@@ -11,7 +11,7 @@ defmodule ProlegalsWeb.Plugs.RequireAuth do
       conn
     else
       conn
-      |> put_flash(:error, "you must be logged in")
+      |> put_flash(:error, "You must be logged in")
       |> redirect(to: ProlegalsWeb.Router.Helpers.session_path(conn, :new))
       |> halt()
     end

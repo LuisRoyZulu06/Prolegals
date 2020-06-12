@@ -34,13 +34,23 @@ defmodule ProlegalsWeb.Router do
     plug :put_layout, false
   end
 
+   scope "/", ProlegalsWeb do
+    pipe_through([:browser, :no_layout])
+    get("/logout/current/user", SessionController, :signout)
+  end
+
   scope "/", ProlegalsWeb do
-    pipe_through([:session, :app])
+    #   pipe_through([:session, :app])
+    pipe_through :browser
+    get "/Dashboard", UserController, :dashboard
     get("/", SessionController, :new)
     post("/", SessionController, :create)
     get("/forgortFleetHub//password", UserController, :forgot_password)
     post("/confirmation/token", UserController, :token)
     get("/reset/FleetHub/password", UserController, :default_password)
+
+    # ---------------------------User Maintenance
+    get "/User/Maintenance", UserController, :user_management
     
     # ---------------------------Test
     get("/new/password", UserController, :new_password)
@@ -50,10 +60,10 @@ defmodule ProlegalsWeb.Router do
     # ----------------------------------------------------------------
   end
 
-  scope "/", ProlegalsWeb do
-    pipe_through([:session, :dashboard_layout])
-    get("/dashboard", UserController, :dashboard)
-  end
+  # scope "/", ProlegalsWeb do
+  #   pipe_through([:session, :dashboard_layout])
+  #   get("/dashboard", UserController, :dashboard)
+  # end
 
   # Other scopes may use custom stacks.
   # scope "/api", ProlegalsWeb do

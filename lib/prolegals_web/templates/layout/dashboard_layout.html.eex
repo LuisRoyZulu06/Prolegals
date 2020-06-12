@@ -88,6 +88,13 @@
                                         <span class="nav-link-text" data-i18n="nav.ui_components">Dashboard</span>
                                     </a>
                                 </li>
+
+                                <li>
+                                    <a href="<%= Routes.user_path(@conn, :user_management)%>" title="User Maintenace" data-filter-tags="ui components">
+                                        <i class="fal fa-user"></i>
+                                        <span class="nav-link-text" data-i18n="nav.ui_components">User Maintenance</span>
+                                    </a>
+                                </li>
                             </ul>
                         <div class="filter-message js-filter-message bg-success-600"></div>
                         </nav>
@@ -228,7 +235,7 @@
                                                     <img class="profile-image rounded-circle" alt="Proxy User" src="<%= Routes.static_path(@conn, "/images/avatar/1.png") %>">
                                                 </span>
                                                  <div class="info-card-text">
-                                                    <%= "#{String.capitalize(@conn.assigns.user.first_name)}"%> | ProLegal
+                                                    user_name | ProLegal
                                                     <span class="text-truncate text-truncate-md opacity-80">
                                                         user_role
                                                     </span>
@@ -257,7 +264,7 @@
                                         <a class="dropdown-item fw-500 pt-3 pb-3" href="#">
                                             <span data-i18n="drpdwn.page-change-password">Change Password</span>
                                         </a>
-                                        <a class="dropdown-item fw-500 pt-3 pb-3" href="#">
+                                        <a class="dropdown-item fw-500 pt-3 pb-3" href="<%= Routes.session_path(@conn, :signout)%>">
                                             <span data-i18n="drpdwn.page-logout">Logout</span>
                                         </a>
                                     </div>
@@ -316,7 +323,7 @@
                 <a href="#" class="menu-item btn" data-toggle="tooltip" data-placement="left" title="Scroll Top">
                     <i class="fal fa-arrow-up"></i>
                 </a>
-                <a href="#" class="menu-item btn" data-toggle="tooltip" data-placement="left" title="Logout">
+                <a href="<%= Routes.session_path(@conn, :signout)%>" class="menu-item btn" data-toggle="tooltip" data-placement="left" title="Logout">
                     <i class="fal fa-sign-out"></i>
                 </a>
                 <a href="#" class="menu-item btn" data-action="app-fullscreen" data-toggle="tooltip" data-placement="left" title="Full Screen">

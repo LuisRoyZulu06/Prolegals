@@ -101,7 +101,8 @@ defmodule Prolegals.Accounts do
   def change_user(%User{} = user) do
     User.changeset(user, %{})
   end
-  # -----------------------------------------------------
+
+  # -------------------TEST------------------------------
   def get_user_by(nt_username) do
     Repo.all(
       from(

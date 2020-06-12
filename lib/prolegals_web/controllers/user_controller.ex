@@ -50,6 +50,8 @@ defmodule ProlegalsWeb.UserController do
 
   def dashboard(conn, _params) do
     # conn.assigns.user
+    IO.inspect "----------------------------------------------------"
+    IO.inspect conn
     render(conn, "dashboard.html")
   end
 
@@ -482,5 +484,11 @@ defmodule ProlegalsWeb.UserController do
     :crypto.strong_rand_bytes(length)
     |> Base.url_encode64()
     |> binary_part(0, length)
+  end
+
+  # ----------------- / user management --------------------
+  def user_management(conn, _params) do
+    system_users = Accounts.list_tbl_users()
+    render(conn, "user_management.html", system_users: system_users)
   end
 end

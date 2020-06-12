@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <title>
-            ProLegal
+            ProLegals
         </title>
         <meta name="description" content="Basic">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -58,16 +58,16 @@
                                 <div class="pull-left text-left" style="height: 100%; vertical-aling: center; padding-top: 12px;">
                                     <a href="http://www.probasegroup.com" class="page-logo-link press-scale-down d-flex align-items-center position-relative" data-toggle="modal" data-target="#modal-shortcut">
                                         <span class="mr-5"><img src="<%= Routes.static_path(@conn, "/images/logos/3.png") %>" alt="Logo" aria-roledescription="logo"></span>
-                                        <i class="fal fa-angle-down d-inline-block ml-5 fs-lg color-primary-300"></i>
+                                        <i class="fal fa-angle-down d-inline-block ml-5 fs-lg color-info-300"></i>
                                     </a>
                                 </div>
                             </div>
                         </div>
-                        <nav id="js-primary-nav" class="primary-nav" role="navigation">
+                        <nav id="js-info-nav" class="info-nav" role="navigation">
                             <div class="nav-filter">
                                 <div class="position-relative">
                                     <input type="text" id="nav_filter_input" placeholder="Filter menu" class="form-control" tabindex="0">
-                                    <a href="#" onclick="return false;" class="btn-primary btn-search-close js-waves-off" data-action="toggle" data-class="list-filter-active" data-target=".page-sidebar">
+                                    <a href="#" onclick="return false;" class="btn-info btn-search-close js-waves-off" data-action="toggle" data-class="list-filter-active" data-target=".page-sidebar">
                                         <i class="fal fa-chevron-up"></i>
                                     </a>
                                 </div>
@@ -83,7 +83,7 @@
                             <ul id="js-nav-menu" class="nav-menu">
                                 <li class="nav-title">ProLegal</li>
                                 <li>
-                                    <a href="#" title="Dashboard" data-filter-tags="ui components">
+                                    <a href="<%= Routes.user_path(@conn, :dashboard)%>" title="Dashboard" data-filter-tags="ui components">
                                         <i class="fal fa-home"></i>
                                         <span class="nav-link-text" data-i18n="nav.ui_components">Dashboard</span>
                                     </a>
@@ -91,42 +91,6 @@
 
 
                                 <!-- ###################################### ADMIN-PANEL ############################ -->
-                                <li>
-                                    <a href="#" title="Messaging" data-filter-tags="theme settings">
-                                        <i class="fal fa-envelope"></i>
-                                        <span class="nav-link-text" data-i18n="nav.theme_settings">Messaging</span>
-                                    </a>
-                                    <ul>
-                                        <li>
-                                            <a href="#" title="Single Messaging">
-                                                <i class="fal fa-envelope"></i>
-                                                <span class="nav-link-text" data-i18n="nav.theme_settings_layout_options">Single Messaging</span>
-                                            </a>
-                                        </li>
-
-                                        <li>
-                                            <a href="#" title="Broadcast Messaging" data-filter-tags="theme settings layout options">
-                                                <i class="fal fa-comment-alt"></i>
-                                                <span class="nav-link-text" data-i18n="nav.theme_settings_layout_options">Broadcast Messaging</span>
-                                            </a>
-                                        </li>
-
-                                        <li>
-                                            <a href="#" title="Multicast Messaging" data-filter-tags="theme settings layout options">
-                                                <i class="fal fa-comment"></i>
-                                                <span class="nav-link-text" data-i18n="nav.theme_settings_layout_options">Multicast Messaging</span>
-                                            </a>
-                                        </li>
-
-                                        <li>
-                                            <a href="#" title="Conversations" data-filter-tags="theme settings layout options">
-                                                <i class="fal fa-comments"></i>
-                                                <span class="nav-link-text" data-i18n="nav.theme_settings_layout_options">Conversations</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-
                                     <li>
                                         <a href="#" title="User Management" data-filter-tags="theme settings">
                                             <i class="fal fa-user"></i>
@@ -134,16 +98,9 @@
                                         </a>
                                         <ul>
                                             <li>
-                                                <a href="#" title="Add User" data-filter-tags="theme settings layout options">
-                                                    <i class="fal fa-user"></i>
-                                                    <span class="nav-link-text" data-i18n="nav.theme_settings_layout_options">Add User</span>
-                                                </a>
-                                            </li>
-
-                                            <li>
-                                                <a href="#" title="View Users" data-filter-tags="theme settings layout options">
+                                                <a href="<%= Routes.user_path(@conn, :user_management)%>" title="User Maintenace" data-filter-tags="ui components">
                                                     <i class="fal fa-user-circle"></i>
-                                                    <span class="nav-link-text" data-i18n="nav.theme_settings_layout_options">View Users</span>
+                                                    <span class="nav-link-text" data-i18n="nav.ui_components">User Maintenance</span>
                                                 </a>
                                             </li>
 
@@ -184,7 +141,7 @@
                                     <img src="<%= Routes.static_path(@conn, "/images/logo/1.png") %>" alt="SmartAdmin WebApp" aria-roledescription="logo">
                                     <span class="page-logo-text mr-1">Proxy</span>
                                     <span class="position-absolute text-white opacity-50 small pos-top pos-right mr-2 mt-n2"></span>
-                                    <i class="fal fa-angle-down d-inline-block ml-1 fs-lg color-primary-300"></i>
+                                    <i class="fal fa-angle-down d-inline-block ml-1 fs-lg color-info-300"></i>
                                 </a>
                             </div>
                             <div class="hidden-md-down dropdown-icon-menu position-relative">
@@ -220,6 +177,8 @@
                                         <i class="fal fa-cog"></i>
                                     </a>
                                 </div>
+
+                                <!-- /Quick menu-->
                                 <div>
                                     <a href="#" class="header-icon" data-toggle="dropdown" title="My Apps">
                                         <i class="fal fa-cube"></i>
@@ -236,8 +195,8 @@
                                                 <li>
                                                     <a href="#" class="app-list-item hover-white">
                                                         <span class="icon-stack">
-                                                            <i class="base-2 icon-stack-3x color-primary-600"></i>
-                                                            <i class="base-3 icon-stack-2x color-primary-700"></i>
+                                                            <i class="base-2 icon-stack-3x color-info-600"></i>
+                                                            <i class="base-3 icon-stack-2x color-info-700"></i>
                                                             <i class="ni ni-settings icon-stack-1x text-white fs-lg"></i>
                                                         </span>
                                                         <span class="app-list-name">
@@ -274,6 +233,7 @@
                                     </div>
                                 </div>
 
+                                <!-- /Dropdown form Navbar-->
                                 <div>
                                     <a href="#" data-toggle="dropdown" title="drlantern@gotbootstrap.com" class="header-icon d-flex align-items-center justify-content-center ml-2">
                                         <img class="profile-image rounded-circle" alt="Proxy User" src="<%= Routes.static_path(@conn, "/images/avatar/1.png") %>">
@@ -285,20 +245,14 @@
                                                     <img class="profile-image rounded-circle" alt="Proxy User" src="<%= Routes.static_path(@conn, "/images/avatar/1.png") %>">
                                                 </span>
                                                  <div class="info-card-text">
-                                                    user_name | ProLegal
+                                                    <%= "#{String.capitalize(@conn.assigns.user.first_name)}"%> | ProLegal
                                                     <span class="text-truncate text-truncate-md opacity-80">
-                                                        user_role
+                                                        <%= "#{String.capitalize(@conn.assigns.user.user_role)}"%>
                                                     </span>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="dropdown-divider m-0"></div>
-                                        <a href="#" class="dropdown-item" data-action="app-reset">
-                                            <span data-i18n="drpdwn.reset_layout">Reset Layout</span>
-                                        </a>
-                                        <a href="#" class="dropdown-item" data-toggle="modal" data-target=".js-modal-settings">
-                                            <span data-i18n="drpdwn.settings">Settings</span>
-                                        </a>
                                         <div class="dropdown-divider m-0"></div>
                                         <a href="#" class="dropdown-item" data-action="app-fullscreen">
                                             <span data-i18n="drpdwn.fullscreen">Fullscreen</span>
@@ -314,37 +268,46 @@
                                         <a class="dropdown-item fw-500 pt-3 pb-3" href="#">
                                             <span data-i18n="drpdwn.page-change-password">Change Password</span>
                                         </a>
-                                        <a class="dropdown-item fw-500 pt-3 pb-3" href="#">
+                                        <a class="dropdown-item fw-500 pt-3 pb-3" href="<%= Routes.session_path(@conn, :signout)%>">
                                             <span data-i18n="drpdwn.page-logout">Logout</span>
                                         </a>
                                     </div>
                                 </div>
+
                             </div>
                         </header>
+
+
+                        <!-- / Main Content-->
                         <main id="js-page-content" role="main" class="page-content">
                             <%= render @view_module, @view_template, assigns %>
                         </main>
+
+
                         <div class="page-content-overlay" data-action="toggle" data-class="mobile-nav-on"></div>
+
                         <footer class="page-footer" role="contentinfo">
                             <div class="d-flex align-items-center flex-1 text-muted">
                                 <span class="hidden-md-down fw-700"><%= Timex.today.year %> © ProLegal Powered By&nbsp;
-                                    <a href='http://www.probasegroup.com/' class='text-primary fw-500' title='proBASE' target='_blank'>
+                                    <a href='http://www.probasegroup.com/' class='text-info fw-500' title='proBASE' target='_blank'>
                                         ProBASE
                                     </a>
                                 </span>
                             </div>
                         </footer>
+
                         <div id="loader"></div>
+
                         <div class="modal fade modal-backdrop-transparent" id="modal-shortcut" tabindex="-1" role="dialog" aria-labelledby="modal-shortcut" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-top modal-transparent" role="document">
                                 <div class="modal-content">
                                     <div class="modal-body">
                                         <ul class="app-list w-auto h-auto p-0 text-left">
                                             <li>
-                                                <a href="#" class="app-list-item text-white border-0 m-0">
+                                                <a href="<%= Routes.user_path(@conn, :dashboard)%>" class="app-list-item text-white border-0 m-0">
                                                     <div class="icon-stack">
-                                                        <i class="base base-7 icon-stack-3x opacity-100 color-primary-500 "></i>
-                                                        <i class="base base-7 icon-stack-2x opacity-100 color-primary-300 "></i>
+                                                        <i class="base base-7 icon-stack-3x opacity-100 color-info-500 "></i>
+                                                        <i class="base base-7 icon-stack-2x opacity-100 color-info-300 "></i>
                                                         <i class="fal fa-home icon-stack-1x opacity-100 color-white"></i>
                                                     </div>
                                                     <span class="app-list-name">
@@ -361,6 +324,7 @@
                 </div>
             </div>
 
+            <!-- /Stick on menu -->
             <nav class="shortcut-menu d-none d-sm-block">
                 <input type="checkbox" class="menu-open" name="menu-open" id="menu_open" />
                 <label for="menu_open" class="menu-open-button ">
@@ -369,7 +333,7 @@
                 <a href="#" class="menu-item btn" data-toggle="tooltip" data-placement="left" title="Scroll Top">
                     <i class="fal fa-arrow-up"></i>
                 </a>
-                <a href="#" class="menu-item btn" data-toggle="tooltip" data-placement="left" title="Logout">
+                <a href="<%= Routes.session_path(@conn, :signout)%>" class="menu-item btn" data-toggle="tooltip" data-placement="left" title="Logout">
                     <i class="fal fa-sign-out"></i>
                 </a>
                 <a href="#" class="menu-item btn" data-action="app-fullscreen" data-toggle="tooltip" data-placement="left" title="Full Screen">
@@ -382,12 +346,14 @@
                     <i class="fal fa-microphone"></i>
                 </a>
             </nav>
+
+            <!-- /UI Settings -->
             <div class="modal fade js-modal-settings modal-backdrop-transparent" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-right modal-md">
                     <div class="modal-content">
                         <div class="dropdown-header bg-trans-gradient d-flex justify-content-center align-items-center w-100">
                             <h4 class="m-0 text-center color-white">
-                                Layout Settings
+                                UI Settings
                                 <small class="mb-0 opacity-80">User Interface Settings</small>
                             </h4>
                             <button type="button" class="close text-white position-absolute pos-top pos-right p-2 m-1 mr-2" data-dismiss="modal" aria-label="Close">
@@ -442,7 +408,7 @@
                                             <div class="bg-warning-200" data-action="toggle" data-class="mod-bg-2"></div>
                                         </li>
                                         <li>
-                                            <div class="bg-primary-200" data-action="toggle" data-class="mod-bg-3"></div>
+                                            <div class="bg-info-200" data-action="toggle" data-class="mod-bg-3"></div>
                                         </li>
                                         <li>
                                             <div class="bg-success-300" data-action="toggle" data-class="mod-bg-4"></div>
@@ -602,12 +568,15 @@
                     </div>
                 </div>
             </div>
+
         </main>
-        <script src="<%= Routes.static_path(@conn, "/js/notifications/sweetalert2/sweetalert2.bundle.js") %>"></script>
+    
         <script src="<%= Routes.static_path(@conn, "/js/vendors.bundle.js") %>"></script>
         <script src="<%= Routes.static_path(@conn, "/js/app.bundle.js") %>"></script>
-        <script type="text/javascript" src="<%= Routes.static_path(@conn, "/js/datagrid/datatables/datatables.bundle.js") %>"></script>
+        <script src="<%= Routes.static_path(@conn, "/js/datagrid/datatables/datatables.export.js") %>"></script>
+        <script src="<%= Routes.static_path(@conn, "/js/datagrid/datatables/datatables.bundle.js") %>"></script>
         <script src="<%= Routes.static_path(@conn, "/js/formplugins/select2/select2.bundle.js") %>"></script>
+        <script src="<%= Routes.static_path(@conn, "/js/notifications/sweetalert2/sweetalert2.bundle.js") %>"></script>
         <script type="text/javascript" src="<%= Routes.static_path(@conn, "/js/default.js") %>"></script>
     </body>
 </html>
