@@ -3,7 +3,7 @@ use Mix.Config
 # Configure your database
 config :prolegals, Prolegals.Repo,
   username: "postgres",
-  password: "postgres",
+  password: "cool",
   database: "prolegals_dev",
   hostname: "localhost",
   show_sensitive_data_on_connection_error: true,
