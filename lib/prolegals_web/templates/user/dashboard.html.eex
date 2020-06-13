@@ -1,0 +1,213 @@
+<main id="js-page-content" role="main" class="page-content">
+    <!-- ####################################################### FLASH ################## -->
+    <div class="row">
+        <div class="col-md-12 col-lg-offset-2">
+            <div class="form-group">
+                <%= if get_flash(@conn, :info) do %>
+                    <div class="alert alert-info alert-styled-left">
+                    <button type="button" class="close" data-dismiss="alert">&times; <span class="sr-only">Close</span></button>
+                    <%= get_flash(@conn, :info) %>
+                    </div>
+                <% end %>
+                <%= if get_flash(@conn, :error) do %>
+                    <div class="alert alert-danger alert-styled-left">
+                    <button type="button" class="close" data-dismiss="alert">&times; <span class="sr-only">Close</span></button>
+                    Opps! <%= get_flash(@conn, :error) %>
+                    </div>
+                <% end %>
+            </div>
+        </div>
+    </div>
+    <!-- ################################################################################ -->
+
+    <div class="subheader">
+        <h1 class="subheader-title">
+            <i class='subheader-icon fal fa-legal'></i> ProLegals <span class='fw-300'>Dashboard</span>
+            <small>
+            </small>
+        </h1>
+        <div class="subheader-block">
+            <i class='subheader-icon fal fa-user'></i> <%= "#{String.capitalize(@conn.assigns.user.first_name)}"%> <%= "#{String.capitalize(@conn.assigns.user.last_name)}"%>  | FleetHUB
+        </div>
+    </div>
+
+    <!-- ###################################### SECURITY-PANEL ############################ -->
+    <%= if @user.user_role == "security" do %>
+        <div class="container-fluid" style="margin-top: 2em;">
+            <div class="row">
+                <div class="col-md-4">
+                    <a href="#" data-toggle="modal" data-target="#log-book">
+                        <div id="cp-2" class="card border">
+                            <div class="card-header bg-info-600">
+                              Log Book
+                            </div>
+                            <div class="card-body p-0 bg-info-300" style="height: 160px">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <h1 class="opacity-15" id="driver-cards">LOG BOOK</h1>  
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <i class="fal fa-book position-absolute pos-middle pos-middle opacity-15 mb-n1 mr-n1" style="font-size:12rem;"></i>
+                                        </div>
+                                    </div> 
+                                </div>
+                            <div class="card-footer bg-info-800 py-2">
+                                <br>
+                            </div>
+                        </div> 
+                    </a>                                     
+                </div>
+
+                <div class="col-md-4">
+                    <a href="#" data-toggle="modal" data-target="#profile-modal">
+                        <div id="cp-2" class="card border">
+                            <div class="card-header bg-primary-600">
+                                Personal Profile
+                            </div>
+                            <div class="card-body p-0 bg-primary-300" style="height: 160px">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <h1 class="opacity-15" id="driver-cards">PROFILE</h1>  
+                                            </div>
+
+                                            <div class="col-sm-6">
+                                                <i class="fal fa-user position-absolute pos-middle pos-middle opacity-15 mb-n1 mr-n1" style="font-size:12rem;"></i>
+                                            </div>
+                                        </div> 
+                                    </div>
+                                <div class="card-footer bg-primary-800 py-2">
+                                <br>
+                            </div>
+                        </div> 
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
+    <%end%>
+     <!-- ################################################################################# --> 
+
+
+</main> 
+
+<!-- ################################ LOG BOOK MODAL ##################################### -->
+<div class="modal fade" id="log-book" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">LOG BOOK <i class='subheader-icon fal fa-user-circle'></i></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="fal fa-times"></i></span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form class="form-horizontal" action="<%= Routes.security_path(@conn, :create_log_book_user)%>" enctype="multipart/form-data"  method="post">
+                    <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
+                    <div class="form-group">
+                        <label class="form-label">Full Name</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fal fa-user"></i></span>
+                            </div>
+                            <input type="text" name="name" class="form-control" placeholder="Full Names" required="required">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Personal Details</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fal fa-user"></i></span>
+                            </div>
+                            <select class="custom-select form-control" name="sex" required="required">
+                                <option selected="">Select Gender</option>
+                                <option value="M">Male</option>
+                                <option value="F">Female</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Contact Details</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fal fa-phone"></i></span>
+                            </div>
+                            <input type="text" name="mobile" placeholder="Phone Number" value="+260" class="form-control" required="required">
+                            <input type="text" name="address" placeholder="Physical Address" class="form-control" required="required">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Identity Details</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fal fa-id-card"></i></span>
+                            </div>
+                            <select class="custom-select form-control" name="id_type" required="required">
+                                <option selected="">Select ID Type</option>
+                                <option value="NRC">NRC</option>
+                                <option value="PASSPORT">Passport</option>
+                                <option value="DRIVERS LICENSE">Drivers License</option>
+                            </select>
+                            <input type="text" name="id_no" placeholder="Enter ID Number" class="form-control" required="required">
+                        </div>
+                    </div>
+
+                     <div class="form-group">
+                        <label class="form-label">Company Details</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fal fa-home"></i></span>
+                            </div>
+                            <input type="text" name="company" placeholder="Company Name" class="form-control" required="required">
+                        
+                        </div>
+                    </div>
+
+                     <div class="form-group">
+                        <label class="form-label">Details for visit</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fal fa-home"></i></span>
+                            </div>
+                            <input type="text" name="person_to_see" placeholder="Person To See"  class="form-control" required="required">
+                            <input type="text" name="purpose" placeholder="Purpose for Visit" class="form-control" required="required">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label"> Date of visit</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fal fa-clock"></i></span>
+                            </div>
+                            <input type="date" name="date" placeholder="Date of Visit" class="form-control" required="required">
+                            
+                        </div>
+                    </div>
+
+                     <div class="form-group">
+                        <label class="form-label"> Time for visit</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fal fa-clock"></i></span>
+                            </div>
+                            <input type="text" name="time_in" placeholder="Time In" class="form-control" required="required">
+                            
+                        </div>
+                    </div>
+     
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Add user</button>
+                    </div>
+                </form>
+            </div>   
+        </div>
+    </div>
+</div>  
+<!-- ################################################################################# --> 
