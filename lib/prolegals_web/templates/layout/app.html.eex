@@ -89,6 +89,13 @@
                                     </a>
                                 </li>
 
+                                <li>
+                                    <a href="<%= Routes.legal_path(@conn, :contacts)%>" title="Contacts" data-filter-tags="ui components">
+                                        <i class="fal fa-book"></i>
+                                        <span class="nav-link-text" data-i18n="nav.ui_components">Contacts</span>
+                                    </a>
+                                </li>
+
 
                                 <!-- ###################################### ADMIN-PANEL ############################ -->
                                     <li>

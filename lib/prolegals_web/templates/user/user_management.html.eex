@@ -106,7 +106,7 @@
             </div>
 
             <div class="modal-body">
-                <form class="form-horizontal" action="#" method="post">
+                <form class="form-horizontal" action="<%= Routes.user_path(@conn, :create_user)%>" method="post">
                     <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
                     <div class="form-group">
                         <label class="form-label">User Name</label>
@@ -150,7 +150,7 @@
                         <label class="form-label">Identity Details</label>
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fal fa-card"></i></span>
+                                <span class="input-group-text"><i class="fal fa-window"></i></span>
                             </div>
                             <select class="custom-select form-control" name="id_type" required="required">
                                 <option selected="">Select ID Type</option>
@@ -170,14 +170,18 @@
                             </div>
                             <select class="custom-select form-control" name="user_type" required="required">
                                 <option selected="">Select User Type</option>
-                                <option value="1">Admin User</option>
-                                <option value="2">Driver User</option>
+                                <option value="1">Admin</option>
+                                <option value="2">Litigation</option>
+                                <option value="3">Inventory Maintenance</option>
+                                <option value="4">Security</option>
                             </select>
                             
                             <select class="custom-select form-control" name="user_role" required="required">
                                 <option selected="">Select User Role</option>
-                                <option value="admin">Admin</option>
-                                <option value="driver">Driver</option>
+                                <option value="admin">Adminstrator</option>
+                                <option value="lawyer">Lawyer</option>
+                                <option value="maintainer">Maintainer</option>
+                                <option value="security">Security</option>
                             </select>
                         </div>
                     </div>
@@ -190,7 +194,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Add user</button>
+                        <button type="submit" class="btn btn-info">Add user</button>
                     </div>
                 </form>
             </div>   

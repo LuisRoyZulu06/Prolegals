@@ -51,6 +51,7 @@ defmodule ProlegalsWeb.Router do
 
     # ---------------------------User Maintenance
     get "/User/Maintenance", UserController, :user_management
+    post "/Create/User", UserController, :create_user
     
     # ---------------------------Test
     get("/new/password", UserController, :new_password)
@@ -58,6 +59,10 @@ defmodule ProlegalsWeb.Router do
     post("/reset/password", UserController, :default_password)
     post("/reset/user/password", UserController, :reset_pwd)
     # ----------------------------------------------------------------
+  
+    # ---------------------------Legal Controller
+    get "/Contacts", LegalController, :contacts
+
   end
 
   # scope "/", ProlegalsWeb do

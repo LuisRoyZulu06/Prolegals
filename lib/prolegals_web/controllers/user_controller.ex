@@ -19,7 +19,8 @@ defmodule ProlegalsWeb.UserController do
            :update,
            :create,
            :update_status,
-           :user_actitvity
+           :user_actitvity,
+           :user_management
          ]
   )
 
@@ -490,5 +491,21 @@ defmodule ProlegalsWeb.UserController do
   def user_management(conn, _params) do
     system_users = Accounts.list_tbl_users()
     render(conn, "user_management.html", system_users: system_users)
+  end
+
+  def create_user(conn, params) do
+    case Accounts.create_user(params) do
+      {:ok, _} ->
+        conn
+        |> put_flash(:info, "User added.")
+        |> redirect(to: Routes.user_path(conn, :user_management))
+
+        conn
+
+      {:error, _} ->
+        conn
+        |> put_flash(:error, "Failed to add user to system.")
+        |> redirect(to: Routes.user_path(conn, :user_management))
+    end
   end
 end
