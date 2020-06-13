@@ -1,0 +1,3 @@
+mix phx.gen.context Accounts User tbl_users first_name last_name email password user_type:integer user_role status:integer auto_password sex age:integer id_type id_no:integer phone:integer home_add
+
+mix phx.gen.context Logs UserLogs tbl_user_logs activity user_id
