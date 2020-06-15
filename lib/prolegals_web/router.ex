@@ -62,6 +62,7 @@ defmodule ProlegalsWeb.Router do
   
     # ---------------------------Legal Controller
     get "/Contacts", LegalController, :contacts
+    post "/Create/Contact", LegalController, :create_contact
 
       # ////////////////////////////////////////////////////////////////// Security Controller
       get "/list/logbook/user", SecurityController, :list_log_book_users

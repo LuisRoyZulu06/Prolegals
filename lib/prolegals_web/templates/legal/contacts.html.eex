@@ -49,11 +49,12 @@
             </div>
         </div>
     </div>
+
     <div class="row" id="js-contacts">
-    
     <!-- Looping through main ocntent-->
+    <%= for contact <- @contacts do %>
         <div class="col-xl-4">
-            <div id="c_1" class="card border shadow-0 mb-g shadow-sm-hover" data-filter-tags="rep_name">
+            <div id="c_1" class="card border shadow-0 mb-g shadow-sm-hover" data-filter-tags="<%= contact.name %>">
                 <div class="card-body border-faded border-top-0 border-left-0 border-right-0 rounded-top">
                     <div class="d-flex flex-row align-items-center">
                         <span class="status status-success mr-3">
@@ -61,12 +62,12 @@
                         </span>
                         <div class="info-card-text flex-1">
                             <a href="javascript:void(0);" class="fs-xl text-truncate text-truncate-lg text-info" data-toggle="dropdown" aria-expanded="false">
-                                Rep Name
+                                <%= contact.name %>
                                 <i class="fal fa-angle-down d-inline-block ml-1 fs-md"></i>
                             </a>
                             <div class="dropdown-menu">
-                                <a class="dropdown-item" href="tel:company_tell" data-toggle="tooltip" data-placement="top" title="Call">
-                                   Call
+                                <a class="dropdown-item" href="tel:<%= contact.phone %>" data-toggle="tooltip" data-placement="top" title="Call">
+                                   <%= contact.phone %>
                                 </a>
                                 <a class="dropdown-item" href="mailto:email">Send Email</a>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit-vendor">Edit Contact</a>
@@ -91,8 +92,8 @@
                     </div>
                 </div>
             </div>
-        </div>    
-
+        </div> 
+    <% end %>
     </div>
 </main>
 
@@ -178,7 +179,7 @@
             </div>
 
             <div class="modal-body">                
-                <form action="#" method="POST">
+                <form action="<%= Routes.legal_path(@conn, :create_contact)%>" method="POST">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
@@ -257,7 +258,7 @@
             </div>
 
             <div class="modal-body">                
-                <form action="#" method="POST">
+                <form action="<%= Routes.legal_path(@conn, :create_contact)%>" method="POST">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
@@ -267,9 +268,9 @@
                                         <span class="input-group-text"><i class="fal fa-building"></i></span>
                                     </div>
                                     <input type="text" name="name" placeholder="Name of Company" class="form-control" required="required">
-                                    <select class="custom-select form-control" name="id_type" required="required">
+                                    <select class="custom-select form-control" name="bus_category" required="required">
                                         <option selected="">Select Business Category</option>
-                                        <option value="option1">Option 1</option>
+                                        <option value="tech">Tech</option>
                                     </select>
                                     <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
                                     <input type="hidden" name="contact_type" value="company">
@@ -322,127 +323,6 @@
         </div>
     </div>
 </div>
-
-
-<!-- ############################### ADD-VENDOR MODAL #################################### -->
-<div class="modal fade" id="add-vendor" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">ADD NEW CONTACT <i class="fal fa-book"></i> </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true"><i class="fal fa-times"></i></span>
-                </button>
-            </div>
-
-            <div class="modal-body">
-                <form action="#" method="POST">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="form-label">Company Rep: Full Name</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fal fa-user"></i></span>
-                                    </div>
-                                    <input type="text" name="rep_name" placeholder="Name of contact person" class="form-control" required="required">
-                                    <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label">Postion</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fal fa-window-alt width-1 text-align-center"></i></span>
-                                    </div>
-                                    <input type="text" name="position" placeholder="Position held at company" class="form-control">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label">Company Name</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fal fa-home width-1 text-align-center"></i></span>
-                                    </div>
-                                    <input type="text" name="comp_name" placeholder="Company Name" class="form-control" required="required">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label">Company Email</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fal fa-envelope width-1 text-align-center"></i></span>
-                                    </div>
-                                    <input type="text" name="comp_email" placeholder="Company Email" class="form-control" required="required">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="form-label">Company Rep: Email Address</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fal fa-envelope"></i></span>
-                                    </div>
-                                    <input type="email" name="email" placeholder="Company Rep Email Address" class="form-control" required="required">
-                                </div>
-                            </div>
-
-                             <div class="form-group">
-                                <label class="form-label">Tel:</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fal fa-phone"></i></span>
-                                    </div>
-                                    <input type="text" name="comp_tel" placeholder="Company Tel" class="form-control" required="required">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label">Office Address</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fal fa-home"></i></span>
-                                    </div>
-                                    <input type="text" name="comp_address" placeholder="Office Address" class="form-control" required="required">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label">Company Details</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fal fa-info"></i></span>
-                                    </div>
-                                    <textarea type="text" name="comp_info" placeholder="Company Details" class="form-control" required="required">
-                                    </textarea>
-                                </div>
-                            </div>                          
-                        </div>
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Add Contact</button>
-                    </div>                   
-                </form>
-            </div>
-
-        </div>
-    </div>
-</div>
-
-
-
-
-
-
-
-
 
 
 
