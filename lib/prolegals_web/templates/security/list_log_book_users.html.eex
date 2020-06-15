@@ -1,0 +1,318 @@
+<main id="js-page-content" role="main" class="page-content">
+    <!-- ####################################################### FLASH ################## -->
+    <div class="row">
+        <div class="col-md-12 col-lg-offset-2">
+            <div class="form-group">
+                <%= if get_flash(@conn, :info) do %>
+                    <div class="alert alert-info alert-styled-left">
+                    <button type="button" class="close" data-dismiss="alert">&times; <span class="sr-only">Close</span></button>
+                    <%= get_flash(@conn, :info) %>
+                    </div>
+                <% end %>
+                <%= if get_flash(@conn, :error) do %>
+                    <div class="alert alert-danger alert-styled-left">
+                    <button type="button" class="close" data-dismiss="alert">&times; <span class="sr-only">Close</span></button>
+                    Opps! <%= get_flash(@conn, :error) %>
+                    </div>
+                <% end %>
+            </div>
+        </div>
+    </div>
+    <!-- ################################################################################ -->
+    
+    <div class="subheader">
+        <h1 class="subheader-title">
+            <i class='subheader-icon fal fa-user'></i> Log Book Management
+        </h1>
+        <div class="subheader-block" id="loggedIn-user">
+            <i class='subheader-icon fal fa-user'></i> <%= "#{String.capitalize(@conn.assigns.user.first_name)}"%> <%= "#{String.capitalize(@conn.assigns.user.last_name)}"%>  | FleetHUB
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xl-12">
+            <div id="panel-1" class="panel">
+                <div class="panel-hdr">
+                    <h2>
+                        List of Users
+                    </h2>
+                    <div class="panel-toolbar">
+                        
+                    </div>
+                </div>
+
+                <div class="panel-container show">
+                    <div class="panel-content">
+                        
+                        <!-- datatable start -->
+                        <table id="dt-basic-example" class="table table-bordered table-hover table-striped w-100">
+                            <thead class="p-3 bg-primary-300 rounded overflow-hidden position-relative text-white mb-g">
+                                <tr>
+                                    <th>Full Name</th>
+                                    <th>Sex</th>
+                                    <th>Phone Number</th>
+                                    <th>Address</th>
+                                    <th>ID Type</th>
+                                    <th>ID Number</th>
+                                    <th>Company</th>
+                                    <th>Person To See</th>
+                                    <th>Purpose</th>
+                                    <th>Date</th>
+                                    <th>Time In</th>
+                                    <th>Time Out</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <%= for list_log_book_user <- @list_log_book_users do %>
+                                
+                                    <tr>
+                                        <td><%= list_log_book_user.name%></td>
+                                        <td><%= list_log_book_user.sex%></td>
+                                        <td><%= list_log_book_user.mobile%></td>
+                                        <td><%= list_log_book_user.address%></td>
+                                        <td><%= list_log_book_user.id_type%></td>
+                                        <td><%= list_log_book_user.id_no%></td>
+                                        <td><%= list_log_book_user.company%></td>
+                                        <td><%= list_log_book_user.person_to_see%></td>
+                                        <td><%= list_log_book_user.purpose%></td>
+                                        <td><%= list_log_book_user.date%></td>
+                                        <td><%= list_log_book_user.time_in%></td>
+                                        <td><%= list_log_book_user.time_out%></td>
+                                       
+                                        <td>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <i class='subheader-icon fal fa-chevron-down'></i>
+                                                    </span>
+                                                    <div class="dropdown-menu">
+                                                        <a class="dropdown-item"  data-toggle="modal" data-target="#editmodal">Edit</a>
+                                                        <a class="dropdown-item"  data-toggle="modal" data-target="#profile-modal">View</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>                                      
+                                    </tr>                                
+                                
+                                <% end %>   
+                            </tbody>        
+                        </table>
+                        <!-- datatable end -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- ############################## EDIT-DRIVER ########################################## -->
+<div class="modal fade" id="editmodal"  tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title text-black">
+                    Edit User Details
+                </h4>
+                <button type="button" class="close text-black" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="fal fa-times"></i></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="panel-content">
+                <form action="#" method="POST">
+                    <div class="row">
+                    <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
+                    <input type="hidden" name="id" id="id">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Full Name</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-user"></i></span>
+                                    </div>
+                                    <input type="text" name="name" id="name" class="form-control" required="required">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Sex</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-user-circle width-1 text-align-center"></i></span>
+                                    </div>
+                                    <select class="custom-select form-control" name="sex" required="required">
+                                        <option selected="">Select Gender</option>
+                                        <option value="M">Male</option>
+                                        <option value="F">Female</option>
+                                    </select>
+                                </div>
+                            </div>
+                                <div class="form-group">
+                                <label class="form-label">ID Type</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-user-circle width-1 text-align-center"></i></span>
+                                    </div>
+                                    <select class="custom-select form-control" name="id_type" id="id_type" required="required">
+                                        <option selected="">Select Gender</option>
+                                        <option value="NRC">NRC</option>
+                                        <option value="PassPort">PassPort</option>
+                                        <option value="Drivers License">Drivers License</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">ID Number</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-window-alt width-1 text-align-center"></i></span>
+                                    </div>
+                                    <input type="text" name="id_no" id="id_no" class="form-control" required="required">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Address</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-home width-1 text-align-center"></i></span>
+                                    </div>
+                                    <input type="text" name="address" id="address" class="form-control" required="required">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Phone Number</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-home width-1 text-align-center"></i></span>
+                                    </div>
+                                    <input type="text" name="mobile" id="mobile" class="form-control" required="required">
+                                </div>
+                            </div>
+   
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Company</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-user"></i></span>
+                                    </div>
+                                    <input type="text" name="company" id="company" class="form-control" required="required">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="form-label">Person to See</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-user width-1 text-align-center"></i></span>
+                                    </div>
+                                    <input type="text" name="person_to_see" id="person_to_see" class="form-control" required="required">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Purpose</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-phone width-1 text-align-center"></i></span>
+                                    </div>
+                                    <input type="text" name="purpose" id="purpose" class="form-control" required="required">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Date</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-mouse-pointer width-1 text-align-center"></i></span>
+                                    </div>
+                                    <input type="date" name="date" id="date"  class="form-control" required="required">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Time In</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-window-alt width-1 text-align-center"></i></span>
+                                    </div>
+                                    <input type="text" name="time_in" id="time_in" class="form-control" required="required">
+                                </div>
+                            </div>
+
+                           <div class="form-group">
+                                <label class="form-label">Time Out</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-window-alt width-1 text-align-center"></i></span>
+                                    </div>
+                                    <input type="text" name="time_out" id="time_out" class="form-control" required="required">
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Update User</button>
+                    </div>   
+                </form>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ######################################################################## -->
+
+<script src="<%= Routes.static_path(@conn, "/js/vendors.bundle.js") %>"></script>
+<script src="<%= Routes.static_path(@conn, "/js/statistics/peity/peity.bundle.js") %>"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<script>
+$(document).ready(function(){
+//Edit User
+$('#editmodal').on('show.bs.modal', function (event){
+
+    var button = $(event.relatedTarget)
+    var id = button.data('id')
+    var first_name = button.data('name')
+    var sex = button.data('sex')
+    var mobile = button.data('mobile')
+    var address = button.data('address')
+    var id_type = button.data('id_type')
+    var id_no = button.data('id_no')
+    var company  = button.data('company')
+    var person_to_see = button.data('person_to_see')
+    var purpose = button.data('purpose')
+    var date = button.data('date')
+    var time_in = button.data('time_in')
+    var time_out = button.data('time_out')
+    
+    var modal = $(this)
+    modal.find('.modal-body #id').val(id);
+    modal.find('.modal-body #name').val(name);
+    modal.find('.modal-body #sex').val(sex);
+    modal.find('.modal-body #mobile').val(mobile);
+    modal.find('.modal-body #address').val(address);
+    modal.find('.modal-body #id_type').val(id_type);
+    modal.find('.modal-body #id_no').val(id_no);
+    modal.find('.modal-body #company').val(company);
+    modal.find('.modal-body #person_to_see').val(person_to_see);
+    modal.find('.modal-body #purpose').val(purpose);
+    modal.find('.modal-body #date').val(date);
+    modal.find('.modal-body #time_in').val(time_in);
+    modal.find('.modal-body #time_out').val(time_out);
+});
+});
+</script>
+
+
+
