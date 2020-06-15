@@ -2,4 +2,8 @@ mix phx.gen.context Accounts User tbl_users first_name last_name email password 
 
 mix phx.gen.context Logs UserLogs tbl_user_logs activity user_id
 
+<<<<<<< HEAD
 mix phx.gen.context Security LogBook sec_tbl_log_book name sex id_type id_no image mobile_no address company person_to_see purpose date time_in time_out
+=======
+mix phx.gen.context Litigation Contacts li_tbl_contacts name email phone company_name job_title id_type id_no compnay_rep bus_category contact_type fax tel city country
+>>>>>>> 2ee1209deb7a5753b3ae8f295a1c0e9217868761

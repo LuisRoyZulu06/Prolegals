@@ -8,7 +8,7 @@ defmodule Prolegals.Accounts.User do
     field :email, :string
     field :first_name, :string
     field :home_add, :string
-    field :id_no, :integer
+    field :id_no, :string
     field :id_type, :string
     field :last_name, :string
     field :password, :string
@@ -49,7 +49,7 @@ defmodule Prolegals.Accounts.User do
     )
     |> unique_constraint(:email, name: :unique_email, message: " Email address already exists")
     |> unique_constraint(:phone, name: :unique_phone, message: " Phone number already exists")
-    |> unique_constraint(:id_no, name: :unique_id_no, message: " ID number already exists")
+    |> unique_constraint(:identity_number, name: :unique_identity_number, message: " ID number already exists")
     |> validate_user_role()
     |> put_pass_hash
   end
@@ -75,7 +75,5 @@ defmodule Prolegals.Accounts.User do
 end
 
 
-#Prolegals.Accounts.create_user(%{first_name: "Luis Roy", last_name: "Zulu", email: "luis@probasegroup.com", password: "password06", user_type: 1, status: 1, user_role: "admin", sex: "m", age: "24", id_type: "nrc", id_no: 342891101, phone: 0979797337, home_add: "202/20 Roma Null off Zambezi Road", inserted_at: NaiveDateTime.utc_now, updated_at: NaiveDateTime.utc_now})
-#Prolegals.Accounts.create_user(%{first_name: "john", last_name: "mfula", email: "johnmfula360@gmail.com", password: "cool", user_type: 1, status: 1, user_role: "admin", sex: "m", age: "24", id_type: "nrc", id_no: 342891101, phone: 0979776337, home_add: "Matero B6565", inserted_at: NaiveDateTime.utc_now, updated_at: NaiveDateTime.utc_now})
-#Prolegals.Accounts.create_user(%{first_name: "john", last_name: "Mfula", email: "lawyer@gmail.com", password: "cool", user_type: 2, status: 1, user_role: "lawyer", sex: "m", age: "24", id_type: "nrc", id_no: 304831101, phone: 0975432237, home_add: "mtendere A4443", inserted_at: NaiveDateTime.utc_now, updated_at: NaiveDateTime.utc_now})
-#Prolegals.Accounts.create_user(%{first_name: "john", last_name: "Mfula", email: "security@gmail.com", password: "cool", user_type: 2, status: 1, user_role: "security", sex: "m", age: "24", id_type: "nrc", id_no: 30468101, phone: 0975432267, home_add: "mtendere A4555", inserted_at: NaiveDateTime.utc_now, updated_at: NaiveDateTime.utc_now})
+#Prolegals.Accounts.create_user(%{first_name: "Luis Roy", last_name: "Zulu", email: "luis@probasegroup.com", password: "password06", user_type: 1, status: 1, user_role: "admin", sex: "m", age: "24", id_type: "nrc", id_no: "342891/10/1", phone: 0979797337, home_add: "202/20 Roma Null off Zambezi Road", inserted_at: NaiveDateTime.utc_now, updated_at: NaiveDateTime.utc_now})
+#Prolegals.Accounts.create_user(%{first_name: "John", last_name: "Mfula", email: "johnmfula360@gmail.com", password: "password02", user_type: 2, status: 1, user_role: "lawyer", sex: "m", age: "29", id_type: "nrc", id_no: "304681/10/1", phone: 0975432237, home_add: "Mtendere A4443", inserted_at: NaiveDateTime.utc_now, updated_at: NaiveDateTime.utc_now})
