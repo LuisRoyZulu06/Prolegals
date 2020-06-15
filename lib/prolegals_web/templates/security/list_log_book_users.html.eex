@@ -22,7 +22,7 @@
     
     <div class="subheader">
         <h1 class="subheader-title">
-            <i class='subheader-icon fal fa-user'></i> Log Book Management
+            <i class='subheader-icon fal fa-user'></i> LogBook Management
         </h1>
         <div class="subheader-block" id="loggedIn-user">
             <i class='subheader-icon fal fa-user'></i> <%= "#{String.capitalize(@conn.assigns.user.first_name)}"%> <%= "#{String.capitalize(@conn.assigns.user.last_name)}"%>  | FleetHUB
@@ -69,7 +69,7 @@
                                     <tr>
                                         <td><%= list_log_book_user.name%></td>
                                         <td><%= list_log_book_user.sex%></td>
-                                        <td><%= list_log_book_user.mobile%></td>
+                                        <td><%= list_log_book_user.mobile_no%></td>
                                         <td><%= list_log_book_user.address%></td>
                                         <td><%= list_log_book_user.id_type%></td>
                                         <td><%= list_log_book_user.id_no%></td>
@@ -87,7 +87,7 @@
                                                         <i class='subheader-icon fal fa-chevron-down'></i>
                                                     </span>
                                                     <div class="dropdown-menu">
-                                                        <a class="dropdown-item"  data-toggle="modal" data-target="#editmodal">Edit</a>
+                                                        <a class="dropdown-item" data-id="<%= list_log_book_user.id %>"  data-toggle="modal" data-target="#time_out_modal">Add Time Out</a>
                                                         <a class="dropdown-item"  data-toggle="modal" data-target="#profile-modal">View</a>
                                                     </div>
                                                 </div>
@@ -106,13 +106,13 @@
     </div>
 </main>
 
-<!-- ############################## EDIT-DRIVER ########################################## -->
-<div class="modal fade" id="editmodal"  tabindex="-1" role="dialog" aria-hidden="true">
+<!-- ############################## TIME OUT-MODAL ########################################## -->
+<div class="modal fade" id="time_out_modal"  tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title text-black">
-                    Edit User Details
+                    Add Time Out
                 </h4>
                 <button type="button" class="close text-black" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true"><i class="fal fa-times"></i></span>
@@ -120,148 +120,27 @@
             </div>
             <div class="modal-body">
                 <div class="panel-content">
-                <form action="#" method="POST">
+                <form action="<%= Routes.security_path(@conn, :add_time_out)%>" method="POST">
                     <div class="row">
                     <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
                     <input type="hidden" name="id" id="id">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="form-group">
-                                <label class="form-label">Full Name</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fal fa-user"></i></span>
-                                    </div>
-                                    <input type="text" name="name" id="name" class="form-control" required="required">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label">Sex</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fal fa-user-circle width-1 text-align-center"></i></span>
-                                    </div>
-                                    <select class="custom-select form-control" name="sex" required="required">
-                                        <option selected="">Select Gender</option>
-                                        <option value="M">Male</option>
-                                        <option value="F">Female</option>
-                                    </select>
-                                </div>
-                            </div>
-                                <div class="form-group">
-                                <label class="form-label">ID Type</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fal fa-user-circle width-1 text-align-center"></i></span>
-                                    </div>
-                                    <select class="custom-select form-control" name="id_type" id="id_type" required="required">
-                                        <option selected="">Select Gender</option>
-                                        <option value="NRC">NRC</option>
-                                        <option value="PassPort">PassPort</option>
-                                        <option value="Drivers License">Drivers License</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label">ID Number</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fal fa-window-alt width-1 text-align-center"></i></span>
-                                    </div>
-                                    <input type="text" name="id_no" id="id_no" class="form-control" required="required">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label">Address</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fal fa-home width-1 text-align-center"></i></span>
-                                    </div>
-                                    <input type="text" name="address" id="address" class="form-control" required="required">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label">Phone Number</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fal fa-home width-1 text-align-center"></i></span>
-                                    </div>
-                                    <input type="text" name="mobile" id="mobile" class="form-control" required="required">
-                                </div>
-                            </div>
-   
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="form-label">Company</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fal fa-user"></i></span>
-                                    </div>
-                                    <input type="text" name="company" id="company" class="form-control" required="required">
-                                </div>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label class="form-label">Person to See</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fal fa-user width-1 text-align-center"></i></span>
-                                    </div>
-                                    <input type="text" name="person_to_see" id="person_to_see" class="form-control" required="required">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label">Purpose</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fal fa-phone width-1 text-align-center"></i></span>
-                                    </div>
-                                    <input type="text" name="purpose" id="purpose" class="form-control" required="required">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label">Date</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fal fa-mouse-pointer width-1 text-align-center"></i></span>
-                                    </div>
-                                    <input type="date" name="date" id="date"  class="form-control" required="required">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label">Time In</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fal fa-window-alt width-1 text-align-center"></i></span>
-                                    </div>
-                                    <input type="text" name="time_in" id="time_in" class="form-control" required="required">
-                                </div>
-                            </div>
-
-                           <div class="form-group">
                                 <label class="form-label">Time Out</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fal fa-window-alt width-1 text-align-center"></i></span>
+                                        <span class="input-group-text"><i class="fal fa-clock"></i></span>
                                     </div>
                                     <input type="text" name="time_out" id="time_out" class="form-control" required="required">
                                 </div>
                             </div>
-
                         </div>
+ 
                     </div>
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Update User</button>
+                        <button type="submit" class="btn btn-primary">Add Time</button>
                     </div>   
                 </form>
             </div>
@@ -271,10 +150,27 @@
 </div>
 
 <!-- ######################################################################## -->
-
-<script src="<%= Routes.static_path(@conn, "/js/vendors.bundle.js") %>"></script>
-<script src="<%= Routes.static_path(@conn, "/js/statistics/peity/peity.bundle.js") %>"></script>
+<script src="<%= Routes.static_path(@conn, "/js/jquery-1.11.2.min.js") %>"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<script>
+$(document).ready(function(){
+//Time out Js
+$('#time_out_modal').on('show.bs.modal', function (event){
+
+    console.log("time_out");
+   
+
+    var button = $(event.relatedTarget)
+    var id = button.data('id')
+   
+    
+    var modal = $(this)
+    modal.find('.modal-body #id').val(id);
+    
+});
+});
+</script>
 
 <script>
 $(document).ready(function(){
@@ -313,6 +209,7 @@ $('#editmodal').on('show.bs.modal', function (event){
 });
 });
 </script>
+
 
 
 

@@ -8,7 +8,7 @@ defmodule Prolegals.Accounts.User do
     field :email, :string
     field :first_name, :string
     field :home_add, :string
-    field :id_no, :integer
+    field :id_no, :string
     field :id_type, :string
     field :last_name, :string
     field :password, :string
@@ -49,7 +49,7 @@ defmodule Prolegals.Accounts.User do
     )
     |> unique_constraint(:email, name: :unique_email, message: " Email address already exists")
     |> unique_constraint(:phone, name: :unique_phone, message: " Phone number already exists")
-    |> unique_constraint(:id_no, name: :unique_id_no, message: " ID number already exists")
+    |> unique_constraint(:identity_number, name: :unique_identity_number, message: " ID number already exists")
     |> validate_user_role()
     |> put_pass_hash
   end
