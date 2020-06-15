@@ -83,6 +83,32 @@
                     </a>
                 </div>
 
+                <div class="col-md-4">
+                    <a href="<%= Routes.security_path(@conn, :list_log_book_users)%>">
+                        <div id="cp-2" class="card border">
+                            <div class="card-header bg-success-600">
+                                List of Users in The Log Book
+                            </div>
+                            <div class="card-body p-0 bg-success-300" style="height: 160px">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <h1 class="opacity-15" id="driver-cards">TABLE</h1>  
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <i class="fal fa-table position-absolute pos-middle pos-middle opacity-15 mb-n1 mr-n1" style="font-size:11rem;"></i>
+                                        </div>
+                                    </div> 
+                                </div>
+                            <div class="card-footer bg-success-800 py-2">
+                                <br>
+                            </div>
+                        </div> 
+                    </a>                                     
+                </div>
+                
+            </div>
+
             </div>
 
         </div>
@@ -136,7 +162,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fal fa-phone"></i></span>
                             </div>
-                            <input type="text" name="mobile" placeholder="Phone Number" value="+260" class="form-control" required="required">
+                            <input type="text" name="mobile_no" placeholder="Phone Number" value="+260" class="form-control" required="required">
                             <input type="text" name="address" placeholder="Physical Address" class="form-control" required="required">
                         </div>
                     </div>

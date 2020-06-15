@@ -29,6 +29,22 @@ defmodule ProlegalsWeb.SecurityController do
       end
   end 
 
+   def add_time_out(conn, params) do
+      case Securitys.create_log_book(params) do
+          {:ok, _} ->
+            conn
+            |> put_flash(:info, "User Time Out Added To System")
+            |> redirect(to: Routes.security_path(conn, :list_log_book_users))
+
+            conn
+
+          {:error, _} ->
+            conn
+            |> put_flash(:error, "Failed To Add User Time Out To system.")
+            |> redirect(to: Routes.security_path(conn, :list_log_book_users))
+      end
+   end 
+
 
 
     
