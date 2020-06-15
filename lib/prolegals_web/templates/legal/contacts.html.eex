@@ -73,7 +73,7 @@
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit-vendor">Edit Contact</a>
                                 <a class="dropdown-item" data-toggle="modal" data-target="#delete-alert">Delete Contact</a>
                             </div>
-                            <span class="text-truncate text-truncate-xl">Position, Company Name.</span>
+                            <span class="text-truncate text-truncate-xl"><%= contact.job_title %>, <%= contact.company_name %>.</span>
                         </div>
                         <button class="js-expand-btn btn btn-sm btn-default d-none" data-toggle="collapse" data-target="#c_1 > .card-body + .card-body" aria-expanded="false">
                             <span class="collapsed-hidden">+</span>
@@ -81,16 +81,20 @@
                         </button>
                     </div>
                 </div>
+
+                <%= if contact.contact_type == "company" do %>
                 <div class="card-body p-0 collapse show">
                     <div class="p-3">
                         <a href="tel:company_tel" class="mt-1 d-block fs-sm fw-400 text-dark">
-                            <i class="fas fa-mobile-alt text-muted mr-2"></i>company_tel</a>
+                            <i class="fal fa-mobile-alt text-muted mr-2">Tel: </i><%= contact.tel %></a>
                         <a href="mailto:company_email" class="mt-1 d-block fs-sm fw-400 text-dark">
-                            <i class="fas fa-mouse-pointer text-muted mr-2"></i> company_email </a>
+                            <i class="fal fa-mouse-pointer text-muted mr-2">Fax: </i> <%= contact.fax %> </a>
                         <address class="fs-sm fw-400 mt-4 text-muted">
-                            <i class="fas fa-map-pin mr-2"></i> company_address </address>
+                            <i class="fal fa-map-pin mr-2">Address: </i> <%= contact.city %> <%= contact.country %> </address>
                     </div>
                 </div>
+                <% end %>
+
             </div>
         </div> 
     <% end %>
