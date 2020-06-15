@@ -1,0 +1,179 @@
+<main id="js-page-content" role="main" class="page-content">
+<div class="subheader">
+        <h1 class="subheader-title">
+            <i class='subheader-icon fal fa-user-circle'></i> Manage  Ammunition
+                
+            <a href="javascript:void(0);" class="btn btn-light hover-effect" data-toggle="modal" data-target="#addUser">
+                Add Ammunition
+            </a>
+        </h1>
+
+        <div class="subheader-block" id="loggedIn-user">
+            <i class='subheader-icon fal fa-user'></i> <%= "#{String.capitalize(@conn.assigns.user.first_name)}"%> <%= "#{String.capitalize(@conn.assigns.user.last_name)}"%>  | FleetHUB
+        </div>    
+    </div>
+
+ <div class="row">
+        <div class="col-xl-12">
+            <div id="panel-1" class="panel">
+                <div class="panel-hdr">
+                    <h2>
+                       Ammo in Inventory <i class='subheader-icon fal fa-user-circle'></i>
+                    </h2>
+                </div>
+
+                <div class="panel-container show">
+                    <div class="panel-content">
+                        
+                        <!-- datatable start -->
+                        <table id="dt-basic-example" class="table table-bordered table-hover table-striped w-100">
+                            <thead class="p-3  rounded overflow-hidden position-relative mb-g">
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Serial Number</th>
+                                    <th>Caliber</th>
+                                    <th>Quantity</th>
+                                    <th>Fire Arm Type</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class='subheader-icon fal fa-chevron-down'></i>
+                                                </span>
+                                                <div class="dropdown-menu">
+                                                     <a class="dropdown-item">View</a>
+                                                    <button type="button" class="dropdown-item" data-toggle="modal" data-target="#editmodal" >Edit</button>                                         
+                                                    <a class="dropdown-item" data-toggle="modal" data-target="#deactivate_user">Deactive</a>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>                        
+                        </table>
+                        <!-- datatable end -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- ############################################ ADD USER MODAL ######################################### -->
+<div class="modal fade" id="addUser" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="text-align: center">
+                <h5 class="modal-title">Add Ammunition <i class='subheader-icon fal fa-user-circle'></i></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="fal fa-times"></i></span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form class="form-horizontal" action="<%= Routes.user_path(@conn, :create_user)%>" method="post">
+                    <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
+
+                    <div class="form-group">
+                        <label class="form-label">Ammunition Details</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fal fa-user"></i></span>
+                            </div>
+                            <select class="custom-select form-control" name="sex" required="required">
+                                <option selected="">Type</option>
+                                <option value="M">Wad Cutter (WC)</option>
+                                <option value="F">Lead Round Nose (LRN)</option>
+                                <option value="M">Semi Wad Cutter (SWC)</option>
+                                <option value="F">Semi-Jacketed (SJ)</option>
+                                <option value="M">Full Metal Jacket (FMJ)</option>
+                                <option value="F">Semi-Jacketed Hollow Point (SJHP)</option>
+                                <option value="M">Jacketed Hollow Point (JHP)</option>
+                                <option value="F">Special (RCBD)</option>
+                            </select>
+                            <input type="text" name="age" placeholder="Serial Number" class="form-control" required="required">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label"></label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fal fa-window"></i></span>
+                            </div>
+                            <select class="custom-select form-control" name="id_type" required="required">
+                                <option selected="">Caliber</option>
+                                <option value="NRC">22LR</option>
+                                <option value="PASSPORT">30 Carbine</option>
+                                <option value="DRIVERS LICENSE">25 ACP</option>
+                                <option value="NRC">300 BLK</option>
+                                <option value="PASSPORT">380 ACP</option>
+                                <option value="DRIVERS LICENSE">9MM</option>
+                                <option value="NRC">12 Gauge</option>
+                                <option value="PASSPORT">20 Gauge</option>
+                                <option value="DRIVERS LICENSE">28 Gauge</option>
+                            </select>
+                            <input type="text" name="id_no" placeholder="Quantity" class="form-control" required="required">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Firearm Details</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fal fa-user"></i></span>
+                            </div>
+                            <select class="custom-select form-control" name="id_type" required="required">
+                                <option selected="">Fire Arm Type</option>
+                                <option value="NRC">Pistal</option>
+                                <option value="PASSPORT">Revolver</option>
+                                <option value="DRIVERS LICENSE">Rifle</option>
+                                <option value="DRIVERS LICENSE">Shotfun</option>
+                                <option value="DRIVERS LICENSE">AR-15</option>
+                                <option value="DRIVERS LICENSE">AR-15</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-info">Submit</button>
+                    </div>
+                </form>
+            </div>   
+        </div>
+    </div>
+</div>  

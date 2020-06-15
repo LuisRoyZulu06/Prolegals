@@ -49,24 +49,30 @@ defmodule ProlegalsWeb.Router do
     post("/confirmation/token", UserController, :token)
     get("/reset/FleetHub/password", UserController, :default_password)
 
+    # ---------------------------Firearms Inventory
+    get "/firearms", AdminController, :firearm
+
+    # ---------------------------Ammunition Inventory
+    get "/ammunition", AdminController, :ammunition
+
     # ---------------------------User Maintenance
     get "/User/Maintenance", UserController, :user_management
     post "/Create/User", UserController, :create_user
-    
+
     # ---------------------------Test
     get("/new/password", UserController, :new_password)
     post("/new/password", UserController, :change_password)
     post("/reset/password", UserController, :default_password)
     post("/reset/user/password", UserController, :reset_pwd)
     # ----------------------------------------------------------------
-  
+
     # ---------------------------Legal Controller
     get "/Contacts", LegalController, :contacts
 
       # ////////////////////////////////////////////////////////////////// Security Controller
       get "/list/logbook/user", SecurityController, :list_log_book_users
       post "/create/logbook/user", SecurityController, :create_log_book_user
-  
+
 
   end
 

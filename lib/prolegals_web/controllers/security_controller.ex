@@ -5,9 +5,9 @@ defmodule ProlegalsWeb.SecurityController do
     alias Prolegals.Securitys
     alias Prolegals.Accounts
     alias Prolegals.Accounts.User
-  
+
     def list_log_book_users(conn, _params) do
-      list_log_book_users = Securitys.list_tbl_log_book() 
+      list_log_book_users = Securitys.list_tbl_log_book()
       render(conn, "list_log_book_users.html", list_log_book_users: list_log_book_users)
     end
 
@@ -27,10 +27,9 @@ defmodule ProlegalsWeb.SecurityController do
             |> put_flash(:error, "Failed To Add New User To system.")
             |> redirect(to: Routes.user_path(conn, :dashboard))
       end
-  end 
+  end
 
 
 
-    
+
 end
-  
