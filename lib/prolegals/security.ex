@@ -1,24 +1,24 @@
-defmodule Prolegals.Securitys do
+defmodule Prolegals.Security do
   @moduledoc """
-  The Securitys context.
+  The Security context.
   """
 
   import Ecto.Query, warn: false
   alias Prolegals.Repo
 
-  alias Prolegals.Securitys.Log_book
+  alias Prolegals.Security.LogBook
 
   @doc """
-  Returns the list of tbl_log_book.
+  Returns the list of sec_tbl_log_book.
 
   ## Examples
 
-      iex> list_tbl_log_book()
-      [%Log_book{}, ...]
+      iex> list_sec_tbl_log_book()
+      [%LogBook{}, ...]
 
   """
-  def list_tbl_log_book do
-    Repo.all(Log_book)
+  def list_sec_tbl_log_book do
+    Repo.all(LogBook)
   end
 
   @doc """
@@ -29,13 +29,13 @@ defmodule Prolegals.Securitys do
   ## Examples
 
       iex> get_log_book!(123)
-      %Log_book{}
+      %LogBook{}
 
       iex> get_log_book!(456)
       ** (Ecto.NoResultsError)
 
   """
-  def get_log_book!(id), do: Repo.get!(Log_book, id)
+  def get_log_book!(id), do: Repo.get!(LogBook, id)
 
   @doc """
   Creates a log_book.
@@ -43,15 +43,15 @@ defmodule Prolegals.Securitys do
   ## Examples
 
       iex> create_log_book(%{field: value})
-      {:ok, %Log_book{}}
+      {:ok, %LogBook{}}
 
       iex> create_log_book(%{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
   def create_log_book(attrs \\ %{}) do
-    %Log_book{}
-    |> Log_book.changeset(attrs)
+    %LogBook{}
+    |> LogBook.changeset(attrs)
     |> Repo.insert()
   end
 
@@ -61,15 +61,15 @@ defmodule Prolegals.Securitys do
   ## Examples
 
       iex> update_log_book(log_book, %{field: new_value})
-      {:ok, %Log_book{}}
+      {:ok, %LogBook{}}
 
       iex> update_log_book(log_book, %{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def update_log_book(%Log_book{} = log_book, attrs) do
+  def update_log_book(%LogBook{} = log_book, attrs) do
     log_book
-    |> Log_book.changeset(attrs)
+    |> LogBook.changeset(attrs)
     |> Repo.update()
   end
 
@@ -79,13 +79,13 @@ defmodule Prolegals.Securitys do
   ## Examples
 
       iex> delete_log_book(log_book)
-      {:ok, %Log_book{}}
+      {:ok, %LogBook{}}
 
       iex> delete_log_book(log_book)
       {:error, %Ecto.Changeset{}}
 
   """
-  def delete_log_book(%Log_book{} = log_book) do
+  def delete_log_book(%LogBook{} = log_book) do
     Repo.delete(log_book)
   end
 
@@ -95,10 +95,10 @@ defmodule Prolegals.Securitys do
   ## Examples
 
       iex> change_log_book(log_book)
-      %Ecto.Changeset{source: %Log_book{}}
+      %Ecto.Changeset{source: %LogBook{}}
 
   """
-  def change_log_book(%Log_book{} = log_book) do
-    Log_book.changeset(log_book, %{})
+  def change_log_book(%LogBook{} = log_book) do
+    LogBook.changeset(log_book, %{})
   end
 end

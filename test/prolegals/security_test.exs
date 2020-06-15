@@ -1,10 +1,10 @@
-defmodule Prolegals.SecuritysTest do
+defmodule Prolegals.SecurityTest do
   use Prolegals.DataCase
 
-  alias Prolegals.Securitys
+  alias Prolegals.Security
 
-  describe "tbl_log_book" do
-    alias Prolegals.Securitys.Log_book
+  describe "sec_tbl_log_book" do
+    alias Prolegals.Security.LogBook
 
     @valid_attrs %{address: "some address", company: "some company", date: "some date", id_no: "some id_no", id_type: "some id_type", image: "some image", mobile_no: "some mobile_no", name: "some name", person_to_see: "some person_to_see", purpose: "some purpose", sex: "some sex", time_in: "some time_in", time_out: "some time_out"}
     @update_attrs %{address: "some updated address", company: "some updated company", date: "some updated date", id_no: "some updated id_no", id_type: "some updated id_type", image: "some updated image", mobile_no: "some updated mobile_no", name: "some updated name", person_to_see: "some updated person_to_see", purpose: "some updated purpose", sex: "some updated sex", time_in: "some updated time_in", time_out: "some updated time_out"}
@@ -14,23 +14,23 @@ defmodule Prolegals.SecuritysTest do
       {:ok, log_book} =
         attrs
         |> Enum.into(@valid_attrs)
-        |> Securitys.create_log_book()
+        |> Security.create_log_book()
 
       log_book
     end
 
-    test "list_tbl_log_book/0 returns all tbl_log_book" do
+    test "list_sec_tbl_log_book/0 returns all sec_tbl_log_book" do
       log_book = log_book_fixture()
-      assert Securitys.list_tbl_log_book() == [log_book]
+      assert Security.list_sec_tbl_log_book() == [log_book]
     end
 
     test "get_log_book!/1 returns the log_book with given id" do
       log_book = log_book_fixture()
-      assert Securitys.get_log_book!(log_book.id) == log_book
+      assert Security.get_log_book!(log_book.id) == log_book
     end
 
     test "create_log_book/1 with valid data creates a log_book" do
-      assert {:ok, %Log_book{} = log_book} = Securitys.create_log_book(@valid_attrs)
+      assert {:ok, %LogBook{} = log_book} = Security.create_log_book(@valid_attrs)
       assert log_book.address == "some address"
       assert log_book.company == "some company"
       assert log_book.date == "some date"
@@ -47,12 +47,12 @@ defmodule Prolegals.SecuritysTest do
     end
 
     test "create_log_book/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = Securitys.create_log_book(@invalid_attrs)
+      assert {:error, %Ecto.Changeset{}} = Security.create_log_book(@invalid_attrs)
     end
 
     test "update_log_book/2 with valid data updates the log_book" do
       log_book = log_book_fixture()
-      assert {:ok, %Log_book{} = log_book} = Securitys.update_log_book(log_book, @update_attrs)
+      assert {:ok, %LogBook{} = log_book} = Security.update_log_book(log_book, @update_attrs)
       assert log_book.address == "some updated address"
       assert log_book.company == "some updated company"
       assert log_book.date == "some updated date"
@@ -70,19 +70,19 @@ defmodule Prolegals.SecuritysTest do
 
     test "update_log_book/2 with invalid data returns error changeset" do
       log_book = log_book_fixture()
-      assert {:error, %Ecto.Changeset{}} = Securitys.update_log_book(log_book, @invalid_attrs)
-      assert log_book == Securitys.get_log_book!(log_book.id)
+      assert {:error, %Ecto.Changeset{}} = Security.update_log_book(log_book, @invalid_attrs)
+      assert log_book == Security.get_log_book!(log_book.id)
     end
 
     test "delete_log_book/1 deletes the log_book" do
       log_book = log_book_fixture()
-      assert {:ok, %Log_book{}} = Securitys.delete_log_book(log_book)
-      assert_raise Ecto.NoResultsError, fn -> Securitys.get_log_book!(log_book.id) end
+      assert {:ok, %LogBook{}} = Security.delete_log_book(log_book)
+      assert_raise Ecto.NoResultsError, fn -> Security.get_log_book!(log_book.id) end
     end
 
     test "change_log_book/1 returns a log_book changeset" do
       log_book = log_book_fixture()
-      assert %Ecto.Changeset{} = Securitys.change_log_book(log_book)
+      assert %Ecto.Changeset{} = Security.change_log_book(log_book)
     end
   end
 end

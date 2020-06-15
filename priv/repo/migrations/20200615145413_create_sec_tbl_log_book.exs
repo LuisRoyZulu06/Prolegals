@@ -1,8 +1,8 @@
-defmodule Prolegals.Repo.Migrations.CreateTblLogBook do
+defmodule Prolegals.Repo.Migrations.CreateSecTblLogBook do
   use Ecto.Migration
 
   def change do
-    create table(:tbl_log_book) do
+    create table(:sec_tbl_log_book) do
       add :name, :string
       add :sex, :string
       add :id_type, :string

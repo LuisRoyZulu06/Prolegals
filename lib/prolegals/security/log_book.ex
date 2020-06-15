@@ -1,8 +1,8 @@
-defmodule Prolegals.Securitys.Log_book do
+defmodule Prolegals.Security.LogBook do
   use Ecto.Schema
   import Ecto.Changeset
 
-  schema "tbl_log_book" do
+  schema "sec_tbl_log_book" do
     field :address, :string
     field :company, :string
     field :date, :string
