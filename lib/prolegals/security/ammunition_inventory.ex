@@ -16,6 +16,6 @@ defmodule Prolegals.Security.AmmunitionInventory do
   def changeset(ammunition_inventory, attrs) do
     ammunition_inventory
     |> cast(attrs, [:caliber, :serial_number, :type, :quantity, :firearm_serial_number])
-    |> validate_required([:caliber, :serial_number, :type, :quantity, :firearm_serial_number])
+    # |> validate_required([:caliber, :serial_number, :type, :quantity, :firearm_serial_number])
   end
 end

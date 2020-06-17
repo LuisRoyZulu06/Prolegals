@@ -51,9 +51,16 @@ defmodule ProlegalsWeb.Router do
 
     # ---------------------------Firearms Inventory
     get "/firearms", AdminController, :firearm
+    post "/Create/Firearm", AdminController, :create_firearms_inventory
+    post "/update/Firearm", AdminController, :update_firearms_inventory
+    get "/Delete/Firearm", AdminController, :delete_firearms_inventory
+    get "/Firearms/View", AdminController, :view_firearm
 
     # ---------------------------Ammunition Inventory
-    get "/ammunition", AdminController, :ammunition
+    get "/Ammunition", AdminController, :ammunition
+    post "/Create/Ammunition", AdminController, :create_ammunition_inventory
+    post "/Update/Ammunition", AdminController, :update_ammunition_inventory
+    get "/Delete/Ammunition", AdminController, :delete_ammunition_inventory
 
     # ---------------------------User Maintenance
     get "/User/Maintenance", UserController, :user_management
