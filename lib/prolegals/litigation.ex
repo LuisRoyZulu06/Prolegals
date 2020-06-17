@@ -6,6 +6,7 @@ defmodule Prolegals.Litigation do
   import Ecto.Query, warn: false
   alias Prolegals.Repo
 
+  # ----------------------------------------------------------------------------------Contacts
   alias Prolegals.Litigation.Contacts
 
   @doc """
@@ -100,5 +101,103 @@ defmodule Prolegals.Litigation do
   """
   def change_contacts(%Contacts{} = contacts) do
     Contacts.changeset(contacts, %{})
+  end
+
+  # ----------------------------------------------------------------------------------Litigation
+
+  alias Prolegals.Litigation.Cases
+
+  @doc """
+  Returns the list of li_tbl_case.
+
+  ## Examples
+
+      iex> list_li_tbl_case()
+      [%Cases{}, ...]
+
+  """
+  def list_li_tbl_case do
+    Repo.all(Cases)
+  end
+
+  @doc """
+  Gets a single cases.
+
+  Raises `Ecto.NoResultsError` if the Cases does not exist.
+
+  ## Examples
+
+      iex> get_cases!(123)
+      %Cases{}
+
+      iex> get_cases!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_cases!(id), do: Repo.get!(Cases, id)
+
+  @doc """
+  Creates a cases.
+
+  ## Examples
+
+      iex> create_cases(%{field: value})
+      {:ok, %Cases{}}
+
+      iex> create_cases(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_cases(attrs \\ %{}) do
+    %Cases{}
+    |> Cases.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a cases.
+
+  ## Examples
+
+      iex> update_cases(cases, %{field: new_value})
+      {:ok, %Cases{}}
+
+      iex> update_cases(cases, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_cases(%Cases{} = cases, attrs) do
+    cases
+    |> Cases.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a cases.
+
+  ## Examples
+
+      iex> delete_cases(cases)
+      {:ok, %Cases{}}
+
+      iex> delete_cases(cases)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_cases(%Cases{} = cases) do
+    Repo.delete(cases)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking cases changes.
+
+  ## Examples
+
+      iex> change_cases(cases)
+      %Ecto.Changeset{source: %Cases{}}
+
+  """
+  def change_cases(%Cases{} = cases) do
+    Cases.changeset(cases, %{})
   end
 end

@@ -172,4 +172,79 @@ defmodule Prolegals.LitigationTest do
       assert %Ecto.Changeset{} = Litigation.change_contacts(contacts)
     end
   end
+
+  describe "li_tbl_case" do
+    alias Prolegals.Litigation.Cases
+
+    @valid_attrs %{case_description: "some case_description", case_name: "some case_name", case_no: "some case_no", case_status: "some case_status", client: "some client", date_case_opened: "some date_case_opened", incident_date: "some incident_date", practice_area: "some practice_area", staff: "some staff"}
+    @update_attrs %{case_description: "some updated case_description", case_name: "some updated case_name", case_no: "some updated case_no", case_status: "some updated case_status", client: "some updated client", date_case_opened: "some updated date_case_opened", incident_date: "some updated incident_date", practice_area: "some updated practice_area", staff: "some updated staff"}
+    @invalid_attrs %{case_description: nil, case_name: nil, case_no: nil, case_status: nil, client: nil, date_case_opened: nil, incident_date: nil, practice_area: nil, staff: nil}
+
+    def cases_fixture(attrs \\ %{}) do
+      {:ok, cases} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Litigation.create_cases()
+
+      cases
+    end
+
+    test "list_li_tbl_case/0 returns all li_tbl_case" do
+      cases = cases_fixture()
+      assert Litigation.list_li_tbl_case() == [cases]
+    end
+
+    test "get_cases!/1 returns the cases with given id" do
+      cases = cases_fixture()
+      assert Litigation.get_cases!(cases.id) == cases
+    end
+
+    test "create_cases/1 with valid data creates a cases" do
+      assert {:ok, %Cases{} = cases} = Litigation.create_cases(@valid_attrs)
+      assert cases.case_description == "some case_description"
+      assert cases.case_name == "some case_name"
+      assert cases.case_no == "some case_no"
+      assert cases.case_status == "some case_status"
+      assert cases.client == "some client"
+      assert cases.date_case_opened == "some date_case_opened"
+      assert cases.incident_date == "some incident_date"
+      assert cases.practice_area == "some practice_area"
+      assert cases.staff == "some staff"
+    end
+
+    test "create_cases/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Litigation.create_cases(@invalid_attrs)
+    end
+
+    test "update_cases/2 with valid data updates the cases" do
+      cases = cases_fixture()
+      assert {:ok, %Cases{} = cases} = Litigation.update_cases(cases, @update_attrs)
+      assert cases.case_description == "some updated case_description"
+      assert cases.case_name == "some updated case_name"
+      assert cases.case_no == "some updated case_no"
+      assert cases.case_status == "some updated case_status"
+      assert cases.client == "some updated client"
+      assert cases.date_case_opened == "some updated date_case_opened"
+      assert cases.incident_date == "some updated incident_date"
+      assert cases.practice_area == "some updated practice_area"
+      assert cases.staff == "some updated staff"
+    end
+
+    test "update_cases/2 with invalid data returns error changeset" do
+      cases = cases_fixture()
+      assert {:error, %Ecto.Changeset{}} = Litigation.update_cases(cases, @invalid_attrs)
+      assert cases == Litigation.get_cases!(cases.id)
+    end
+
+    test "delete_cases/1 deletes the cases" do
+      cases = cases_fixture()
+      assert {:ok, %Cases{}} = Litigation.delete_cases(cases)
+      assert_raise Ecto.NoResultsError, fn -> Litigation.get_cases!(cases.id) end
+    end
+
+    test "change_cases/1 returns a cases changeset" do
+      cases = cases_fixture()
+      assert %Ecto.Changeset{} = Litigation.change_cases(cases)
+    end
+  end
 end

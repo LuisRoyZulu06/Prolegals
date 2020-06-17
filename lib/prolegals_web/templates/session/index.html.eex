@@ -40,8 +40,7 @@
 
                                     <h2 class="fs-xxl fw-500 mt-4 text-white">
                                         <small id="login-content">
-                                            FleetHUB is a fleet management system which Zambian Railways Limited (ZRL) will use to remove or minimize the risks associated
-                                            with vehicle investment, improving efficiency, productivity and reducing their overall transportation and staff costs.
+                                            ProLegals is a case management system which integrates and handles all information related to legal cases and matter management. The system is tailored to also provide solutions to litigation, reporting and document managing.
                                         </small>
                                     </h2>
 
@@ -63,7 +62,7 @@
                                     </div>
                                 </div>
 
-                                <div class="line" style="border-right: solid #193467"></div>
+                                <div class="line" style="border-right: solid #c1d3f0"></div>
 
                                 <div class="col-sm-12 col-md-6 col-lg-5 col-xl-4 ml-auto">
                                     <!-- To Handle Flashes -->
