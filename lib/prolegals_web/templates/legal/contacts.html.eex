@@ -19,7 +19,6 @@
         </div>
     </div>
     <!-- ################################################################################ -->
-
     <div class="subheader">
         <h1 class="subheader-title">
             <i class='subheader-icon fal fa-plus-circle'></i> Contacts
@@ -31,7 +30,7 @@
             </small>
         </h1>
         <div class="subheader-block" id="loggedIn-user">
-            <i class='subheader-icon fal fa-user'></i> <%= "#{String.capitalize(@conn.assigns.user.first_name)}"%> <%= "#{String.capitalize(@conn.assigns.user.last_name)}"%>  | FleetHUB
+            <i class='subheader-icon fal fa-user'></i> <%= "#{String.capitalize(@conn.assigns.user.first_name)}"%> <%= "#{String.capitalize(@conn.assigns.user.last_name)}"%>  | <%= "#{String.capitalize(@conn.assigns.user.user_role)}"%>
         </div>
     </div>
     <div class="row">
@@ -58,7 +57,11 @@
                 <div class="card-body border-faded border-top-0 border-left-0 border-right-0 rounded-top">
                     <div class="d-flex flex-row align-items-center">
                         <span class="status status-success mr-3">
-                            <img class="profile-image rounded-circle" alt="App user" src="<%= Routes.static_path(@conn, "/images/avatar/1.png") %>"></span>
+                            <%= if contact.contact_type == "company" do %>
+                                <img class="profile-image rounded-circle" alt="App user" src="<%= Routes.static_path(@conn, "/images/avatar/7.png") %>"></span>
+                            <% else %>
+                                <img class="profile-image rounded-circle" alt="App user" src="<%= Routes.static_path(@conn, "/images/avatar/1.png") %>"></span>
+                            <% end %>
                         </span>
                         <div class="info-card-text flex-1">
                             <a href="javascript:void(0);" class="fs-xl text-truncate text-truncate-lg text-info" data-toggle="dropdown" aria-expanded="false">
@@ -66,14 +69,11 @@
                                 <i class="fal fa-angle-down d-inline-block ml-1 fs-md"></i>
                             </a>
                             <div class="dropdown-menu">
-                                <a class="dropdown-item" href="tel:<%= contact.phone %>" data-toggle="tooltip" data-placement="top" title="Call">
-                                   <%= contact.phone %>
-                                </a>
-                                <a class="dropdown-item" href="mailto:email">Send Email</a>
+                                <a class="dropdown-item" href="mailto:email">View</a>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit-vendor">Edit Contact</a>
                                 <a class="dropdown-item" data-toggle="modal" data-target="#delete-alert">Delete Contact</a>
                             </div>
-                            <span class="text-truncate text-truncate-xl"><%= contact.job_title %>, <%= contact.company_name %>.</span>
+                            <span class="text-truncate text-truncate-xl"><%= contact.company_rep %> <%= contact.job_title %>.</span>
                         </div>
                         <button class="js-expand-btn btn btn-sm btn-default d-none" data-toggle="collapse" data-target="#c_1 > .card-body + .card-body" aria-expanded="false">
                             <span class="collapsed-hidden">+</span>
@@ -86,11 +86,22 @@
                 <div class="card-body p-0 collapse show">
                     <div class="p-3">
                         <a href="tel:company_tel" class="mt-1 d-block fs-sm fw-400 text-dark">
-                            <i class="fal fa-mobile-alt text-muted mr-2">Tel: </i><%= contact.tel %></a>
+                            <i class="fal fa-mobile-alt text-muted mr-2"> </i><%= contact.tel %></a>
                         <a href="mailto:company_email" class="mt-1 d-block fs-sm fw-400 text-dark">
-                            <i class="fal fa-mouse-pointer text-muted mr-2">Fax: </i> <%= contact.fax %> </a>
+                            <i class="fal fa-mouse-pointer text-muted mr-2"> </i> <%= contact.comp_email %> </a>
                         <address class="fs-sm fw-400 mt-4 text-muted">
-                            <i class="fal fa-map-pin mr-2">Address: </i> <%= contact.city %> <%= contact.country %> </address>
+                            <i class="fal fa-map-pin mr-2"> </i> <%= contact.city %> <%= contact.country %> <%= contact.comp_address %> </address>
+                    </div>
+                </div>
+                <% else %>
+                <div class="card-body p-0 collapse show">
+                    <div class="p-3">
+                        <a href="tel:company_tel" class="mt-1 d-block fs-sm fw-400 text-dark">
+                            <i class="fal fa-mobile-alt text-muted mr-2"> </i><%= contact.phone %></a>
+                        <a href="mailto:company_email" class="mt-1 d-block fs-sm fw-400 text-dark">
+                            <i class="fal fa-envelope text-muted mr-2"> </i> <%= contact.email %> </a>
+                        <address class="fs-sm fw-400 mt-4 text-muted">
+                            <i class="fal fa-map-pin mr-2"> </i> <%= contact.home_add %> </address>
                     </div>
                 </div>
                 <% end %>
@@ -128,7 +139,7 @@
                                             </div>
 
                                             <div class="col-sm-6">
-                                                <i class="fal fa-user position-absolute pos-middle pos-middle opacity-15 mb-n1 mr-n1" style="font-size:11rem;"></i>
+                                                <i class="fal fa-user position-absolute pos-middle pos-middle opacity-30 mb-n1 mr-n1" style="font-size:11rem;"></i>
                                             </div>
                                         </div> 
                                     </div>
@@ -152,7 +163,7 @@
                                             </div>
 
                                             <div class="col-sm-6">
-                                                <i class="fal fa-building position-absolute pos-middle pos-middle opacity-15 mb-n1 mr-n1" style="font-size:11rem;"></i>
+                                                <i class="fal fa-building position-absolute pos-middle pos-middle opacity-30 mb-n1 mr-n1" style="font-size:11rem;"></i>
                                             </div>
                                         </div> 
                                     </div>
@@ -193,6 +204,7 @@
                                         <span class="input-group-text"><i class="fal fa-user"></i></span>
                                     </div>
                                     <input type="text" name="name" placeholder="Full Name" class="form-control" required="required">
+                                    <input type="text" name="home_add" placeholder="Home Address" class="form-control" required="required">
                                     <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
                                     <input type="hidden" name="contact_type" value="individual">
                                 </div>
@@ -235,6 +247,22 @@
                                     <input type="text" name="id_no" placeholder="ID Number" class="form-control" required="required">
                                 </div>
                             </div>
+
+                            <div class="form-group">
+                                <div class="frame-wrap demo">
+                                    <div class="demo">
+                                        <div class="custom-control custom-switch">
+                                            <input type="radio" class="custom-control-input" id="customSwitch2radio" checked="" name="enabled">
+                                            <label class="custom-control-label" for="customSwitch2radio">Enabled</label>
+                                        </div>
+                                        <div class="custom-control custom-switch">
+                                            <input type="radio" class="custom-control-input" id="customSwitch1radio" name="disabled">
+                                            <label class="custom-control-label" for="customSwitch1radio">Disabled</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
 
@@ -289,6 +317,7 @@
                                     </div>
                                     <input type="text" name="fax" placeholder="Fax" class="form-control" required="required">
                                     <input type="text" name="tel" placeholder="Company Tel" class="form-control" required="required">
+                                    <input type="text" name="comp_email" placeholder="Company Email" class="form-control" required="required">
                                 </div>
                             </div>
 
@@ -300,6 +329,7 @@
                                     </div>
                                     <input type="text" name="city" placeholder="City" class="form-control" required="required">
                                     <input type="text" name="country" placeholder="Country" class="form-control" required="required">
+                                    <input type="text" name="comp_address" placeholder="Physical Address" class="form-control" required="required">
                                 </div>
                             </div>
 
@@ -314,6 +344,22 @@
                                     <input type="text" name="phone" placeholder="Cell" class="form-control" required="required">
                                 </div>
                             </div>
+
+                            <div class="form-group">
+                                <div class="frame-wrap demo">
+                                    <div class="demo">
+                                        <div class="custom-control custom-switch">
+                                            <input type="radio" class="custom-control-input" id="customSwitch2radio" checked="" name="enabled">
+                                            <label class="custom-control-label" for="customSwitch2radio">Enabled</label>
+                                        </div>
+                                        <div class="custom-control custom-switch">
+                                            <input type="radio" class="custom-control-input" id="customSwitch1radio" name="disabled">
+                                            <label class="custom-control-label" for="customSwitch1radio">Disabled</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
                         </div>
                     </div>
 
@@ -342,7 +388,7 @@
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Edit Contact <i class="fal fa-book"></i> </h5>
+                <h5 class="modal-title">Edit Contact <i class="fal fa-edit"></i> </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true"><i class="fal fa-times"></i></span>
                 </button>
@@ -353,7 +399,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="form-label">Company Rep: Full Name</label>
+                                <label class="form-label">Name</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fal fa-user"></i></span>

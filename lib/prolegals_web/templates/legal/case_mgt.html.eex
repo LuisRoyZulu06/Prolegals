@@ -1,0 +1,205 @@
+<!-- ####################################################### FLASH ################## -->
+    <div class="row">
+        <div class="col-md-12 col-lg-offset-2">
+            <div class="form-group">
+                <%= if get_flash(@conn, :info) do %>
+                    <div class="alert alert-info alert-styled-left">
+                    <button type="button" class="close" data-dismiss="alert">&times; <span class="sr-only">Close</span></button>
+                    <%= get_flash(@conn, :info) %>
+                    </div>
+                <% end %>
+                <%= if get_flash(@conn, :error) do %>
+                    <div class="alert alert-danger alert-styled-left">
+                    <button type="button" class="close" data-dismiss="alert">&times; <span class="sr-only">Close</span></button>
+                    Opps! <%= get_flash(@conn, :error) %>
+                    </div>
+                <% end %>
+            </div>
+        </div>
+    </div>
+    <!-- ################################################################################ -->
+<%# <div class="alert alert-primary">
+    <div class="d-flex flex-start w-100">
+        <div class="mr-2 hidden-md-down">
+            <span class="icon-stack icon-stack-lg">
+                <i class="base base-6 icon-stack-3x opacity-100 color-primary-500"></i>
+                <i class="base base-10 icon-stack-2x opacity-100 color-primary-300 fa-flip-vertical"></i>
+                <i class="fal fa-info icon-stack-1x opacity-100 color-white"></i>
+            </span>
+        </div>
+        <div class="d-flex flex-fill">
+            <div class="flex-fill">
+                <span class="h5">Add Case</span>
+                <br>Progress components are built with two HTML elements, some CSS to set the width, and a few attributes. We don’t use <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/progress" target="_blank">the HTML5 <code>&lt;progress&gt;</code> element</a>, ensuring you can stack progress bars, animate them, and place text labels over them.
+            </div>
+        </div>
+    </div>
+</div> %>
+<div class="subheader">
+    <h1 class="subheader-title">
+        <i class='subheader-icon fal fa-shopping-bag'></i> Cases
+        <small>
+            Add new case here, and view it later on the table.<br>
+            <a href="javascript:void(0);" class="btn btn-light hover-effect" data-toggle="modal" data-target="#add-case">
+                Add Case
+            </a>
+        </small>
+    </h1>
+    <div class="subheader-block" id="loggedIn-user">
+        <i class='subheader-icon fal fa-user'></i> <%= "#{String.capitalize(@conn.assigns.user.first_name)}"%> <%= "#{String.capitalize(@conn.assigns.user.last_name)}"%>  | <%= "#{String.capitalize(@conn.assigns.user.user_role)}"%>
+    </div>
+</div>
+
+<div id="panel-1" class="panel">
+    <div class="panel-hdr">
+        <h2>
+            List of Cases <i class='subheader-icon fal fa-shopping-bag'></i>
+        </h2>
+    </div>
+
+    <div class="panel-container show">
+        <div class="panel-content">
+            
+            <!-- datatable start -->
+            <table id="dt-basic-example" class="table table-bordered table-hover table-striped w-100">
+                <thead class="p-3 bg-info-300 rounded overflow-hidden position-relative text-white mb-g">
+                    <tr>
+                        <th>Case Name</th>
+                        <th>Case Number</th>
+                        <th>Date Opened</th>
+                        <th>Client</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <%= for case <-@cases do %>
+                    <tr>
+                        <td><%= case.case_name %></td>
+                        <td><%= case.case_no %></td>
+                        <td><%= case.date_case_opened %></td>
+                        <td><%= case.client %></td>
+                        <td><%= case.case_status %></td>
+                        <td>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class='subheader-icon fal fa-chevron-down'></i>
+                                    </span>
+                                    <div class="dropdown-menu">
+                                         <a class="dropdown-item"><i class='subheader-icon fal fa-eye'></i> View</a>
+                                        <button type="button" class="dropdown-item" data-toggle="modal" data-target="#editmodal" ><i class='subheader-icon fal fa-edit'></i>Edit</button>                                         
+                                        <a class="dropdown-item" data-toggle="modal" data-target="#deactivate_user"><i class='subheader-icon fal fa-times'></i>Deactive</a>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>  
+                    <% end %>                  
+            </table>
+            <!-- datatable end -->
+        </div>
+    </div>
+</div>
+
+
+<!-- ############################### ADD-CASE MODAL #################################### -->
+<div class="modal fade" id="add-case" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">ADD NEW CASE <i class='subheader-icon fal fa-shopping-bag'></i> </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="fal fa-times"></i></span>
+                </button>
+            </div>
+
+            <div class="modal-body">                
+                <form action="<%= Routes.legal_path(@conn, :create_case)%>" method="POST">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">Case ID</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-shopping-bag"></i></span>
+                                    </div>
+                                    <input type="text" name="case_name" placeholder="Case Name" class="form-control" required="required">
+                                    <input type="text" name="case_no" placeholder="Case Number" class="form-control" required="required">
+                                    <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
+                                    <input type="hidden" name="case_status" value="PENDING">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Case Details</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-shopping-bag"></i></span>
+                                    </div>
+                                    <select class="custom-select form-control" name="practice_area" required="required">
+                                        <option selected="">Select Practice Area</option>
+                                        <option value="option 1">Option 1</option>
+                                    </select>
+
+                                    <input type="text" name="case_description" placeholder="Case Description" class="form-control" required="required">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">People Involved</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-user"></i></span>
+                                    </div>
+                                    <select class="custom-select form-control" name="client" required="required">
+                                        <option selected="">Select client</option>
+                                        <option value="client 1">Client 1</option>
+                                    </select>
+
+                                    <select class="custom-select form-control" name="staff" required="required">
+                                        <option selected="">Select staff</option>
+                                        <option value="staff 1">Staff 1</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Date of Incident</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-clock"></i></span>
+                                    </div>
+                                    <input type="date" name="incident_date" placeholder="Date Incident Happened" class="form-control" required="required">
+                                </div>
+                                <span class="help-block">
+                                    Enter date when incident happened.
+                                </span>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Case Date</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-clock"></i></span>
+                                    </div>
+                                    <input type="date" name="date_case_opened" placeholder="Date Incident Happened" class="form-control" required="required">
+                                </div>
+                                <span class="help-block">
+                                    Enter date when case was opened.
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-info">Add Case</button>
+                    </div>                   
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -34,20 +34,19 @@ defmodule ProlegalsWeb.Router do
     plug :put_layout, false
   end
 
-   scope "/", ProlegalsWeb do
+  scope "/", ProlegalsWeb do
     pipe_through([:browser, :no_layout])
     get("/logout/current/user", SessionController, :signout)
   end
 
   scope "/", ProlegalsWeb do
-    #   pipe_through([:session, :app])
-    pipe_through :browser
-    get "/Dashboard", UserController, :dashboard
-    get("/", SessionController, :new)
-    post("/", SessionController, :create)
-    get("/forgortFleetHub//password", UserController, :forgot_password)
-    post("/confirmation/token", UserController, :token)
-    get("/reset/FleetHub/password", UserController, :default_password)
+    pipe_through([:browser, :app])
+    # post("/new/password", UserController, :change_password)
+    #
+    get("/dashboard", UserController, :dashboard)
+    # ---------------------------User Maintenance
+    get "/User/Maintenance", UserController, :user_management
+    post "/Create/User", UserController, :create_user
 
     # ---------------------------Firearms Inventory
     get "/firearms", AdminController, :firearm
@@ -62,36 +61,39 @@ defmodule ProlegalsWeb.Router do
     post "/Update/Ammunition", AdminController, :update_ammunition_inventory
     get "/Delete/Ammunition", AdminController, :delete_ammunition_inventory
 
-    # ---------------------------User Maintenance
-    get "/User/Maintenance", UserController, :user_management
-    post "/Create/User", UserController, :create_user
-
-    # ---------------------------Test
-    get("/new/password", UserController, :new_password)
-    post("/new/password", UserController, :change_password)
-    post("/reset/password", UserController, :default_password)
-    post("/reset/user/password", UserController, :reset_pwd)
-    # ----------------------------------------------------------------
-
     # ---------------------------Legal Controller
     get "/Contacts", LegalController, :contacts
     post "/Create/Contact", LegalController, :create_contact
+    get "/Manage/Cases", LegalController, :case_mgt
+    post "/Add/New/Case", LegalController, :create_case
+    get "/Notifications", LegalController, :notifications
+    get "/Tasks", LegalController, :tasks
 
     # ////////////////////////////////////////////////////////////////// Security Controller
     get "/list/logbook/user", SecurityController, :list_log_book_users
     post "/create/logbook/user", SecurityController, :create_log_book_user
     post "/add/timeout", SecurityController, :add_time_out
-
-      # ////////////////////////////////////////////////////////////////// Security Controller
-      get "/list/logbook/user", SecurityController, :list_log_book_users
-      post "/create/logbook/user", SecurityController, :create_log_book_user
-
   end
 
-  # scope "/", ProlegalsWeb do
-  #   pipe_through([:session, :dashboard_layout])
-  #   get("/dashboard", UserController, :dashboard)
-  # end
+  scope "/", ProlegalsWeb do
+    pipe_through([:session, :app])
+    # pipe_through :browser
+    # get "/Dashboard", UserController, :dashboard
+    get("/", SessionController, :new)
+    post("/", SessionController, :create)
+    get("/forgortFleetHub//password", UserController, :forgot_password)
+    post("/confirmation/token", UserController, :token)
+    get("/reset/FleetHub/password", UserController, :default_password)
+  end
+
+  scope "/", ProlegalsWeb do
+    pipe_through([:session, :dashboard_layout])
+    # ---------------------------Test
+    get("/new/password", UserController, :new_password)
+    post("/reset/password", UserController, :default_password)
+    post("/reset/user/password", UserController, :reset_pwd)
+    # ----------------------------------------------------------------
+  end
 
   # Other scopes may use custom stacks.
   # scope "/api", ProlegalsWeb do

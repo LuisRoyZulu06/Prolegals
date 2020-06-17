@@ -152,13 +152,13 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fal fa-window"></i></span>
                             </div>
-                            <select class="custom-select form-control" name="identity_type" required="required">
+                            <select class="custom-select form-control" name="id_type" required="required">
                                 <option selected="">Select ID Type</option>
                                 <option value="NRC">NRC</option>
                                 <option value="PASSPORT">Passport</option>
                                 <option value="DRIVERS LICENSE">Drivers License</option>
                             </select>
-                            <input type="text" name="identity_number" placeholder="Enter ID Number" class="form-control" required="required">
+                            <input type="text" name="id_no" placeholder="Enter ID Number" class="form-control" required="required">
                         </div>
                     </div>
 

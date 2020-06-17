@@ -5,6 +5,7 @@ defmodule ProlegalsWeb.UserController do
   alias Prolegals.Accounts
   alias Prolegals.Accounts.User
   alias Prolegals.Emails.Email
+  alias ProlegalsWeb.Plugs.EnforcePasswordPolicy
 
   plug(
     ProlegalsWeb.Plugs.RequireAuth
@@ -432,11 +433,11 @@ defmodule ProlegalsWeb.UserController do
             end
         end
     end
-  rescue
-    _ ->
-      conn
-      |> put_flash(:error, "Password changed with errors")
-      |> redirect(to: Routes.user_path(conn, :new_password))
+  # rescue
+  #   _ ->
+  #     conn
+  #     |> put_flash(:error, "Password changed with errors")
+  #     |> redirect(to: Routes.user_path(conn, :new_password))
   end
 
   def change_pwd(user, user_params) do
@@ -457,6 +458,9 @@ defmodule ProlegalsWeb.UserController do
          conn,
          %{"old_password" => pwd, "new_password" => new_pwd}
        ) do
+    IO.inspect("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+    IO.inspect conn
+
     with true <- String.trim(pwd) != "",
          true <- String.trim(new_pwd) != "" do
       Auth.confirm_password(
@@ -493,7 +497,7 @@ defmodule ProlegalsWeb.UserController do
     render(conn, "user_management.html", system_users: system_users)
   end
 
-  def create_user(conn, params) do
+  def create_user(conn, params) do 
     case Accounts.create_user(params) do
       {:ok, _} ->
         conn
@@ -502,7 +506,7 @@ defmodule ProlegalsWeb.UserController do
 
         conn
 
-      {:error, _} ->
+      {:error, lunje} ->
         conn
         |> put_flash(:error, "Failed to add user to system.")
         |> redirect(to: Routes.user_path(conn, :user_management))
