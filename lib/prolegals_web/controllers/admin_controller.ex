@@ -1,4 +1,4 @@
-defmodule ProlegalsWeb.PageController do
+defmodule ProlegalsWeb.AdminController do
   use ProlegalsWeb, :controller
 
   def index(conn, _params) do

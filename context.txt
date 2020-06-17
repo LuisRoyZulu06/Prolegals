@@ -1,0 +1,15 @@
+mix phx.gen.context Accounts User tbl_users first_name last_name email password user_type:integer user_role status:integer auto_password sex age:integer id_type id_no:integer phone:integer home_add
+
+mix phx.gen.context Logs UserLogs tbl_user_logs activity user_id
+
+
+mix phx.gen.context Litigation Contacts li_tbl_contacts name email phone company_name job_title id_type id_no compnay_rep bus_category contact_type fax tel city country
+
+mix phx.gen.context Litigation Cases li_tbl_case case_name case_no case_status practice_area case_description client staff incident_date date_case_opened
+
+mix phx.gen.context Security FirearmsInventory sec_tbl_firearms name type brand model serial_number rounds date_purchased purchased_from purchase_price make_year person_assigned status bullet_id firearm_image
+
+mix phx.gen.context Security AmmunitionInventory sec_tbl_ammunition caliber serial_number type quantity firearm_serial_number 
+
+
+mix phx.gen.context Security LogBook sec_tbl_log_book name sex id_type id_no image mobile_no address company person_to_see purpose date time_in time_out
