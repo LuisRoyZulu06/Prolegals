@@ -99,11 +99,12 @@ defmodule ProlegalsWeb.SecurityController do
     render(conn, "view_log_book_user.html", logbook_users: logbook_users )
    end
 
+
+
+
   def traverse_errors(errors) do
     for {key, {msg, _opts}} <- errors, do: "#{key} #{msg}"
   end
-
-
 
 
 end
