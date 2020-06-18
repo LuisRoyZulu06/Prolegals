@@ -140,7 +140,7 @@
 
 
                                 <!----------------------------------------------------------------------------------------------------Litigation -->
-                                <%= if @user.user_role == "lawyer" do %>
+                                <%= if @user.user_role == "litigation" do %>
                                 <li>
                                     <a href="<%= Routes.legal_path(@conn, :notifications)%>" title="Notifications" data-filter-tags="ui components">
                                         <i class="fal fa-envelope"></i>
@@ -619,7 +619,11 @@
             </div>
 
         </main>
-    
+
+
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.3.3/umd/popper.min.js"></script>
+        <%# <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script> %>
         <script src="<%= Routes.static_path(@conn, "/js/vendors.bundle.js") %>"></script>
         <script src="<%= Routes.static_path(@conn, "/js/app.bundle.js") %>"></script>
         <script src="<%= Routes.static_path(@conn, "/js/miscellaneous/fullcalendar/fullcalendar.bundle.js") %>"></script>
