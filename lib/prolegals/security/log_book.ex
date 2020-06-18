@@ -1,5 +1,6 @@
 defmodule Prolegals.Security.LogBook do
   use Ecto.Schema
+  use Arc.Ecto.Schema
   import Ecto.Changeset
 
   schema "sec_tbl_log_book" do
@@ -8,7 +9,7 @@ defmodule Prolegals.Security.LogBook do
     field :date, :string
     field :id_no, :string
     field :id_type, :string
-    field :image, :string
+    field :image, Prolegals.ImageUploader.Type
     field :mobile_no, :string
     field :name, :string
     field :person_to_see, :string
@@ -23,6 +24,8 @@ defmodule Prolegals.Security.LogBook do
   @doc false
   def changeset(log_book, attrs) do
     log_book
+    |> cast(attrs, [:image])
+    |> cast_attachments(attrs, [:image])
     |> cast(attrs, [:name, :sex, :id_type, :id_no, :image, :mobile_no, :address, :company, :person_to_see, :purpose, :date, :time_in, :time_out])
     # |> validate_required([:name, :sex, :id_type, :id_no, :image, :mobile_no, :address, :company, :person_to_see, :purpose, :date, :time_in, :time_out])
   end
