@@ -32,7 +32,7 @@
     </div>
 
     <!----------------------------------------------------------------------------------------------------Litigation -->
-    <%= if @user.user_role == "lawyer" do %>
+    <%= if @user.user_role == "litigation" do %>
         <div class="row">
             <div class="col-sm-6 col-xl-3">
                 <a href="<%= Routes.legal_path(@conn, :contacts)%>" title="Contact Management" data-filter-tags="ui components">    
