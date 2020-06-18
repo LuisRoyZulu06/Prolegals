@@ -107,7 +107,7 @@
     </div>
 </main>
 
-<!-- ############################## TIME OUT-MODAL ########################################## -->
+<!-- ############################## TIME OUT-MODAL ######################### -->
 <div class="modal fade" id="time_out_modal"  tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -397,12 +397,11 @@ $('#time_out_modal').on('show.bs.modal', function (event){
 <script>
 $(document).ready(function(){
 //Edit User
-
-$('#editmodal').on('show.bs.modal', function (event){
+$('#edit-modal').on('show.bs.modal', function (event){
 
     var button = $(event.relatedTarget)
     var id = button.data('id')
-    var first_name = button.data('name')
+    var name = button.data('name')
     var sex = button.data('sex')
     var mobile_no = button.data('mobile_no')
     var address = button.data('address')

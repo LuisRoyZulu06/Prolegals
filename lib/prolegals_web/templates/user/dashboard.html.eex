@@ -212,7 +212,7 @@
                     <a href="<%= Routes.security_path(@conn, :list_log_book_users)%>">
                         <div id="cp-2" class="card border">
                             <div class="card-header bg-success-600">
-                                List of Users in The Log Book
+                                Visitors  Logs
                             </div>
                             <div class="card-body p-0 bg-success-300" style="height: 160px">
                                     <div class="row">
@@ -333,7 +333,7 @@
                         <label class="form-label">Facial image </label>
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fal fa-clock"></i></span>
+                                <span class="input-group-text"><i class="fal fa-user"></i></span>
                             </div>
                             <input type="file" name="image" placeholder="Facial image of the person" class="form-control" required="required">
                             
@@ -375,12 +375,11 @@
                                 <div class="row no-gutters row-grid">
                                     <div class="col-12">
                                         <div class="d-flex flex-column align-items-center justify-content-center p-4">
-                                            <%= if @user.sex == "M" do %>
-                                            <img class="rounded-circle shadow-2 img-thumbnail" alt="<%= @user.first_name%> <%= @user.last_name%>" src="<%= Routes.static_path(@conn, "/images/avatar/3.png") %>">
-                                            <% end %>
 
                                             <%= if @user.sex == "F" do %>
                                             <img class="rounded-circle shadow-2 img-thumbnail" alt="<%= @user.first_name%> <%= @user.last_name%>" src="<%= Routes.static_path(@conn, "/images/avatar/2.jpg") %>">
+                                            <% else %>
+                                            <img class="rounded-circle shadow-2 img-thumbnail" alt="<%= @user.first_name%> <%= @user.last_name%>" src="<%= Routes.static_path(@conn, "/images/avatar/3.png") %>">
                                             <% end %>
                                             
                                             <h5 class="mb-0 fw-700 text-center mt-3">
