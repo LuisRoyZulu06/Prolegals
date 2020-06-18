@@ -115,19 +115,19 @@
                                 </li>
                                 <li>
                                         <a href="#" title="Inventory Management" data-filter-tags="theme settings">
-                                            <i class="fal fa-gift"></i>
+                                            <i class="fal fa-database"></i>
                                             <span class="nav-link-text" data-i18n="nav.theme_settings">Inventory</span>
                                         </a>
                                         <ul>
                                             <li>
                                                 <a href="<%= Routes.admin_path(@conn, :firearm)%>" title="User Maintenace" data-filter-tags="ui components">
-                                                    <i class="fal fa-user-circle"></i>
+                                                    <i class="fal fa-bolt"></i>
                                                     <span class="nav-link-text" data-i18n="nav.ui_components">FireArms</span>
                                                 </a>
                                             </li>
                                             <li>
                                                 <a href="<%= Routes.admin_path(@conn, :ammunition)%>" title="User Maintenace" data-filter-tags="ui components">
-                                                    <i class="fal fa-user-circle"></i>
+                                                    <i class="fal fa-bullseye"></i>
                                                     <span class="nav-link-text" data-i18n="nav.ui_components">Ammunition</span>
                                                 </a>
                                             </li>

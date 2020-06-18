@@ -23,7 +23,7 @@
 
 <div class="subheader">
         <h1 class="subheader-title">
-            <i class='subheader-icon fal fa-user-circle'></i> Manage  Firearms
+            Manage  Firearms
                 <br>
             <a href="javascript:void(0);" class="btn btn-light hover-effect" data-toggle="modal" data-target="#addUser">
                 Add Firearms
@@ -40,7 +40,7 @@
             <div id="panel-1" class="panel">
                 <div class="panel-hdr">
                     <h2>
-                       Firearms in Inventory <i class='subheader-icon fal fa-user-circle'></i>
+                       Firearms in Inventory 
                     </h2>
                 </div>
 
@@ -135,9 +135,6 @@
                     <div class="form-group">
                         <label class="form-label">Firearm Details</label>
                         <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fal fa-user"></i></span>
-                            </div>
                             <select class="custom-select form-control" name="brand" required="required">
                                 <option selected="">Brand</option>
                                 <option value="556 Tactical LLC">556 Tactical LLC</option>
@@ -149,10 +146,6 @@
                                 <option value="Bravo Company MFG, Inc">Bravo Company MFG, Inc</option>
                                 <option value="B&T AG">B&T AG</option>
                             </select>
-
-                             <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fal fa-user"></i></span>
-                            </div>
                             <select class="custom-select form-control" name="type" required="required">
                                 <option selected="">Type</option>
                                 <option value="Pistal">Pistal</option>
@@ -169,9 +162,6 @@
                     <div class="form-group">
                         <label class="form-label"></label>
                         <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fal fa-window"></i></span>
-                            </div>
                             <select class="custom-select form-control" name="name" required="required">
                                 <option selected="">Name</option>
                                 <option value="AK47">AK-47</option>
@@ -184,9 +174,6 @@
                                 <option value="Schwarzlose machine gun">Schwarzlose machine gun</option>
                                 <option value="Springfield rifle">Springfield rifle</option>
                             </select>
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fal fa-window"></i></span>
-                            </div>
                             <select class="custom-select form-control" name="model" required="required">
                                 <option selected="">Model</option>
                                 <option value="X34522LR">X34522LR</option>
@@ -203,14 +190,8 @@
                     <div class="form-group">
                         <label class="form-label"></label>
                         <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fal fa-user"></i></span>
-                            </div>
                              <input type="text" value="" name="serial_number" id="dl_exp_dt" placeholder="Serial Number" class="form-control" required="required">
                             
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fal fa-user"></i></span>
-                            </div>
                              <input type="text" name="rounds" value="" id="dl_exp_dt" placeholder="Rounds" class="form-control" required="required">
                         </div>
                     </div>
@@ -218,9 +199,6 @@
                     <div class="form-group">
                         <label class="form-label"></label>
                         <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fal fa-user"></i></span>
-                            </div>
                             <select class="custom-select form-control" name="make_year" required="required">
                                 <option selected="">Make Year</option>
                                 <option value="2010">2010</option>
@@ -230,10 +208,6 @@
                                 <option value="2014">2014</option>
                                 <option value="2015">2015</option>
                             </select>
-                            
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fal fa-user"></i></span>
-                            </div>
                             <select class="custom-select form-control" name="status" required="required">
                                 <option selected="">Status</option>
                                 <option value="New">New</option>
@@ -245,14 +219,8 @@
                     <div class="form-group">
                         <label class="form-label"></label>
                         <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fal fa-calendar-alt"></i></span>
-                            </div>
                              <input type="date" name="date_purchased" value="" id="dl_exp_dt" placeholder="Date Purchased" class="form-control" required="required">
                             
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fal fa-user"></i></span>
-                            </div>
                              <input type="text" name="purchased_from" value="" id="dl_exp_dt" placeholder="Purchased From" class="form-control" required="required">
                         </div>
                     </div>
@@ -260,14 +228,8 @@
                     <div class="form-group">
                         <label class="form-label"></label>
                         <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fal fa-user"></i></span>
-                            </div>
-                             <input type="text" name="purchase_price" value="" id="dl_exp_dt" placeholder="Purchased Price" class="form-control" required="required">
+                             <input type="text" name="purchase_price" value="" id="dl_exp_dt" placeholder="Purchas Price" class="form-control" required="required">
                             
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fal fa-user"></i></span>
-                            </div>
                             <select class="custom-select form-control" name="person_assigned" required="required">
                                 <option selected="">Person Assigned</option>
                                 <option value="John Banda">John Mfula</option>
@@ -283,9 +245,6 @@
                     <div class="form-group">
                         <label class="form-label"></label>
                         <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fal fa-user"></i></span>
-                            </div>
                             <select class="custom-select form-control" name="bullet_id" required="required">
                                 <option selected="">Bullet Type</option>
                                 <option value="Wad Cutter (WC)">Wad Cutter (WC)</option>
@@ -298,9 +257,6 @@
                                 <option value="Special (RCBD)">Special (RCBD)</option>
                             </select>
                             
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fal fa-user"></i></span>
-                            </div>
                             <input type="file" name="firearm_image" value="" id="dl_exp_dt" placeholder="Image" class="form-control" required="required">
                         </div>
                     </div>
