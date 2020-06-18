@@ -48,6 +48,21 @@ defmodule ProlegalsWeb.Router do
     get "/User/Maintenance", UserController, :user_management
     post "/Create/User", UserController, :create_user
 
+    # ---------------------------Legal Controller
+    get "/Contacts", LegalController, :contacts
+    post "/Create/Contact", LegalController, :create_contact
+    get "/Manage/Cases", LegalController, :case_mgt
+    post "/Add/New/Case", LegalController, :create_case
+    get "/Notifications", LegalController, :notifications
+    get "/Tasks", LegalController, :tasks
+
+    # ////////////////////////////////////////////////////////////////// Security Controller
+    get "/list/logbook/user", SecurityController, :list_log_book_users
+    post "/create/logbook/user", SecurityController, :create_log_book_user
+    post "/add/timeout", SecurityController, :add_time_out
+    post "/logbook/update", SecurityController, :edit_log_book_user
+    get "/view/logbook/user", SecurityController, :view_log_book_user
+
     # ---------------------------Firearms Inventory
     get "/firearms", AdminController, :firearm
     post "/Create/Firearm", AdminController, :create_firearms_inventory
@@ -69,10 +84,6 @@ defmodule ProlegalsWeb.Router do
     get "/Notifications", LegalController, :notifications
     get "/Tasks", LegalController, :tasks
 
-    # ////////////////////////////////////////////////////////////////// Security Controller
-    get "/list/logbook/user", SecurityController, :list_log_book_users
-    post "/create/logbook/user", SecurityController, :create_log_book_user
-    post "/add/timeout", SecurityController, :add_time_out
   end
 
   scope "/", ProlegalsWeb do

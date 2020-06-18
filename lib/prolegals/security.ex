@@ -11,6 +11,7 @@ defmodule Prolegals.Security do
   alias Prolegals.Security.FirearmsInventory
 
 
+
   @doc """
   Returns the list of sec_tbl_log_book.
 

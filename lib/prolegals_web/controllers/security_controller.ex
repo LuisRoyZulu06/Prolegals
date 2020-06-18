@@ -30,7 +30,6 @@ defmodule ProlegalsWeb.SecurityController do
       end
   end
 
-
    def add_time_out(conn, %{"id" => id} = params) do
     list_log_book_user = Security.get_log_book!(id)
 
@@ -61,13 +60,51 @@ defmodule ProlegalsWeb.SecurityController do
           |> put_flash(:error, reason)
           |> redirect(to: Routes.security_path(conn, :list_log_book_users))
       end
-
   end
+
+  def edit_log_book_user(conn, %{"id" => id} = params) do
+    list_log_book_user = Security.get_log_book!(id)
+
+      Ecto.Multi.new()
+      |> Ecto.Multi.update(:list_log_book_user, LogBook.changeset(list_log_book_user, params))
+      |> Ecto.Multi.run(:userlogs, fn %{list_log_book_user: list_log_book_user} ->
+        activity = "Prolegals LogBook updated with ID \"#{list_log_book_user.id}\""
+
+        userlogs = %{
+          user_id: conn.assigns.user.id,
+          activity: activity
+        }
+
+        UserLogs.changeset(%UserLogs{}, userlogs)
+        |> Repo.insert()
+      end)
+      |> Repo.transaction()
+      |> case do
+        {:ok, %{list_log_book_user: _list_log_book_user, userlogs: _userlogs}} ->
+          conn
+          |> put_flash(:info, "LogBook successfully updated:-) ")
+          |> redirect(to: Routes.security_path(conn, :list_log_book_users))
+
+        {:error, _failed_operation, failed_value, _changes_so_far} ->
+          reason = traverse_errors(failed_value.errors) |> List.first()
+
+          conn
+          |> put_flash(:error, reason)
+          |> redirect(to: Routes.security_path(conn, :list_log_book_users))
+      end
+   end
+
+   def view_log_book_user(conn, %{"id" => id}) do
+    logbook_users = Security.get_log_book!(id)
+    render(conn, "view_log_book_user.html", logbook_users: logbook_users )
+   end
+
+
+
 
   def traverse_errors(errors) do
     for {key, {msg, _opts}} <- errors, do: "#{key} #{msg}"
   end
-
 
 
 end

@@ -75,6 +75,11 @@ defmodule Prolegals.Accounts.User do
 end
 
 
+
+#Prolegals.Accounts.create_user(%{first_name: "Luis Roy", last_name: "Zulu", email: "luis@probasegroup.com", password: "password06", user_type: 1, status: 1, user_role: "admin", sex: "m", age: "24", id_type: "nrc", id_no: "342891/10/1", phone: 0979797337, home_add: "202/20 Roma Null off Zambezi Road", inserted_at: NaiveDateTime.utc_now, updated_at: NaiveDateTime.utc_now})
+#Prolegals.Accounts.create_user(%{first_name: "John", last_name: "Mfula", email: "johnmfula360@gmail.com", password: "password02", user_type: 2, status: 1, user_role: "lawyer", sex: "m", age: "29", id_type: "nrc", id_no: "304681/10/1", phone: 0975432237, home_add: "Mtendere A4443", inserted_at: NaiveDateTime.utc_now, updated_at: NaiveDateTime.utc_now})
+#Prolegals.Accounts.create_user(%{first_name: "Lunje", last_name: "Daka", email: "lunje@probasegroup.com", password: "password04", user_type: 4, status: 1, user_role: "security", sex: "m", age: "29", id_type: "nrc", id_no: "2267891/10/1", phone: 0977009988, home_add: "Chawama", inserted_at: NaiveDateTime.utc_now, updated_at: NaiveDateTime.utc_now})
+
 #Prolegals.Accounts.create_user(%{first_name: "Luis Roy", last_name: "Zulu", email: "luis@probasegroup.com", password: "password06", user_type: 1, status: 1, user_role: "admin", sex: "m", age: "24", id_type: "nrc", id_no: 342891101, phone: 0979797337, home_add: "202/20 Roma Null off Zambezi Road", inserted_at: NaiveDateTime.utc_now, updated_at: NaiveDateTime.utc_now})
 #Prolegals.Accounts.create_user(%{first_name: "john", last_name: "Mfula", email: "johnmfula@gmail.com", password: "password02", user_type: 2, status: 1, user_role: "lawyer", sex: "m", age: "24", id_type: "nrc", id_no: 304831101, phone: 0975432237, home_add: "mtendere A4443", inserted_at: NaiveDateTime.utc_now, updated_at: NaiveDateTime.utc_now})
 #Prolegals.Accounts.create_user(%{first_name: "Davies", last_name: "Phiri", email: "davies@probasegroup.com", password: "password02", user_type: 1, status: 1, user_role: "admin", sex: "m", age: "24", id_type: "nrc", id_no: "304831/10/1", phone: 0978242442, home_add: "Foxdale off Zambezi road", inserted_at: NaiveDateTime.utc_now, updated_at: NaiveDateTime.utc_now})
@@ -83,4 +88,5 @@ end
 #Prolegals.Accounts.create_user(%{first_name: "Luis Roy", last_name: "Zulu", email: "luis@probasegroup.com", password: "password06", user_type: 1, status: 1, user_role: "admin", sex: "m", age: "24", id_type: "nrc", id_no: "342891/10/1", phone: 0979797337, home_add: "202/20 Roma Null off Zambezi Road", inserted_at: NaiveDateTime.utc_now, updated_at: NaiveDateTime.utc_now})
 #Prolegals.Accounts.create_user(%{first_name: "John", last_name: "Mfula", email: "johnmfula360@gmail.com", password: "password02", user_type: 2, status: 1, user_role: "lawyer", sex: "m", age: "29", id_type: "nrc", id_no: "304681/10/1", phone: 0975432237, home_add: "Mtendere A4443", inserted_at: NaiveDateTime.utc_now, updated_at: NaiveDateTime.utc_now})
 #Prolegals.Accounts.create_user(%{first_name: "Lunje", last_name: "Daka", email: "lunje@probasegroup.com", password: "password04", user_type: 4, status: 1, user_role: "security", sex: "m", age: "29", id_type: "nrc", id_no: "2267891/10/1", phone: 0977009988, home_add: "Chawama", inserted_at: NaiveDateTime.utc_now, updated_at: NaiveDateTime.utc_now})
+
 
