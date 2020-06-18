@@ -33,61 +33,66 @@
         </div>
     </div>
 
-    <div class="col-xl-12">
-        <div class="row">
-            <div class="col-xl-6">
-                <div id="panel-5" class="panel">
-                    <div class="panel-hdr">
-                        <h2>
-                            Polar <span class="fw-300"><i>Area</i></span>
-                        </h2>
-                        <div class="panel-toolbar">
-                            <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
-                            <button class="btn btn-panel" data-action="panel-fullscreen" data-toggle="tooltip" data-offset="0,10" data-original-title="Fullscreen"></button>
-                            <button class="btn btn-panel" data-action="panel-close" data-toggle="tooltip" data-offset="0,10" data-original-title="Close"></button>
-                        </div>
-                    </div>
-                    <div class="panel-container show">
-                        <div class="panel-content">
-                            <div class="panel-tag">
-                                Polar charts are similar to pie charts, but each segment has the same angle - the radius of the segment differs depending on the value. Polar charts is often useful when we want to show a comparison data similar to a pie chart, but also show a scale of values for context
+    <!-------------------------------------------------------------------------------------------------Administrator -->
+    <%= if @user.user_role == "admin" do %>
+        <div class="col-xl-12">
+            <div class="row">
+                <div class="col-xl-6">
+                    <div id="panel-5" class="panel">
+                        <div class="panel-hdr">
+                            <h2>
+                                Polar <span class="fw-300"><i>Area</i></span>
+                            </h2>
+                            <div class="panel-toolbar">
+                                <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
+                                <button class="btn btn-panel" data-action="panel-fullscreen" data-toggle="tooltip" data-offset="0,10" data-original-title="Fullscreen"></button>
+                                <button class="btn btn-panel" data-action="panel-close" data-toggle="tooltip" data-offset="0,10" data-original-title="Close"></button>
                             </div>
-                            <div id="polarArea">
-                                <canvas style="width:100%; height:300px;"></canvas>
+                        </div>
+                        <div class="panel-container show">
+                            <div class="panel-content">
+                                <div class="panel-tag">
+                                    Polar charts are similar to pie charts, but each segment has the same angle - the radius of the segment differs depending on the value. Polar charts is often useful when we want to show a comparison data similar to a pie chart, but also show a scale of values for context
+                                </div>
+                                <div id="polarArea">
+                                    <canvas style="width:100%; height:300px;"></canvas>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-xl-6">
-                <div id="panel-11" class="panel">
-                    <div class="panel-hdr">
-                        <h2>
-                            Radar <span class="fw-300"><i>Chart</i></span>
-                        </h2>
-                        <div class="panel-toolbar">
-                            <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
-                            <button class="btn btn-panel" data-action="panel-fullscreen" data-toggle="tooltip" data-offset="0,10" data-original-title="Fullscreen"></button>
-                            <button class="btn btn-panel" data-action="panel-close" data-toggle="tooltip" data-offset="0,10" data-original-title="Close"></button>
-                        </div>
-                    </div>
-                    <div class="panel-container show">
-                        <div class="panel-content">
-                            <div class="panel-tag">
-                                For a radar chart, to provide context of what each point means, we include an array of strings that show around each point in the chart. For the radar chart data, we have an array of datasets as objects, with a fill, stroke, and line color for each point. We also have an array of data values
+                <div class="col-xl-6">
+                    <div id="panel-11" class="panel">
+                        <div class="panel-hdr">
+                            <h2>
+                                Radar <span class="fw-300"><i>Chart</i></span>
+                            </h2>
+                            <div class="panel-toolbar">
+                                <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
+                                <button class="btn btn-panel" data-action="panel-fullscreen" data-toggle="tooltip" data-offset="0,10" data-original-title="Fullscreen"></button>
+                                <button class="btn btn-panel" data-action="panel-close" data-toggle="tooltip" data-offset="0,10" data-original-title="Close"></button>
                             </div>
-                            <div id="radarChart">
-                                <canvas style="width:100%; height:300px;"></canvas>
+                        </div>
+                        <div class="panel-container show">
+                            <div class="panel-content">
+                                <div class="panel-tag">
+                                    For a radar chart, to provide context of what each point means, we include an array of strings that show around each point in the chart. For the radar chart data, we have an array of datasets as objects, with a fill, stroke, and line color for each point. We also have an array of data values
+                                </div>
+                                <div id="radarChart">
+                                    <canvas style="width:100%; height:300px;"></canvas>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    <% end %>
+    <!----------------------------------------------------------------------------------------------------------------->
+
 
     <!----------------------------------------------------------------------------------------------------Litigation -->
-    <%= if @user.user_role == "lawyer" do %>
+    <%= if @user.user_role == "litigation" do %>
         <div class="row">
             <div class="col-sm-6 col-xl-3">
                 <a href="<%= Routes.legal_path(@conn, :contacts)%>" title="Contact Management" data-filter-tags="ui components">    
