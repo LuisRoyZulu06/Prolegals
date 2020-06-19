@@ -31,6 +31,64 @@
         </div>
     </div>
 
+    <!-------------------------------------------------------------------------------------------------Administrator -->
+    <%= if @user.user_role == "admin" do %>
+        <div class="col-xl-12">
+            <div class="row">
+                <div class="col-xl-6">
+                    <div id="panel-5" class="panel">
+                        <div class="panel-hdr">
+                            <h2>
+                                Polar <span class="fw-300"><i>Area</i></span>
+                            </h2>
+                            <div class="panel-toolbar">
+                                <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
+                                <button class="btn btn-panel" data-action="panel-fullscreen" data-toggle="tooltip" data-offset="0,10" data-original-title="Fullscreen"></button>
+                                <button class="btn btn-panel" data-action="panel-close" data-toggle="tooltip" data-offset="0,10" data-original-title="Close"></button>
+                            </div>
+                        </div>
+                        <div class="panel-container show">
+                            <div class="panel-content">
+                                <div class="panel-tag">
+                                    Polar charts are similar to pie charts, but each segment has the same angle - the radius of the segment differs depending on the value. Polar charts is often useful when we want to show a comparison data similar to a pie chart, but also show a scale of values for context
+                                </div>
+                                <div id="polarArea">
+                                    <canvas style="width:100%; height:300px;"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-6">
+                    <div id="panel-11" class="panel">
+                        <div class="panel-hdr">
+                            <h2>
+                                Radar <span class="fw-300"><i>Chart</i></span>
+                            </h2>
+                            <div class="panel-toolbar">
+                                <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
+                                <button class="btn btn-panel" data-action="panel-fullscreen" data-toggle="tooltip" data-offset="0,10" data-original-title="Fullscreen"></button>
+                                <button class="btn btn-panel" data-action="panel-close" data-toggle="tooltip" data-offset="0,10" data-original-title="Close"></button>
+                            </div>
+                        </div>
+                        <div class="panel-container show">
+                            <div class="panel-content">
+                                <div class="panel-tag">
+                                    For a radar chart, to provide context of what each point means, we include an array of strings that show around each point in the chart. For the radar chart data, we have an array of datasets as objects, with a fill, stroke, and line color for each point. We also have an array of data values
+                                </div>
+                                <div id="radarChart">
+                                    <canvas style="width:100%; height:300px;"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <% end %>
+    <!----------------------------------------------------------------------------------------------------------------->
+
+
     <!----------------------------------------------------------------------------------------------------Litigation -->
     <%= if @user.user_role == "litigation" do %>
         <div class="row">
@@ -157,7 +215,7 @@
                     <a href="<%= Routes.security_path(@conn, :list_log_book_users)%>">
                         <div id="cp-2" class="card border">
                             <div class="card-header bg-success-600">
-                                List of Users in The Log Book
+                                Visitors  Logs
                             </div>
                             <div class="card-body p-0 bg-success-300" style="height: 160px">
                                     <div class="row">
@@ -198,21 +256,13 @@
                 <form class="form-horizontal" action="<%= Routes.security_path(@conn, :create_log_book_user)%>" enctype="multipart/form-data"  method="post">
                     <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
                     <div class="form-group">
-                        <label class="form-label">Full Name</label>
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fal fa-user"></i></span>
-                            </div>
-                            <input type="text" name="name" class="form-control" placeholder="Full Names" required="required">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
                         <label class="form-label">Personal Details</label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fal fa-user"></i></span>
                             </div>
+                            <input type="text" name="name" class="form-control" placeholder="Full Names" required="required">
+
                             <select class="custom-select form-control" name="sex" required="required">
                                 <option selected="">Select Gender</option>
                                 <option value="M">Male</option>
@@ -277,20 +327,21 @@
                                 <span class="input-group-text"><i class="fal fa-clock"></i></span>
                             </div>
                             <input type="date" name="date" placeholder="Date of Visit" class="form-control" required="required">
+                            <input type="text" name="time_in" placeholder="Time In" class="form-control" required="required">
                             
                         </div>
                     </div>
 
                      <div class="form-group">
-                        <label class="form-label"> Time for visit</label>
+                        <label class="form-label">Facial image </label>
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fal fa-clock"></i></span>
+                                <span class="input-group-text"><i class="fal fa-user"></i></span>
                             </div>
-                            <input type="text" name="time_in" placeholder="Time In" class="form-control" required="required">
+                            <input type="file" name="image" placeholder="Facial image of the person" class="form-control" required="required">
                             
                         </div>
-                    </div>
+                     </div>
      
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -327,12 +378,11 @@
                                 <div class="row no-gutters row-grid">
                                     <div class="col-12">
                                         <div class="d-flex flex-column align-items-center justify-content-center p-4">
-                                            <%= if @user.sex == "M" do %>
-                                            <img class="rounded-circle shadow-2 img-thumbnail" alt="<%= @user.first_name%> <%= @user.last_name%>" src="<%= Routes.static_path(@conn, "/images/avatar/3.png") %>">
-                                            <% end %>
 
                                             <%= if @user.sex == "F" do %>
                                             <img class="rounded-circle shadow-2 img-thumbnail" alt="<%= @user.first_name%> <%= @user.last_name%>" src="<%= Routes.static_path(@conn, "/images/avatar/2.jpg") %>">
+                                            <% else %>
+                                            <img class="rounded-circle shadow-2 img-thumbnail" alt="<%= @user.first_name%> <%= @user.last_name%>" src="<%= Routes.static_path(@conn, "/images/avatar/3.png") %>">
                                             <% end %>
                                             
                                             <h5 class="mb-0 fw-700 text-center mt-3">
