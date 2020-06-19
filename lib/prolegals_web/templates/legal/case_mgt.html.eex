@@ -17,7 +17,8 @@
             </div>
         </div>
     </div>
-    <!-- ################################################################################ -->
+<!-- ################################################################################ -->
+
 <%# <div class="alert alert-primary">
     <div class="d-flex flex-start w-100">
         <div class="mr-2 hidden-md-down">
@@ -35,6 +36,7 @@
         </div>
     </div>
 </div> %>
+
 <div class="subheader">
     <h1 class="subheader-title">
         <i class='subheader-icon fal fa-shopping-bag'></i> Cases
@@ -88,7 +90,8 @@
                                     </span>
                                     <div class="dropdown-menu">
                                          <a class="dropdown-item"><i class='subheader-icon fal fa-eye'></i> View</a>
-                                        <button type="button" class="dropdown-item" data-toggle="modal" data-target="#editmodal" ><i class='subheader-icon fal fa-edit'></i>Edit</button>                                         
+                                        <a href="" type="button" class="dropdown-item" data-toggle="modal" data-target="#editmodal" ><i class='subheader-icon fal fa-edit'></i>Edit</a>
+                                        <a href="" type="button" class="dropdown-item" data-toggle="modal" data-target="#editmodal" ><i class='subheader-icon fal fa-file'></i>Report</a>                                         
                                         <a class="dropdown-item" data-toggle="modal" data-target="#deactivate_user"><i class='subheader-icon fal fa-times'></i>Deactive</a>
                                         
                                     </div>
