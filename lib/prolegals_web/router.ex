@@ -76,6 +76,16 @@ defmodule ProlegalsWeb.Router do
     post "/Create/Ammunition", AdminController, :create_ammunition_inventory
     post "/Update/Ammunition", AdminController, :update_ammunition_inventory
     get "/Delete/Ammunition", AdminController, :delete_ammunition_inventory
+    get "/Ammunition/View", AdminController, :view_ammunition
+
+    # ---------------------------Legal Controller
+    get "/Contacts", LegalController, :contacts
+    post "/Create/Contact", LegalController, :create_contact
+    get "/Manage/Cases", LegalController, :case_mgt
+    post "/Add/New/Case", LegalController, :create_case
+    get "/Notifications", LegalController, :notifications
+    get "/Tasks", LegalController, :tasks
+
   end
 
   scope "/", ProlegalsWeb do

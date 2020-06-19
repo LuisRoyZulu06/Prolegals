@@ -18,6 +18,11 @@ defmodule ProlegalsWeb.AdminController do
     render(conn, "ammunition.html", ammunitions: ammunitions)
   end
 
+  def view_ammunition(conn, %{"id" => id}) do
+    ammunitions = Security.get_ammunition_inventory!(id)
+    render(conn, "view_ammunition.html", ammunitions: ammunitions)
+  end
+
   def create_ammunition_inventory(conn, params) do
   	case Security.create_ammunition_inventory(params) do
           {:ok, _} ->
@@ -109,8 +114,8 @@ end
     render(conn, "firearm.html", firearms: firearms)
   end
 
-  def view_firearm(conn, _params) do
-    firearms = Security.list_sec_tbl_firearms()
+  def view_firearm(conn, %{"id" => id}) do
+    firearms = Security.get_firearms_inventory!(id)
     render(conn, "view_firearm.html", firearms: firearms)
   end
 
@@ -163,39 +168,39 @@ end
         # conn
         # |> put_flash(:error, reason)
         # |> redirect(to: Routes.vehicle_path(conn, :list_vehicles))
-    end
-end
-
-def delete_firearms_inventory(conn, %{"id" => id}) do
-  firearms = Security.get_firearms_inventory!(id)
-
-  Ecto.Multi.new()
-  |> Ecto.Multi.delete(:firearms, firearms)
-  |> Ecto.Multi.run(:userlogs, fn %{firearms: firearms} ->
-    activity = "Firearm Removed From Inventory with ID \"#{firearms.id}\""
-
-    userlogs = %{
-      user_id: conn.assigns.user.id,
-      activity: activity
-    }
-
-    UserLogs.changeset(%UserLogs{}, userlogs)
-    |> Repo.insert()
-  end)
-  |> Repo.transaction()
-  |> case do
-    {:ok, %{firearms: _firearms, userlogs: _userlogs}} ->
-      conn
-      |> put_flash(:info, "Firearm deleted from system.")
-      |> redirect(to: Routes.admin_path(conn, :firearm))
-
-    # {:error, _failed_operation, failed_value, _changes_so_far} ->
-    #  reason = AdminController._traverse_errors(failed_value.errors) |> List.first()
-
-    #  conn
-    #  |> put_flash(:error, reason)
-    #  |> redirect(to: Routes.admin_path(conn, :ammunition))
+      end
   end
-end
+
+    def delete_firearms_inventory(conn, %{"id" => id}) do
+      firearms = Security.get_firearms_inventory!(id)
+
+      Ecto.Multi.new()
+      |> Ecto.Multi.delete(:firearms, firearms)
+      |> Ecto.Multi.run(:userlogs, fn %{firearms: firearms} ->
+        activity = "Firearm Removed From Inventory with ID \"#{firearms.id}\""
+
+        userlogs = %{
+          user_id: conn.assigns.user.id,
+          activity: activity
+        }
+
+        UserLogs.changeset(%UserLogs{}, userlogs)
+        |> Repo.insert()
+      end)
+      |> Repo.transaction()
+      |> case do
+        {:ok, %{firearms: _firearms, userlogs: _userlogs}} ->
+          conn
+          |> put_flash(:info, "Firearm deleted from system.")
+          |> redirect(to: Routes.admin_path(conn, :firearm))
+
+        # {:error, _failed_operation, failed_value, _changes_so_far} ->
+        #  reason = AdminController._traverse_errors(failed_value.errors) |> List.first()
+
+        #  conn
+        #  |> put_flash(:error, reason)
+        #  |> redirect(to: Routes.admin_path(conn, :ammunition))
+      end
+    end
 
 end
