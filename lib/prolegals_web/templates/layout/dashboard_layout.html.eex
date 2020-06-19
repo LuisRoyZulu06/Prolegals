@@ -89,67 +89,12 @@
                                     </a>
                                 </li>
 
-
-                                <!-- ###################################### ADMIN-PANEL ############################ -->
                                 <li>
-                                    <a href="#" title="Messaging" data-filter-tags="theme settings">
-                                        <i class="fal fa-envelope"></i>
-                                        <span class="nav-link-text" data-i18n="nav.theme_settings">Messaging</span>
+                                    <a href="<%= Routes.user_path(@conn, :user_management)%>" title="User Maintenace" data-filter-tags="ui components">
+                                        <i class="fal fa-user"></i>
+                                        <span class="nav-link-text" data-i18n="nav.ui_components">User Maintenance</span>
                                     </a>
-                                    <ul>
-                                        <li>
-                                            <a href="#" title="Single Messaging">
-                                                <i class="fal fa-envelope"></i>
-                                                <span class="nav-link-text" data-i18n="nav.theme_settings_layout_options">Single Messaging</span>
-                                            </a>
-                                        </li>
-
-                                        <li>
-                                            <a href="#" title="Broadcast Messaging" data-filter-tags="theme settings layout options">
-                                                <i class="fal fa-comment-alt"></i>
-                                                <span class="nav-link-text" data-i18n="nav.theme_settings_layout_options">Broadcast Messaging</span>
-                                            </a>
-                                        </li>
-
-                                        <li>
-                                            <a href="#" title="Multicast Messaging" data-filter-tags="theme settings layout options">
-                                                <i class="fal fa-comment"></i>
-                                                <span class="nav-link-text" data-i18n="nav.theme_settings_layout_options">Multicast Messaging</span>
-                                            </a>
-                                        </li>
-
-                                        <li>
-                                            <a href="#" title="Conversations" data-filter-tags="theme settings layout options">
-                                                <i class="fal fa-comments"></i>
-                                                <span class="nav-link-text" data-i18n="nav.theme_settings_layout_options">Conversations</span>
-                                            </a>
-                                        </li>
-                                    </ul>
                                 </li>
-
-                                    <li>
-                                        <a href="#" title="User Management" data-filter-tags="theme settings">
-                                            <i class="fal fa-user"></i>
-                                            <span class="nav-link-text" data-i18n="nav.theme_settings">Manage Users</span>
-                                        </a>
-                                        <ul>
-                                            <li>
-                                                <a href="#" title="Add User" data-filter-tags="theme settings layout options">
-                                                    <i class="fal fa-user"></i>
-                                                    <span class="nav-link-text" data-i18n="nav.theme_settings_layout_options">Add User</span>
-                                                </a>
-                                            </li>
-
-                                            <li>
-                                                <a href="#" title="View Users" data-filter-tags="theme settings layout options">
-                                                    <i class="fal fa-user-circle"></i>
-                                                    <span class="nav-link-text" data-i18n="nav.theme_settings_layout_options">View Users</span>
-                                                </a>
-                                            </li>
-
-                                        </ul>
-                                    </li>
-                                <!-- ############################################################################### -->
                             </ul>
                         <div class="filter-message js-filter-message bg-success-600"></div>
                         </nav>
@@ -187,6 +132,7 @@
                                     <i class="fal fa-angle-down d-inline-block ml-1 fs-lg color-primary-300"></i>
                                 </a>
                             </div>
+
                             <div class="hidden-md-down dropdown-icon-menu position-relative">
                                 <a href="#" class="header-btn btn js-waves-off" data-action="toggle" data-class="nav-function-hidden" title="Hide Navigation">
                                     <i class="ni ni-menu"></i>
@@ -204,22 +150,26 @@
                                     </li>
                                 </ul>
                             </div>
+
                             <div class="hidden-lg-up">
                                 <a href="#" class="header-btn btn press-scale-down" data-action="toggle" data-class="mobile-nav-on">
                                     <i class="ni ni-menu"></i>
                                 </a>
                             </div>
+
                             <div class="ml-auto d-flex">
                                 <div class="hidden-sm-up">
                                     <a href="#" class="header-icon" data-action="toggle" data-class="mobile-search-on" data-focus="search-field" title="Search">
                                         <i class="fal fa-search"></i>
                                     </a>
                                 </div>
+
                                 <div class="hidden-md-down">
                                     <a href="#" class="header-icon" data-toggle="modal" data-target=".js-modal-settings">
                                         <i class="fal fa-cog"></i>
                                     </a>
                                 </div>
+
                                 <div>
                                     <a href="#" class="header-icon" data-toggle="dropdown" title="My Apps">
                                         <i class="fal fa-cube"></i>
@@ -314,16 +264,18 @@
                                         <a class="dropdown-item fw-500 pt-3 pb-3" href="#">
                                             <span data-i18n="drpdwn.page-change-password">Change Password</span>
                                         </a>
-                                        <a class="dropdown-item fw-500 pt-3 pb-3" href="#">
+                                        <a class="dropdown-item fw-500 pt-3 pb-3" href="<%= Routes.session_path(@conn, :signout)%>">
                                             <span data-i18n="drpdwn.page-logout">Logout</span>
                                         </a>
                                     </div>
                                 </div>
                             </div>
                         </header>
+
                         <main id="js-page-content" role="main" class="page-content">
                             <%= render @view_module, @view_template, assigns %>
                         </main>
+
                         <div class="page-content-overlay" data-action="toggle" data-class="mobile-nav-on"></div>
                         <footer class="page-footer" role="contentinfo">
                             <div class="d-flex align-items-center flex-1 text-muted">
@@ -334,7 +286,9 @@
                                 </span>
                             </div>
                         </footer>
+
                         <div id="loader"></div>
+
                         <div class="modal fade modal-backdrop-transparent" id="modal-shortcut" tabindex="-1" role="dialog" aria-labelledby="modal-shortcut" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-top modal-transparent" role="document">
                                 <div class="modal-content">
@@ -349,7 +303,7 @@
                                                     </div>
                                                     <span class="app-list-name">
                                                         Dashboard
-                                                    </span>
+                                                    </span> 
                                                 </a>
                                             </li>
                                         </ul>
@@ -369,7 +323,7 @@
                 <a href="#" class="menu-item btn" data-toggle="tooltip" data-placement="left" title="Scroll Top">
                     <i class="fal fa-arrow-up"></i>
                 </a>
-                <a href="#" class="menu-item btn" data-toggle="tooltip" data-placement="left" title="Logout">
+                <a href="<%= Routes.session_path(@conn, :signout)%>" class="menu-item btn" data-toggle="tooltip" data-placement="left" title="Logout">
                     <i class="fal fa-sign-out"></i>
                 </a>
                 <a href="#" class="menu-item btn" data-action="app-fullscreen" data-toggle="tooltip" data-placement="left" title="Full Screen">
@@ -382,6 +336,7 @@
                     <i class="fal fa-microphone"></i>
                 </a>
             </nav>
+
             <div class="modal fade js-modal-settings modal-backdrop-transparent" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-right modal-md">
                     <div class="modal-content">

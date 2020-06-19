@@ -1,0 +1,249 @@
+<main id="js-page-content" role="main" class="page-content">
+    <!----------------------------------------------------------------------------------------------Flash -->
+    <div class="row">
+        <div class="col-md-12 col-lg-offset-2">
+            <div class="form-group">
+                <%= if get_flash(@conn, :info) do %>
+                    <div class="alert alert-info alert-styled-left">
+                    <button type="button" class="close" data-dismiss="alert">&times; <span class="sr-only">Close</span></button>
+                    <%= get_flash(@conn, :info) %>
+                    </div>
+                <% end %>
+                <%= if get_flash(@conn, :error) do %>
+                    <div class="alert alert-danger alert-styled-left">
+                    <button type="button" class="close" data-dismiss="alert">&times; <span class="sr-only">Close</span></button>
+                    Opps! <%= get_flash(@conn, :error) %>
+                    </div>
+                <% end %>
+            </div>
+        </div>
+    </div>
+    <!------------------------------------------------------------------------------------------------------>
+
+    <ol class="breadcrumb page-breadcrumb">
+        <li class="breadcrumb-item"><a href="javascript:void(0);">ProLegals</a></li>
+        <li class="breadcrumb-item">
+            <%= "#{String.capitalize(@conn.assigns.user.first_name)}"%> <%= "#{String.capitalize(@conn.assigns.user.last_name)}"%>
+        </li>
+        <li class="position-absolute pos-top pos-right d-none d-sm-block"><span class="js-get-date"></span></li>
+    </ol>
+    <div class="subheader">
+        <h1 class="subheader-title">
+            <i class='subheader-icon fal fa-table'></i> Tasks: <span class='fw-300'>To Do List</span>
+            <small>
+                Create tasks, check upcoming events and get reminders.
+            </small>
+        </h1>
+    </div>
+
+
+    <!-- Page heading removed for composed layout -->
+    <div class="d-flex flex-grow-1 p-0">
+        <!-- left slider -->
+        <div id="js-inbox-menu" class="flex-wrap position-relative bg-white slide-on-mobile slide-on-mobile-left">
+            <div class="position-absolute pos-top pos-bottom w-100">
+                <div class="d-flex h-100 flex-column">
+                    <br>
+
+                    <div class="flex-1 pr-3">
+                        <a href="#" class="dropdown-item px-3 px-sm-4 pr-lg-3 pl-lg-5 py-2 fs-md font-weight-bold d-flex justify-content-between rounded-pill border-top-left-radius-0 border-bottom-left-radius-0" data-toggle="modal" data-target="#add-task">
+                            <div>
+                                <i class="fal fa-edit width-1"></i>Add Task
+                            </div>
+                            <div class="fw-400 fs-xs js-unread-emails-count"></div>
+                        </a>
+                        <%# <a href="#" class="dropdown-item px-3 px-sm-4 pr-lg-3 pl-lg-5 py-2 fs-md d-flex justify-content-between rounded-pill border-top-left-radius-0 border-bottom-left-radius-0">
+                            <div>
+                                <i class="fas fa-paper-plane width-1"></i>Sent
+                            </div>
+                        </a>
+                        <a href="#" class="dropdown-item px-3 px-sm-4 pr-lg-3 pl-lg-5 py-2 fs-md d-flex justify-content-between rounded-pill border-top-left-radius-0 border-bottom-left-radius-0">
+                            <div>
+                                <i class="fas fa-redo width-1"></i>Refresh
+                            </div>
+                        </a>
+                        <a href="#" class="dropdown-item px-3 px-sm-4 pr-lg-3 pl-lg-5 py-2 fs-md font-weight-bold d-flex justify-content-between rounded-pill border-top-left-radius-0 border-bottom-left-radius-0">
+                            <div>
+                                <i class="fas fa-trash width-1"></i>Trash
+                            </div>
+                        </a> %>
+                    </div>
+
+                    <div class="px-5 py-3 fs-nano fw-500">
+                        ProLegals
+                        <div class="progress mt-1" style="height: 7px;">
+                            <div class="progress-bar" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="slide-backdrop" data-action="toggle" data-class="slide-on-mobile-left-show" data-target="#js-inbox-menu"></div> 
+        <!-- end left slider -->
+        
+        <!-- inbox container -->
+        <div class="d-flex flex-column flex-grow-1 bg-white"> 
+            <div class="flex-wrap align-items-center flex-grow-1 position-relative bg-gray-50">
+                <div class="position-absolute pos-top pos-bottom w-100">
+                    <div class="d-flex h-100 flex-column">
+
+                        <!-- button for mobile -->
+                        <a href="javascript:void(0);" class="pl-3 pr-3 py-2 d-flex d-lg-none align-items-left justify-content-left mr-2 btn" data-action="toggle" data-class="slide-on-mobile-left-show" data-target="#js-inbox-menu">
+                            <i class="fal fa-ellipsis-v h1 mb-0 "></i>
+                        </a>
+                        <!-- end button for mobile -->
+
+                        <div class="container show">
+                            <div class="panel-content">
+                                <!-- datatable start -->
+                                <table id="dt-basic-example" class="table table-bordered table-hover table-striped w-100">
+                                    <thead class="p-3 bg-info-300 rounded overflow-hidden position-relative text-white mb-g">
+                                        <tr>
+                                            <th>Task Name</th>
+                                            <th>Priority</th>
+                                            <th>Due Date</th>
+                                            <th>Case Link</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <%= for task <-@tasks do %>
+                                            <tr>
+                                                <td><%= task.event_name %></td>
+                                                <td><%= task.priority %></td>
+                                                <td><%= task.end_date %></td>
+                                                <td><%= task.case %></td>
+                                                <td><%= task.status %></td>
+                                                <td>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                <i class='subheader-icon fal fa-chevron-down'></i>
+                                                            </span>
+                                                            <div class="dropdown-menu">
+                                                                <a class="dropdown-item" data-toggle="modal" data-target="#view-issue"><i class="fas fa-envelope fs-md"> View Request</i></a>
+                                                                <a class="dropdown-item" data-toggle="modal" data-target="#panel-compose"><i class="fas fa-edit fs-md"> Reject Request</i></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>  
+                                            </tr>   
+                                        <% end %>         
+                                </table>
+                                <!-- datatable end -->
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end inbox container -->
+
+    </div>
+</main>
+
+<!-- ############################### ADD-INDIVIDUAL MODAL #################################### -->
+<div class="modal fade" id="add-task" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">ADD EVENT <i class="fal fa-edit"></i> </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="fal fa-times"></i></span>
+                </button>
+            </div>
+
+            <div class="modal-body">                
+                <form action="<%= Routes.legal_path(@conn, :create_task)%>" method="POST">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">Case</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-clock"></i></span>
+                                    </div>
+                                    <input type="text" name="event_name" placeholder="Event Name" class="form-control" required="required">
+                                    <select class="custom-select form-control" name="case" required="required">
+                                        <option selected="">Select case event is linked to</option>
+                                        <option value="case 1">case 1</option>
+                                    </select>
+                                    <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <input type="checkbox" name="case" value="Not linked to a case">
+                                <label for="vehicle2"> This event is not linked to any case.</label>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Date & Time</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-clock"></i></span>
+                                    </div>
+                                    <input type="date" name="start_date" class="form-control" required="required">
+                                    <input type="time" name="start_time" class="form-control" required="required">
+                                    <input type="text" placeholder="to" class="form-control" disabled>
+                                    <input type="date" name="end_date" class="form-control" required="required">
+                                    <input type="time" name="end_time" class="form-control" required="required">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Priority</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-clock"></i></span>
+                                    </div>
+                                    <select class="custom-select form-control" name="priority" required="required">
+                                        <option selected="">Select event priority</option>
+                                        <option value="high">High</option>
+                                        <option value="medium">Medium</option>
+                                        <option value="low">Low</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Location</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-map-pin"></i></span>
+                                    </div>
+                                    <input type="text" name="location" placeholder="Venu of event" class="form-control" required="required">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="basic-url">Describe</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Comment</span>
+                                    </div>
+                                    <textarea class="form-control" name="details" placeholder="Details about event." aria-label="With textarea"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <input type="checkbox" name="visibility" value="private">
+                                <label for="vehicle2"> Mark this as a private event.</label>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-info">Add Event</button>
+                    </div>                   
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
