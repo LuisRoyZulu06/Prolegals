@@ -84,6 +84,8 @@ defmodule ProlegalsWeb.Router do
     # ---------------------------Legal Controller
     get "/Contacts", LegalController, :contacts
     post "/Create/Contact", LegalController, :create_contact
+    post "/update/Contact", LegalController, :update_contact
+    post "/delete/Contact", LegalController, :delete_contact
     get "/Manage/Cases", LegalController, :case_mgt
     post "/Add/New/Case", LegalController, :create_case
     get "/Notifications", LegalController, :notifications
