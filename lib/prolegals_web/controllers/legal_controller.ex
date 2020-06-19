@@ -2,8 +2,9 @@ defmodule ProlegalsWeb.LegalController do
   use ProlegalsWeb, :controller
 
 alias Prolegals.Litigation
-alias Prolegals.Litigation.Contacts
 alias Prolegals.Litigation.Cases
+alias Prolegals.Litigation.Events
+alias Prolegals.Litigation.Contacts
 
 	def contacts(conn, _params) do
 	  	contacts = Litigation.list_li_tbl_contacts()
@@ -52,6 +53,23 @@ alias Prolegals.Litigation.Cases
 	end
 
 	def tasks(conn, _params) do
-		render(conn, "tasks.html")
+		tasks = Litigation.list_li_tbl_tasks()
+		render(conn, "tasks.html", tasks: tasks)
+	end
+
+	def create_task(conn, params) do
+	  	case Litigation.create_events(params) do
+	          {:ok, _} ->
+	            conn
+	            |> put_flash(:info, "Event created.")
+	            |> redirect(to: Routes.legal_path(conn, :tasks))
+
+	            conn
+
+	          {:error, _} ->
+	            conn
+	            |> put_flash(:error, "Failed to create event.")
+	            |> redirect(to: Routes.legal_path(conn, :tasks))
+	  	end
 	end
 end

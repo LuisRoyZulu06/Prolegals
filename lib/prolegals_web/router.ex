@@ -55,6 +55,7 @@ defmodule ProlegalsWeb.Router do
     post "/Add/New/Case", LegalController, :create_case
     get "/Notifications", LegalController, :notifications
     get "/Tasks", LegalController, :tasks
+    post "/Create/Event", LegalController, :create_task
 
     # ////////////////////////////////////////////////////////////////// Security Controller
     get "/list/logbook/user", SecurityController, :list_log_book_users
@@ -75,15 +76,6 @@ defmodule ProlegalsWeb.Router do
     post "/Create/Ammunition", AdminController, :create_ammunition_inventory
     post "/Update/Ammunition", AdminController, :update_ammunition_inventory
     get "/Delete/Ammunition", AdminController, :delete_ammunition_inventory
-
-    # ---------------------------Legal Controller
-    get "/Contacts", LegalController, :contacts
-    post "/Create/Contact", LegalController, :create_contact
-    get "/Manage/Cases", LegalController, :case_mgt
-    post "/Add/New/Case", LegalController, :create_case
-    get "/Notifications", LegalController, :notifications
-    get "/Tasks", LegalController, :tasks
-
   end
 
   scope "/", ProlegalsWeb do

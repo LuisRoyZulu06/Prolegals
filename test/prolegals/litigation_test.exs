@@ -247,4 +247,77 @@ defmodule Prolegals.LitigationTest do
       assert %Ecto.Changeset{} = Litigation.change_cases(cases)
     end
   end
+
+  describe "li_tbl_tasks" do
+    alias Prolegals.Litigation.Events
+
+    @valid_attrs %{case: "some case", details: "some details", end_date: "some end_date", end_time: "some end_time", location: "some location", start_date: "some start_date", start_time: "some start_time", visibility: "some visibility"}
+    @update_attrs %{case: "some updated case", details: "some updated details", end_date: "some updated end_date", end_time: "some updated end_time", location: "some updated location", start_date: "some updated start_date", start_time: "some updated start_time", visibility: "some updated visibility"}
+    @invalid_attrs %{case: nil, details: nil, end_date: nil, end_time: nil, location: nil, start_date: nil, start_time: nil, visibility: nil}
+
+    def events_fixture(attrs \\ %{}) do
+      {:ok, events} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Litigation.create_events()
+
+      events
+    end
+
+    test "list_li_tbl_tasks/0 returns all li_tbl_tasks" do
+      events = events_fixture()
+      assert Litigation.list_li_tbl_tasks() == [events]
+    end
+
+    test "get_events!/1 returns the events with given id" do
+      events = events_fixture()
+      assert Litigation.get_events!(events.id) == events
+    end
+
+    test "create_events/1 with valid data creates a events" do
+      assert {:ok, %Events{} = events} = Litigation.create_events(@valid_attrs)
+      assert events.case == "some case"
+      assert events.details == "some details"
+      assert events.end_date == "some end_date"
+      assert events.end_time == "some end_time"
+      assert events.location == "some location"
+      assert events.start_date == "some start_date"
+      assert events.start_time == "some start_time"
+      assert events.visibility == "some visibility"
+    end
+
+    test "create_events/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Litigation.create_events(@invalid_attrs)
+    end
+
+    test "update_events/2 with valid data updates the events" do
+      events = events_fixture()
+      assert {:ok, %Events{} = events} = Litigation.update_events(events, @update_attrs)
+      assert events.case == "some updated case"
+      assert events.details == "some updated details"
+      assert events.end_date == "some updated end_date"
+      assert events.end_time == "some updated end_time"
+      assert events.location == "some updated location"
+      assert events.start_date == "some updated start_date"
+      assert events.start_time == "some updated start_time"
+      assert events.visibility == "some updated visibility"
+    end
+
+    test "update_events/2 with invalid data returns error changeset" do
+      events = events_fixture()
+      assert {:error, %Ecto.Changeset{}} = Litigation.update_events(events, @invalid_attrs)
+      assert events == Litigation.get_events!(events.id)
+    end
+
+    test "delete_events/1 deletes the events" do
+      events = events_fixture()
+      assert {:ok, %Events{}} = Litigation.delete_events(events)
+      assert_raise Ecto.NoResultsError, fn -> Litigation.get_events!(events.id) end
+    end
+
+    test "change_events/1 returns a events changeset" do
+      events = events_fixture()
+      assert %Ecto.Changeset{} = Litigation.change_events(events)
+    end
+  end
 end
