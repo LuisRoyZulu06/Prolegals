@@ -15,7 +15,7 @@ defmodule Prolegals.Repo.Migrations.CreateTblUsers do
       add :age, :integer
       add :id_type, :string
       add :id_no, :string
-      add :phone, :integer
+      add :phone, :string
       add :home_add, :string
       add :user_id, :string
 

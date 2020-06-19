@@ -10,19 +10,16 @@ defmodule Prolegals.Repo.Migrations.CreateLiTblContacts do
       add :job_title, :string
       add :id_type, :string
       add :id_no, :string
-      add :company_rep, :string
       add :bus_category, :string
       add :contact_type, :string
-      add :fax, :string
       add :tel, :string
       add :city, :string
       add :country, :string
-      add :home_add, :string
-      add :comp_email, :string
-      add :comp_address, :string
+      add :address, :string
+      add :client_portal, :string
 
       timestamps()
     end
 
   end
-end
+end    

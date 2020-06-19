@@ -1,5 +1,5 @@
 <main id="js-page-content" role="main" class="page-content">
-    <!-- ####################################################### FLASH ################## -->
+    <!-----------------------------------------------------------------------------------------Flash -->
     <div class="row">
         <div class="col-md-12 col-lg-offset-2">
             <div class="form-group">
@@ -18,7 +18,7 @@
             </div>
         </div>
     </div>
-    <!-- ################################################################################ -->
+    <!------------------------------------------------------------------------------------------------->
     <div class="subheader">
         <h1 class="subheader-title">
             <i class='subheader-icon fal fa-plus-circle'></i> Contacts
@@ -56,6 +56,7 @@
             <div id="c_1" class="card border shadow-0 mb-g shadow-sm-hover" data-filter-tags="<%= contact.name %>">
                 <div class="card-body border-faded border-top-0 border-left-0 border-right-0 rounded-top">
                     <div class="d-flex flex-row align-items-center">
+
                         <span class="status status-success mr-3">
                             <%= if contact.contact_type == "company" do %>
                                 <img class="profile-image rounded-circle" alt="App user" src="<%= Routes.static_path(@conn, "/images/avatar/7.png") %>"></span>
@@ -63,18 +64,46 @@
                                 <img class="profile-image rounded-circle" alt="App user" src="<%= Routes.static_path(@conn, "/images/avatar/1.png") %>"></span>
                             <% end %>
                         </span>
+
                         <div class="info-card-text flex-1">
                             <a href="javascript:void(0);" class="fs-xl text-truncate text-truncate-lg text-info" data-toggle="dropdown" aria-expanded="false">
-                                <%= contact.name %>
+                                <%= if contact.contact_type == "company" do %>
+                                    <%= contact.company_name %>
+                                    <% else %>
+                                    <%= contact.name %>
+                                <% end %>
                                 <i class="fal fa-angle-down d-inline-block ml-1 fs-md"></i>
                             </a>
+
                             <div class="dropdown-menu">
-                                <a class="dropdown-item" href="mailto:email">View</a>
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#edit-vendor">Edit Contact</a>
-                                <a class="dropdown-item" data-toggle="modal" data-target="#delete-alert">Delete Contact</a>
+
+                                <%= if contact.contact_type == "individual" do %>
+                                    <a class="dropdown-item" href="#" data-id="<%= contact.id %>" data-name="<%= contact.name %>" data-email="<%= contact.email %>" data-phone="<%= contact.phone %>" data-company_name="<%= contact.company_name %>" data-job_title="<%= contact.job_title %>" data-id_type="<%= contact.id_type %>" data-id_no="<%= contact.id_no %>" data-address="<%= contact.address %>" data-toggle="modal" data-target="#view-contact">View</a>
+
+                                    <a class="dropdown-item" href="#" data-id="<%= contact.id %>" data-name="<%= contact.name %>" data-email="<%= contact.email %>" data-phone="<%= contact.phone %>" data-company_name="<%= contact.company_name %>" data-job_title="<%= contact.job_title %>" data-id_type="<%= contact.id_type %>" data-id_no="<%= contact.id_no %>" data-address="<%= contact.address %>" data-toggle="modal" data-target="#edit-contact">Edit Contact</a>
+
+                                    <a class="dropdown-item" data-toggle="modal" data-target="#delete-alert">Delete Contact</a>
+                                <% else %>
+                                    <a class="dropdown-item" href="#" data-id="<%= contact.id %>" data-name="<%= contact.name %>" data-email="<%= contact.email %>" data-phone="<%= contact.phone %>" data-company_name="<%= contact.company_name %>" data-job-title="<%= contact.job_title %>" data-bus_category="<%= contact.bus_category %>" data-tel="<%= contact.tel %>" data-city="<%= contact.city %>" data-country="<%= contact.country %>" data-address="<%= contact.address %>" data-job_title="<%= contact.job_title %>" data-toggle="modal" data-target="#view-company">View</a>
+
+                                    <a class="dropdown-item" href="#" data-id="<%= contact.id %>" data-name="<%= contact.name %>" data-email="<%= contact.email %>" data-phone="<%= contact.phone %>" data-company_name="<%= contact.company_name %>" data-job-title="<%= contact.job_title %>" data-bus_category="<%= contact.bus_category %>" data-tel="<%= contact.tel %>" data-city="<%= contact.city %>" data-country="<%= contact.country %>" data-address="<%= contact.address %>" data-job_title="<%= contact.job_title %>" data-toggle="modal" data-target="#edit-company">Edit Contact</a>
+
+                                    <a class="dropdown-item" data-toggle="modal" data-target="#delete-alert">Delete Contact</a>
+                                <% end %>
+
+
+
                             </div>
-                            <span class="text-truncate text-truncate-xl"><%= contact.company_rep %> <%= contact.job_title %>.</span>
+                            <span class="text-truncate text-truncate-xl">
+                                <%= if contact.contact_type == "company" do %> 
+                                    <%= contact.name %> 
+                                <% else %> 
+                                    <%= contact.company_name %> 
+                                <% end %> 
+                                    <%= contact.job_title %>.
+                            </span>
                         </div>
+
                         <button class="js-expand-btn btn btn-sm btn-default d-none" data-toggle="collapse" data-target="#c_1 > .card-body + .card-body" aria-expanded="false">
                             <span class="collapsed-hidden">+</span>
                             <span class="collapsed-reveal">-</span>
@@ -88,9 +117,9 @@
                         <a href="tel:company_tel" class="mt-1 d-block fs-sm fw-400 text-dark">
                             <i class="fal fa-mobile-alt text-muted mr-2"> </i><%= contact.tel %></a>
                         <a href="mailto:company_email" class="mt-1 d-block fs-sm fw-400 text-dark">
-                            <i class="fal fa-mouse-pointer text-muted mr-2"> </i> <%= contact.comp_email %> </a>
+                            <i class="fal fa-mouse-pointer text-muted mr-2"> </i> <%= contact.email %> </a>
                         <address class="fs-sm fw-400 mt-4 text-muted">
-                            <i class="fal fa-map-pin mr-2"> </i> <%= contact.city %> <%= contact.country %> <%= contact.comp_address %> </address>
+                            <i class="fal fa-map-pin mr-2"> </i> <%= contact.city %> <%= contact.country %> <%= contact.address %> </address>
                     </div>
                 </div>
                 <% else %>
@@ -101,7 +130,7 @@
                         <a href="mailto:company_email" class="mt-1 d-block fs-sm fw-400 text-dark">
                             <i class="fal fa-envelope text-muted mr-2"> </i> <%= contact.email %> </a>
                         <address class="fs-sm fw-400 mt-4 text-muted">
-                            <i class="fal fa-map-pin mr-2"> </i> <%= contact.home_add %> </address>
+                            <i class="fal fa-map-pin mr-2"> </i> <%= contact.address %> </address>
                     </div>
                 </div>
                 <% end %>
@@ -204,7 +233,7 @@
                                         <span class="input-group-text"><i class="fal fa-user"></i></span>
                                     </div>
                                     <input type="text" name="name" placeholder="Full Name" class="form-control" required="required">
-                                    <input type="text" name="home_add" placeholder="Home Address" class="form-control" required="required">
+                                    <input type="text" name="address" placeholder="Home Address" class="form-control" required="required">
                                     <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
                                     <input type="hidden" name="contact_type" value="individual">
                                 </div>
@@ -217,7 +246,7 @@
                                         <span class="input-group-text"><i class="fal fa-phone"></i></span>
                                     </div>
                                     <input type="text" name="email" placeholder="Email Address" class="form-control" required="required">
-                                    <input type="text" name="phone" placeholder="Phone Number" class="form-control" required="required">
+                                    <input type="text" name="phone" placeholder="Phone Number" value="+260" class="form-control" required="required">
                                 </div>
                             </div>
 
@@ -249,15 +278,16 @@
                             </div>
 
                             <div class="form-group">
+                                <h5 class="frame-heading">Enable or Disable client access portal.</h5>
                                 <div class="frame-wrap demo">
                                     <div class="demo">
                                         <div class="custom-control custom-switch">
-                                            <input type="radio" class="custom-control-input" id="customSwitch2radio" checked="" name="enabled">
-                                            <label class="custom-control-label" for="customSwitch2radio">Enabled</label>
+                                            <input type="radio" class="custom-control-input" id="customSwitch1radio" name="client_portal">
+                                            <label class="custom-control-label" for="customSwitch1radio">Disable</label>
                                         </div>
                                         <div class="custom-control custom-switch">
-                                            <input type="radio" class="custom-control-input" id="customSwitch1radio" name="disabled">
-                                            <label class="custom-control-label" for="customSwitch1radio">Disabled</label>
+                                            <input type="radio" class="custom-control-input" id="customSwitch2radio" checked="" name="client_portal">
+                                            <label class="custom-control-label" for="customSwitch2radio">Enable</label>
                                         </div>
                                     </div>
                                 </div>
@@ -268,7 +298,7 @@
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Add Contact</button>
+                        <button type="submit" class="btn btn-info">Add Contact</button>
                     </div>                   
                 </form>
             </div>
@@ -276,7 +306,6 @@
         </div>
     </div>
 </div>
-
 
 <!-- ############################### ADD-COMPANY MODAL #################################### -->
 <div class="modal fade" id="promptCompany" tabindex="-1" role="dialog" aria-hidden="true">
@@ -299,7 +328,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fal fa-building"></i></span>
                                     </div>
-                                    <input type="text" name="name" placeholder="Name of Company" class="form-control" required="required">
+                                    <input type="text" name="company_name" placeholder="Name of Company" class="form-control" required="required">
                                     <select class="custom-select form-control" name="bus_category" required="required">
                                         <option selected="">Select Business Category</option>
                                         <option value="tech">Tech</option>
@@ -315,9 +344,8 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fal fa-phone"></i></span>
                                     </div>
-                                    <input type="text" name="fax" placeholder="Fax" class="form-control" required="required">
-                                    <input type="text" name="tel" placeholder="Company Tel" class="form-control" required="required">
-                                    <input type="text" name="comp_email" placeholder="Company Email" class="form-control" required="required">
+                                    <input type="text" name="tel" placeholder="Company Tel" value="+260" class="form-control" required="required">
+                                    <input type="text" name="email" placeholder="Company Email" class="form-control" required="required">
                                 </div>
                             </div>
 
@@ -329,7 +357,7 @@
                                     </div>
                                     <input type="text" name="city" placeholder="City" class="form-control" required="required">
                                     <input type="text" name="country" placeholder="Country" class="form-control" required="required">
-                                    <input type="text" name="comp_address" placeholder="Physical Address" class="form-control" required="required">
+                                    <input type="text" name="address" placeholder="Physical Address" class="form-control" required="required">
                                 </div>
                             </div>
 
@@ -339,22 +367,23 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fal fa-user"></i></span>
                                     </div>
-                                    <input type="text" name="company_rep" placeholder="Company Representative" class="form-control" required="required">
+                                    <input type="text" name="name" placeholder="Company Representative" class="form-control" required="required">
                                     <input type="text" name="job_title" placeholder="Job Title" class="form-control" required="required">
-                                    <input type="text" name="phone" placeholder="Cell" class="form-control" required="required">
+                                    <input type="text" name="phone" placeholder="Cell" value="+260" class="form-control" required="required">
                                 </div>
                             </div>
 
                             <div class="form-group">
+                                <h5 class="frame-heading">Enable or Disable client access portal.</h5>
                                 <div class="frame-wrap demo">
                                     <div class="demo">
                                         <div class="custom-control custom-switch">
-                                            <input type="radio" class="custom-control-input" id="customSwitch2radio" checked="" name="enabled">
-                                            <label class="custom-control-label" for="customSwitch2radio">Enabled</label>
+                                            <input type="checkbox" name="client_portal" class="custom-control-input" id="customSwitch1">
+                                            <label class="custom-control-label" for="customSwitch1">Disable</label>
                                         </div>
                                         <div class="custom-control custom-switch">
-                                            <input type="radio" class="custom-control-input" id="customSwitch1radio" name="disabled">
-                                            <label class="custom-control-label" for="customSwitch1radio">Disabled</label>
+                                            <input type="checkbox" name="client_portal" class="custom-control-input" id="customSwitch2" checked="">
+                                            <label class="custom-control-label" for="customSwitch2">Enable</label>
                                         </div>
                                     </div>
                                 </div>
@@ -365,7 +394,7 @@
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Add Company</button>
+                        <button type="submit" class="btn btn-info">Add Company</button>
                     </div>                   
                 </form>
             </div>
@@ -374,21 +403,13 @@
     </div>
 </div>
 
-
-
-
-
-
-
-
-
-
-<!-- ############################### EDIT VENDOR MODAL #################################### -->
-<div class="modal fade" id="edit-vendor" tabindex="-1" role="dialog" aria-hidden="true">
+<!------------------------------------------------------------------------------------Edit Modals -->
+<!-- ############################### EDIT INDIVIDUAL DETAILS #################################### -->
+<div class="modal fade" id="edit-contact" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Edit Contact <i class="fal fa-edit"></i> </h5>
+                <h5 class="modal-title">Edit Contact <i class="fal fa-user"></i> </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true"><i class="fal fa-times"></i></span>
                 </button>
@@ -404,19 +425,9 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fal fa-user"></i></span>
                                     </div>
-                                    <input type="text" name="rep_name" id="rep_name" placeholder="Name of contact person" class="form-control" required="required">
+                                    <input type="text" name="name" id="name" class="form-control" required="required">
                                     <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
                                     <input type="hidden" name="id" id="id">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label">Postion</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fal fa-window-alt width-1 text-align-center"></i></span>
-                                    </div>
-                                    <input type="text" name="position" id="position" placeholder="Position held at company" class="form-control">
                                 </div>
                             </div>
 
@@ -424,70 +435,99 @@
                                 <label class="form-label">Company Name</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fal fa-home width-1 text-align-center"></i></span>
+                                        <span class="input-group-text"><i class="fal fa-building width-1 text-align-center"></i></span>
                                     </div>
-                                    <input type="text" name="comp_name" id="comp_name" placeholder="Company Name" class="form-control" required="required">
+                                    <input type="text" name="company_name" id="company_name" class="form-control">
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label class="form-label">Company Email</label>
+                                <label class="form-label">Address</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fal fa-envelope width-1 text-align-center"></i></span>
+                                        <span class="input-group-text"><i class="fal fa-home width-1 text-align-center"></i></span>
                                     </div>
-                                    <input type="text" name="comp_email" id="comp_email" placeholder="Company Email" class="form-control" required="required">
+                                    <input type="text" name="address" id="address" class="form-control" required="required">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">ID Type</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-window-alt width-1 text-align-center"></i></span>
+                                    </div>
+                                    <input type="text" name="id_type" id="id_type" class="form-control" disabled="">
                                 </div>
                             </div>
                         </div>
 
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="form-label">Company Rep: Email Address</label>
+                                <label class="form-label">Email</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fal fa-envelope"></i></span>
                                     </div>
-                                    <input type="email" name="email" id="email" placeholder="Company Rep Email Address" class="form-control" required="required">
+                                    <input type="email" name="email" id="email" class="form-control" required="required">
                                 </div>
                             </div>
 
-                             <div class="form-group">
-                                <label class="form-label">Tel:</label>
+                            <div class="form-group">
+                                <label class="form-label">Job Title</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-building"></i></span>
+                                    </div>
+                                    <input type="text" name="job_title" id="job_title" class="form-control" required="required">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Phone</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fal fa-phone"></i></span>
                                     </div>
-                                    <input type="text" name="comp_tel" id="comp_tel" placeholder="Company Tel" class="form-control" required="required">
+                                    <input type="text" name="phone" id="phone" class="form-control" required="required">
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label class="form-label">Office Address</label>
+                                <label class="form-label">ID Number</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fal fa-home"></i></span>
+                                        <span class="input-group-text"><i class="fal fa-window-alt"></i></span>
                                     </div>
-                                    <input type="text" name="comp_address" id="comp_address" placeholder="Office Address" class="form-control" required="required">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label">Company Details</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fal fa-info"></i></span>
-                                    </div>
-                                    <textarea type="text" name="comp_info" id="comp_info" placeholder="Company Details" class="form-control" required="required">
-                                    </textarea>
+                                    <input type="text" name="id_no" id="id_no" class="form-control" required="required">
                                 </div>
                             </div>                          
                         </div>
                     </div>
 
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <h5 class="frame-heading">Enable or Disable client access portal.</h5>
+                                <div class="frame-wrap demo">
+                                    <div class="demo">
+                                        <div class="custom-control custom-checkbox custom-control-inline">
+                                            <input type="checkbox" class="custom-control-input" id="defaultInline1">
+                                            <label class="custom-control-label" for="defaultInline1">Disable</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox custom-control-inline">
+                                            <input type="checkbox" class="custom-control-input" id="defaultInline2" checked="">
+                                            <label class="custom-control-label" for="defaultInline2">Enable</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>    
+
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Add Contact</button>
+                        <button type="submit" class="btn btn-info">Edit</button>
                     </div>                   
                 </form>
             </div>
@@ -496,88 +536,558 @@
     </div>
 </div>
 
-<!-- ############################## DELETE-ALERT MODAL ################################## -->
-<div class="modal modal-alert fade" id="delete-alert" tabindex="-1" role="dialog" aria-hidden="true">
-    <!-- Looping through main ocntent-->
-    <div class="modal-dialog modal-dialog-centered" role="document">
+<!-- ############################### EDIT COMPANY DETAILS #################################### -->
+<div class="modal fade" id="edit-company" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Are you sure you want to delete this contact?</h5>
+                <h5 class="modal-title">Edit Company <i class="fal fa-building"></i> </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true"><i class="fal fa-times"></i></span>
                 </button>
             </div>
+
             <div class="modal-body">
-                You can't reverse this action!
+                <form action="#" method="POST">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Company Rep: Name</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-user"></i></span>
+                                    </div>
+                                    <input type="text" name="name" id="name" class="form-control" required="required">
+                                    <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
+                                    <input type="hidden" name="id" id="id">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Company Rep: Phone</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-phone"></i></span>
+                                    </div>
+                                    <input type="text" name="phone" id="phone" class="form-control" required="required">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Email</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-envelope"></i></span>
+                                    </div>
+                                    <input type="email" name="email" id="email" class="form-control" required="required">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">City</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-map-pin width-1 text-align-center"></i></span>
+                                    </div>
+                                    <input type="text" name="city" id="city" class="form-control" required="required">
+                                </div>
+                            </div>                            
+
+                            <div class="form-group">
+                                <label class="form-label">Address</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-home width-1 text-align-center"></i></span>
+                                    </div>
+                                    <input type="text" name="address" id="address" class="form-control" required="required">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Company Name</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-building width-1 text-align-center"></i></span>
+                                    </div>
+                                    <input type="text" name="company_name" id="company_name" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Tel</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-phone"></i></span>
+                                    </div>
+                                    <input type="text" name="tel" id="tel" class="form-control" required="required">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Business Category</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-building"></i></span>
+                                    </div>
+                                    <input type="text" name="bus_category" id="bus_category" class="form-control" required="required">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Country</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-map-pin width-1 text-align-center"></i></span>
+                                    </div>
+                                    <input type="text" name="country" id="country" class="form-control" required="required">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Company Rep: Job Title</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-building"></i></span>
+                                    </div>
+                                    <input type="text" name="job_title" id="job_title" class="form-control" required="required">
+                                </div>
+                            </div>
+                        </div>
+                    </div>    
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <h5 class="frame-heading">Enable or Disable client access portal.</h5>
+                                <div class="frame-wrap demo">
+                                    <div class="demo">
+                                        <div class="custom-control custom-checkbox custom-control-inline">
+                                            <input type="checkbox" class="custom-control-input" id="defaultInline1">
+                                            <label class="custom-control-label" for="defaultInline1">Disable</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox custom-control-inline">
+                                            <input type="checkbox" class="custom-control-input" id="defaultInline2" checked="">
+                                            <label class="custom-control-label" for="defaultInline2">Enable</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>    
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-info">Edit</button>
+                    </div>                   
+                </form>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-                <a href="#" class="btn btn-primary">Yes</a>
-            </div>
+
         </div>
     </div>
-    
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.3.3/umd/popper.min.js"></script>
+<!------------------------------------------------------------------------------------View Modals -->
+<!-- ############################### VIEW INDIVIDUAL DETAILS #################################### -->
+<div class="modal fade" id="view-contact" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Individual Details <i class="fal fa-eye"></i> </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="fal fa-times"></i></span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form action="#" method="POST">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Name</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-user"></i></span>
+                                    </div>
+                                    <input type="text" name="name" id="name" class="form-control" disabled>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Company Name</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-building width-1 text-align-center"></i></span>
+                                    </div>
+                                    <input type="text" name="company_name" id="company_name" class="form-control" disabled>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Address</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-home width-1 text-align-center"></i></span>
+                                    </div>
+                                    <input type="text" name="address" id="address" class="form-control" disabled>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">ID Type</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-window-alt width-1 text-align-center"></i></span>
+                                    </div>
+                                    <input type="text" name="id_type" id="id_type" class="form-control" disabled="">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Email</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-envelope"></i></span>
+                                    </div>
+                                    <input type="email" name="email" id="email" class="form-control" disabled>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Job Title</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-building"></i></span>
+                                    </div>
+                                    <input type="text" name="job_title" id="job_title" class="form-control" disabled>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Phone</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-phone"></i></span>
+                                    </div>
+                                    <input type="text" name="phone" id="phone" class="form-control" disabled>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">ID Number</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-window-alt"></i></span>
+                                    </div>
+                                    <input type="text" name="id_no" id="id_no" class="form-control" disabled>
+                                </div>
+                            </div>                          
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <h5 class="frame-heading">Enable or Disable client access portal.</h5>
+                                <div class="frame-wrap demo">
+                                    <div class="demo">
+                                        <div class="custom-control custom-checkbox custom-control-inline">
+                                            <input type="checkbox" class="custom-control-input" id="defaultInline1">
+                                            <label class="custom-control-label" for="defaultInline1">Disable</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox custom-control-inline">
+                                            <input type="checkbox" class="custom-control-input" id="defaultInline2" checked="">
+                                            <label class="custom-control-label" for="defaultInline2">Enable</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>             
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- ############################### VIEW COMPANY DETAILS #################################### -->
+<div class="modal fade" id="view-company" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Company Details <i class="fal fa-eye"></i> </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="fal fa-times"></i></span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form action="#" method="POST">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Company Rep: Name</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-user"></i></span>
+                                    </div>
+                                    <input type="text" name="name" id="name" class="form-control" disabled>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Company Rep: Phone</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-phone"></i></span>
+                                    </div>
+                                    <input type="text" name="phone" id="phone" class="form-control" disabled>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Email</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-envelope"></i></span>
+                                    </div>
+                                    <input type="email" name="email" id="email" class="form-control" disabled>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">City</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-map-pin width-1 text-align-center"></i></span>
+                                    </div>
+                                    <input type="text" name="city" id="city" class="form-control" disabled>
+                                </div>
+                            </div>                            
+
+                            <div class="form-group">
+                                <label class="form-label">Address</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-home width-1 text-align-center"></i></span>
+                                    </div>
+                                    <input type="text" name="address" id="address" class="form-control" disabled>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Company Name</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-building width-1 text-align-center"></i></span>
+                                    </div>
+                                    <input type="text" name="company_name" id="company_name" class="form-control" disabled>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Tel</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-phone"></i></span>
+                                    </div>
+                                    <input type="text" name="tel" id="tel" class="form-control" disabled>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Business Category</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-building"></i></span>
+                                    </div>
+                                    <input type="text" name="bus_category" id="bus_category" class="form-control" disabled>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Country</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-map-pin width-1 text-align-center"></i></span>
+                                    </div>
+                                    <input type="text" name="country" id="country" class="form-control" disabled>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Company Rep: Job Title</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-building"></i></span>
+                                    </div>
+                                    <input type="text" name="job_title" id="job_title" class="form-control" disabled>
+                                </div>
+                            </div>
+                        </div>
+                    </div>    
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <h5 class="frame-heading">Enable or Disable client access portal.</h5>
+                                <div class="frame-wrap demo">
+                                    <div class="demo">
+                                        <div class="custom-control custom-checkbox custom-control-inline">
+                                            <input type="checkbox" class="custom-control-input" id="defaultInline1">
+                                            <label class="custom-control-label" for="defaultInline1">Disable</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox custom-control-inline">
+                                            <input type="checkbox" class="custom-control-input" id="defaultInline2" checked="">
+                                            <label class="custom-control-label" for="defaultInline2">Enable</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>               
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-----------------------------------------------------------------------------------------Modal Rendering scripts -->
+<script src="<%= Routes.static_path(@conn, "/js/jquery-1.11.2.min.js") %>"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
-<script>
-    $(document).ready(function()
-    {
-
-        $('input[type=radio][name=contactview]').change(function()
-        {
-            if (this.value == 'grid')
-            {
-                $('#js-contacts .card').removeClassPrefix('mb-').addClass('mb-g');
-                $('#js-contacts .col-xl-12').removeClassPrefix('col-xl-').addClass('col-xl-4');
-                $('#js-contacts .js-expand-btn').addClass('d-none');
-                $('#js-contacts .card-body + .card-body').addClass('show');
-
-            }
-            else if (this.value == 'table')
-            {
-                $('#js-contacts .card').removeClassPrefix('mb-').addClass('mb-1');
-                $('#js-contacts .col-xl-4').removeClassPrefix('col-xl-').addClass('col-xl-12');
-                $('#js-contacts .js-expand-btn').removeClass('d-none');
-                $('#js-contacts .card-body + .card-body').removeClass('show');
-            }
-
-        });
-
-        //initialize filter
-        initApp.listFilter($('#js-contacts'), $('#js-filter-contacts'));
-    });
-</script>
-
+<!----------------------------------------------------------------Edit Individuals -->
 <script>
 $(document).ready(function(){
-//Edit msg Account
-$('#edit-vendor').on('show.bs.modal', function (event){
-
+//Edit Individual
+$('#edit-contact').on('show.bs.modal', function (event){
     var button = $(event.relatedTarget)
     var id = button.data('id')
-    var rep_name = button.data('rep_name')
-    var position = button.data('position')
-    var comp_name = button.data('comp_name')
-    var comp_email = button.data('comp_email')
+    var name = button.data('name')
     var email = button.data('email')
-    var comp_tel = button.data('comp_tel')
-    var comp_address = button.data('comp_address')
-    var comp_info = button.data('comp_info')
+    var phone = button.data('phone')
+    var company_name = button.data('company_name')
+    var job_title = button.data('job_title')
+    var id_type = button.data('id_type')
+    var id_no = button.data('id_no')
+    var address = button.data('address')
     
     var modal = $(this)
     modal.find('.modal-body #id').val(id);
-    modal.find('.modal-body #rep_name').val(rep_name);
-    modal.find('.modal-body #position').val(position);
-    modal.find('.modal-body #comp_name').val(comp_name);
-    modal.find('.modal-body #comp_email').val(comp_email);
+    modal.find('.modal-body #name').val(name);
     modal.find('.modal-body #email').val(email);
-    modal.find('.modal-body #comp_tel').val(comp_tel);
-    modal.find('.modal-body #comp_address').val(comp_address);
-    modal.find('.modal-body #comp_info').val(comp_info);
+    modal.find('.modal-body #phone').val(phone);
+    modal.find('.modal-body #company_name').val(company_name);
+    modal.find('.modal-body #job_title').val(job_title);
+    modal.find('.modal-body #id_type').val(id_type);
+    modal.find('.modal-body #id_no').val(id_no);
+    modal.find('.modal-body #address').val(address);
+});
+});
+</script>
 
+<!----------------------------------------------------------------View Individual Details -->
+<script>
+$(document).ready(function(){
+//Edit Individual
+$('#view-contact').on('show.bs.modal', function (event){
+    var button = $(event.relatedTarget)
+    var id = button.data('id')
+    var name = button.data('name')
+    var email = button.data('email')
+    var phone = button.data('phone')
+    var company_name = button.data('company_name')
+    var job_title = button.data('job_title')
+    var id_type = button.data('id_type')
+    var id_no = button.data('id_no')
+    var address = button.data('address')
+    
+    var modal = $(this)
+    modal.find('.modal-body #id').val(id);
+    modal.find('.modal-body #name').val(name);
+    modal.find('.modal-body #email').val(email);
+    modal.find('.modal-body #phone').val(phone);
+    modal.find('.modal-body #company_name').val(company_name);
+    modal.find('.modal-body #job_title').val(job_title);
+    modal.find('.modal-body #id_type').val(id_type);
+    modal.find('.modal-body #id_no').val(id_no);
+    modal.find('.modal-body #address').val(address);
+});
+});
+</script>
+
+<!--------------------------------------------------------------------Edit Company -->
+<script>
+$(document).ready(function(){
+//Edit Company
+$('#edit-company').on('show.bs.modal', function (event){
+    var button = $(event.relatedTarget)
+    var id = button.data('id')
+    var name = button.data('name')
+    var email = button.data('email')
+    var phone = button.data('phone')
+    var company_name = button.data('company_name')
+    var job_title = button.data('job_title')
+    var tel = button.data('tel')
+    var country = button.data('country')
+    var city = button.data('city')
+    var bus_category = button.data('bus_category')
+    var address = button.data('address')
+    
+    var modal = $(this)
+    modal.find('.modal-body #id').val(id);
+    modal.find('.modal-body #name').val(name);
+    modal.find('.modal-body #email').val(email);
+    modal.find('.modal-body #phone').val(phone);
+    modal.find('.modal-body #company_name').val(company_name);
+    modal.find('.modal-body #job_title').val(job_title);
+    modal.find('.modal-body #tel').val(tel);
+    modal.find('.modal-body #country').val(country);
+    modal.find('.modal-body #city').val(city);
+    modal.find('.modal-body #bus_category').val(bus_category);
+    modal.find('.modal-body #address').val(address);
+});
+});
+</script>
+
+<!--------------------------------------------------------------------View Company Details -->
+<script>
+$(document).ready(function(){
+//Edit Company
+$('#view-company').on('show.bs.modal', function (event){
+    var button = $(event.relatedTarget)
+    var id = button.data('id')
+    var name = button.data('name')
+    var email = button.data('email')
+    var phone = button.data('phone')
+    var company_name = button.data('company_name')
+    var job_title = button.data('job_title')
+    var tel = button.data('tel')
+    var country = button.data('country')
+    var city = button.data('city')
+    var bus_category = button.data('bus_category')
+    var address = button.data('address')
+    
+    var modal = $(this)
+    modal.find('.modal-body #id').val(id);
+    modal.find('.modal-body #name').val(name);
+    modal.find('.modal-body #email').val(email);
+    modal.find('.modal-body #phone').val(phone);
+    modal.find('.modal-body #company_name').val(company_name);
+    modal.find('.modal-body #job_title').val(job_title);
+    modal.find('.modal-body #tel').val(tel);
+    modal.find('.modal-body #country').val(country);
+    modal.find('.modal-body #city').val(city);
+    modal.find('.modal-body #bus_category').val(bus_category);
+    modal.find('.modal-body #address').val(address);
 });
 });
 </script>

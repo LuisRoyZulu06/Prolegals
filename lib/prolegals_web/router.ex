@@ -55,6 +55,7 @@ defmodule ProlegalsWeb.Router do
     post "/Add/New/Case", LegalController, :create_case
     get "/Notifications", LegalController, :notifications
     get "/Tasks", LegalController, :tasks
+    post "/Create/Event", LegalController, :create_task
 
     # ////////////////////////////////////////////////////////////////// Security Controller
     get "/list/logbook/user", SecurityController, :list_log_book_users
