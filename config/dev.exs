@@ -9,7 +9,7 @@ config :prolegals, Prolegals.Repo,
   # username: "sa",
   #--------------- Postgres
   username: "postgres",
-  password: "cool",
+  password: "postgres",
   database: "prolegals",
   # port: "1433",
   hostname: "localhost",

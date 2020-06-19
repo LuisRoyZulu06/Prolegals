@@ -1,3 +1,14 @@
+ <div class="subheader">
+        <h1 class="subheader-title">
+            View  Firearms
+                <br>
+        </h1>
+
+        <div class="subheader-block" id="loggedIn-user">
+            <i class='subheader-icon fal fa-user'></i> <%= "#{String.capitalize(@conn.assigns.user.first_name)}"%> <%= "#{String.capitalize(@conn.assigns.user.last_name)}"%>  | INVENTORY
+        </div>    
+    </div>  
+ 
  <div class="row">
                             <div class="col-lg-6 col-xl-3 order-lg-1 order-xl-1">
                                 <!-- profile summary -->
@@ -8,114 +19,95 @@
                                                 <img src="img/demo/avatars/avatar-admin-lg.png" class="rounded-circle shadow-2 img-thumbnail" alt="">
                                                 <h5 class="mb-0 fw-700 text-center mt-3">
                                                     FIREARM IMAGE
-                                                    <small class="text-muted mb-0">Toronto, Canada</small>
                                                 </h5>
                                             </div>
                                         </div>
-                                        <div class="col-6">
-                                            <div class="text-center py-3">
-                                                <h5 class="mb-0 fw-700">
-                                                    764
-                                                    <small class="text-muted mb-0">Connections</small>
-                                                </h5>
-                                            </div>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="text-center py-3">
-                                                <h5 class="mb-0 fw-700">
-                                                    1,673
-                                                    <small class="text-muted mb-0">Followers</small>
-                                                </h5>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="p-3 text-center">
-                                                <a href="javascript:void(0);" class="btn-link font-weight-bold">Follow</a> <span class="text-primary d-inline-block mx-3">&#9679;</span>
-                                                <a href="javascript:void(0);" class="btn-link font-weight-bold">Message</a> <span class="text-primary d-inline-block mx-3">&#9679;</span>
-                                                <a href="javascript:void(0);" class="btn-link font-weight-bold">Connect</a>
-                                            </div>
-                                        </div>
+                                       
+                                        
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-12 col-xl-6 order-lg-3 order-xl-2">
+                            <div class="col-lg-12 col-xl-8 order-lg-3 order-xl-2">
                                 <!-- post comment -->
                                 <div class="card mb-g">
                                     <div class="card-body pb-0 px-4">
-                                        <div class="d-flex flex-row pb-3 pt-2  border-top-0 border-left-0 border-right-0">
-                                            <div class="d-inline-block align-middle status status-success mr-3">
-                                                <span class="profile-image rounded-circle d-block" style="background-image:url('images/gun/pistal.webp'); background-size: cover;"></span>
-                                            </div>
-                                            <h3 class="mb-0 flex-1 text-dark fw-500">
-                                                FIREARM NAME
-                                                <small class="m-0 l-h-n">
-                                                    Human Resources & Psychiatry Division
-                                                </small>
-                                            </h3>
-                                        </div>
-                                    </div>
-                                    <div class="card-body py-0 px-4 border-faded border-right-0 border-bottom-0 border-left-0">
-                                        <div class="d-flex flex-column align-items-center">
-                                            <!-- comment -->
-                                            <div class="d-flex flex-row w-100 py-4">
-                                                <div class="d-inline-block align-middle status status-sm status-success mr-3">
-                                                    <span class="profile-image profile-image-md rounded-circle d-block mt-1" style="background-image:url('img/demo/avatars/avatar-c.png'); background-size: cover;"></span>
+                                <h2 style="text-align:center"> Firearm Details </h2><br>
+                                         <%= for firearm <- [@firearms] do %>
+                                           <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Name: </label>
+                                                        <input type="text" class="form-control" value="<%= firearm.name %>" name="format-date" placeholder="Name" disabled>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label>Type: </label>
+                                                        <input type="text" class="form-control format-phone-number" value="<%= firearm.type %>"  placeholder="Type" disabled>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label>Brand: </label>
+                                                        <input type="text" class="form-control" value="<%= firearm.brand %>" name="format-phone-ext" placeholder="Brand" disabled>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label>Bullet Type: </label>
+                                                        <input type="text" class="form-control" value="<%= firearm.bullet_id %>" name="format-currency" placeholder="Bullet Type" disabled>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label>Condition: </label>
+                                                        <input type="text" class="form-control" value="<%= firearm.status %>" name="format-phone-ext" placeholder="Condition" disabled>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label>Person Assigned: </label>
+                                                        <input type="text" class="form-control" value="<%= firearm.person_assigned %>" name="format-currency" placeholder="Person Assigned" disabled>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label>Model: </label>
+                                                        <input type="text" class="form-control" value="<%= firearm.model %>" name="format-credit-card" placeholder="Model" disabled>
+                                                        <br>
+                                                    </div>
                                                 </div>
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <p>Type</p>
-                                                        <p>Type</p>
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Date Purchased: </label>
+                                                        <input type="text" class="form-control" value="<%= firearm.date_purchased %>" name="format-international-phone" placeholder="Date Purchased" disabled>
+                                                    </div>
+                                                    
+                                                    <div class="form-group">
+                                                        <label>Purchase Price: </label>
+                                                        <input type="text" class="form-control" value="<%= firearm.purchase_price %>" name="format-tax-id" placeholder="Purchase Price" disabled>
+                                                    </div>
+                                                    
+                                                    <div class="form-group">
+                                                        <label>Purchased From: </label>
+                                                        <input type="text" class="form-control" value="<%= firearm.purchased_from %>" name="format-ssn" placeholder="Purchased From" disabled>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label>Serial Number: </label>
+                                                        <input type="text" class="form-control" value="<%= firearm.serial_number %>" name="format-credit-card" placeholder="Serial Number" disabled>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label>Rounds: </label>
+                                                        <input type="text" class="form-control" value="<%= firearm.rounds %>" name="format-tax-id" placeholder="Rounds" disabled>
+                                                    </div>
+                                                    
+                                                    <div class="form-group">
+                                                        <label>Make Year: </label>
+                                                        <input type="text" class="form-control" value="<%= firearm.make_year %>" name="format-ssn" placeholder="Make Year" disabled>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <hr class="m-0 w-100">
-                                            <hr class="m-0 w-100">
-                                            <!-- comme                          nt end -->
-                                            <!-- add comment -->
+                                        <% end %>
                                         </div>
                                     </div>
-                                </div>
                                 <!-- post comment - end -->
                                 <!-- post article - end -->
-                            </div>
-                            <div class="col-lg-6 col-xl-3 order-lg-2 order-xl-3">
-                                <!-- add : -->
-                                <div class="card mb-2">
-                                    <div class="card-body">
-                                        <a href="javascript:void(0);" class="d-flex flex-row align-items-center">
-                                            <div class='icon-stack display-3 flex-shrink-0'>
-                                                <i class="fal fa-circle icon-stack-3x opacity-100 color-primary-400"></i>
-                                                <i class="fas fa-graduation-cap icon-stack-1x opacity-100 color-primary-500"></i>
-                                            </div>
-                                            <div class="ml-3">
-                                                <strong>
-                                                    Add Qualifications
-                                                </strong>
-                                                <br>
-                                                Adding qualifications will help gain more clients
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="card mb-g">
-                                    <div class="card-body">
-                                        <a href="javascript:void(0);" class="d-flex flex-row align-items-center">
-                                            <div class='icon-stack display-3 flex-shrink-0'>
-                                                <i class="fal fa-circle icon-stack-3x opacity-100 color-warning-400"></i>
-                                                <i class="fas fa-handshake icon-stack-1x opacity-100 color-warning-500"></i>
-                                            </div>
-                                            <div class="ml-3">
-                                                <strong>
-                                                    Add Skills
-                                                </strong>
-                                                <br>
-                                                Gain more potential clients by adding skills
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
-                                </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>

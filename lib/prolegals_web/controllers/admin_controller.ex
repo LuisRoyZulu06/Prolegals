@@ -18,6 +18,11 @@ defmodule ProlegalsWeb.AdminController do
     render(conn, "ammunition.html", ammunitions: ammunitions)
   end
 
+  def view_ammunition(conn, %{"id" => id}) do
+    ammunitions = Security.get_ammunition_inventory!(id)
+    render(conn, "view_ammunition.html", ammunitions: ammunitions)
+  end
+
   def create_ammunition_inventory(conn, params) do
   	case Security.create_ammunition_inventory(params) do
           {:ok, _} ->
@@ -109,8 +114,8 @@ end
     render(conn, "firearm.html", firearms: firearms)
   end
 
-  def view_firearm(conn, _params) do
-    firearms = Security.list_sec_tbl_firearms()
+  def view_firearm(conn, %{"id" => id}) do
+    firearms = Security.get_firearms_inventory!(id)
     render(conn, "view_firearm.html", firearms: firearms)
   end
 

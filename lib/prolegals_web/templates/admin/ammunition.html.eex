@@ -31,7 +31,7 @@
     </h1>
 
     <div class="subheader-block" id="loggedIn-user">
-        <i class='subheader-icon fal fa-user'></i> <%= "#{String.capitalize(@conn.assigns.user.first_name)}"%> <%= "#{String.capitalize(@conn.assigns.user.last_name)}"%>  | FleetHUB
+        <i class='subheader-icon fal fa-user'></i> <%= "#{String.capitalize(@conn.assigns.user.first_name)}"%> <%= "#{String.capitalize(@conn.assigns.user.last_name)}"%>  | INVENTORY
     </div>    
 </div>
 
@@ -74,7 +74,7 @@
                                                         <i class='subheader-icon fal fa-chevron-down'></i>
                                                     </span>
                                                     <div class="dropdown-menu">
-                                                        <a class="dropdown-item">View</a>
+                                                         <a class="dropdown-item" href="<%= Routes.admin_path(@conn, :view_ammunition, id: ammunition.id )%>" >View</a>
                                                         <a type="button" class="dropdown-item" data-id="<%= ammunition.id%>" data-type="<%= ammunition.type%>" data-serial_number="<%= ammunition.serial_number%>" data-caliber="<%= ammunition.caliber%>" data-quantity="<%= ammunition.quantity%>" data-firearm_serial_number="<%= ammunition.firearm_serial_number%>" data-toggle="modal" data-target="#editAmmo" >Edit</a> 
                                                         <a class="dropdown-item" href="<%= Routes.admin_path(@conn, :delete_ammunition_inventory, id: ammunition.id)%>">Delete</a>
                                                     </div>

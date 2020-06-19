@@ -31,7 +31,7 @@
         </h1>
 
         <div class="subheader-block" id="loggedIn-user">
-            <i class='subheader-icon fal fa-user'></i> <%= "#{String.capitalize(@conn.assigns.user.first_name)}"%> <%= "#{String.capitalize(@conn.assigns.user.last_name)}"%>  | FleetHUB
+            <i class='subheader-icon fal fa-user'></i> <%= "#{String.capitalize(@conn.assigns.user.first_name)}"%> <%= "#{String.capitalize(@conn.assigns.user.last_name)}"%>  | INVENTORY
         </div>    
     </div>
 
@@ -58,7 +58,6 @@
                                     <th>Date Purchased</th>
                                     <th>Person Assigned</th>
                                     <th>Status</th>
-                                    <th>Image</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -72,7 +71,6 @@
                                     <td><%= firearm.date_purchased %></td>
                                     <td><%= firearm.person_assigned %></td>
                                     <td><%= firearm.status %></td>
-                                    <td><%= firearm.firearm_image %></td>
                                     <td>
                                         <div class="input-group">
                                             <div class="input-group-prepend">
@@ -80,7 +78,7 @@
                                                     <i class='subheader-icon fal fa-chevron-down'></i>
                                                 </span>
                                                 <div class="dropdown-menu">
-                                                     <a class="dropdown-item" href="<%= Routes.admin_path(@conn, :view_firearm)%>" >View</a>
+                                                    <a class="dropdown-item" href="<%= Routes.admin_path(@conn, :view_firearm, id: firearm.id )%>" >View</a>
                                                     <a type="button" class="dropdown-item" data-toggle="modal" 
                                                         data-id="<%= firearm.id%>" 
                                                         data-brand="<%= firearm.brand%>"
@@ -129,7 +127,7 @@
             </div>
 
             <div class="modal-body">
-                <form class="form-horizontal" action="<%= Routes.admin_path(@conn, :create_firearms_inventory)%>" method="POST">
+                <form class="form-horizontal" action="<%= Routes.admin_path(@conn, :create_firearms_inventory)%>" enctype="multipart/form-data" method="POST">
                     <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
 
                     <div class="form-group">
@@ -257,7 +255,7 @@
                                 <option value="Special (RCBD)">Special (RCBD)</option>
                             </select>
                             
-                            <input type="file" name="firearm_image" value="" id="dl_exp_dt" placeholder="Image" class="form-control" required="required">
+                            <input type="file" name="firearm_image" placeholder="Image" class="form-control" required="required">
                         </div>
                     </div>
 
