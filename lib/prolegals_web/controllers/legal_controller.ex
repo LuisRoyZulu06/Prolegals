@@ -72,4 +72,12 @@ alias Prolegals.Litigation.Contacts
 	            |> redirect(to: Routes.legal_path(conn, :tasks))
 	  	end
 	end
+
+	def practice_area(conn, params) do
+		render(conn, "practice_area.html")
+	end
+
+	def bus_category(conn, params) do
+		render(conn, "bus_category.html")
+	end
 end
