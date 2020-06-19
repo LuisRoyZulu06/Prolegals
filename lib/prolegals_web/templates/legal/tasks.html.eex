@@ -46,7 +46,7 @@
                     <br>
 
                     <div class="flex-1 pr-3">
-                        <a href="#" class="dropdown-item px-3 px-sm-4 pr-lg-3 pl-lg-5 py-2 fs-md font-weight-bold d-flex justify-content-between rounded-pill border-top-left-radius-0 border-bottom-left-radius-0 ">
+                        <a href="#" class="dropdown-item px-3 px-sm-4 pr-lg-3 pl-lg-5 py-2 fs-md font-weight-bold d-flex justify-content-between rounded-pill border-top-left-radius-0 border-bottom-left-radius-0" data-toggle="modal" data-target="#add-task">
                             <div>
                                 <i class="fal fa-edit width-1"></i>Add Task
                             </div>
@@ -109,12 +109,13 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        <%= for task <-@tasks do %>
                                             <tr>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
+                                                <td><%= task.event_name %></td>
+                                                <td><%= task.priority %></td>
+                                                <td><%= task.end_date %></td>
+                                                <td><%= task.case %></td>
+                                                <td><%= task.status %></td>
                                                 <td>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
@@ -128,7 +129,8 @@
                                                         </div>
                                                     </div>
                                                 </td>  
-                                            </tr>        
+                                            </tr>   
+                                        <% end %>         
                                 </table>
                                 <!-- datatable end -->
                             </div>
@@ -139,228 +141,109 @@
             </div>
         </div>
         <!-- end inbox container -->
+
     </div>
 </main>
 
-<!-- ############################### APPROVE REQUEST ########################### -->
-<div class="modal fade" id="view-issue" tabindex="-1" role="dialog" aria-hidden="true">
+<!-- ############################### ADD-INDIVIDUAL MODAL #################################### -->
+<div class="modal fade" id="add-task" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Reported Issue</h5>
+                <h5 class="modal-title">ADD EVENT <i class="fal fa-edit"></i> </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true"><i class="fal fa-times"></i></span>
                 </button>
             </div>
 
-            <form action="#" method="POST">
-                <div class="modal-body">
-                    <div class="px-3">
-                        <b>FROM:</b> <input id="first_name" type="text" placeholder="Driver Name" class="form-control border-top-0 border-left-0 border-right-0 px-0 rounded-0 fs-md mt-2 pr-5" tabindex="2">
-                        <br>
-                        <b>REF:</b> <input id="v_slct_problem" type="text" placeholder="REF" class="form-control border-top-0 border-left-0 border-right-0 px-0 rounded-0 fs-md mt-2" tabindex="4">
-                        <br>
-                        <b>MESSAGE:</b> <textarea id="v_descr_problem" type="text" placeholder="Description of Vehicle Issue" class="form-control border-top-0 border-left-0 border-right-0 px-0 rounded-0 fs-md mt-2" tabindex="4"></textarea>
-                        <input type="hidden" name="approval_status" value="approved">
-                        <input type="hidden" name="v_status" value="garage">
-                        <input type="hidden" name="id" id="id">
-                        <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Approve Request</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+            <div class="modal-body">                
+                <form action="<%= Routes.legal_path(@conn, :create_task)%>" method="POST">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">Case</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-clock"></i></span>
+                                    </div>
+                                    <input type="text" name="event_name" placeholder="Event Name" class="form-control" required="required">
+                                    <select class="custom-select form-control" name="case" required="required">
+                                        <option selected="">Select case event is linked to</option>
+                                        <option value="case 1">case 1</option>
+                                    </select>
+                                    <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
+                                </div>
+                            </div>
 
-<!-- ############################### REJECT REQUEST ########################### -->
-<div class="modal fade" id="panel-compose" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Reported Issue</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true"><i class="fal fa-times"></i></span>
-                </button>
+                            <div class="form-group">
+                                <input type="checkbox" name="case" value="Not linked to a case">
+                                <label for="vehicle2"> This event is not linked to any case.</label>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Date & Time</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-clock"></i></span>
+                                    </div>
+                                    <input type="date" name="start_date" class="form-control" required="required">
+                                    <input type="time" name="start_time" class="form-control" required="required">
+                                    <input type="text" placeholder="to" class="form-control" disabled>
+                                    <input type="date" name="end_date" class="form-control" required="required">
+                                    <input type="time" name="end_time" class="form-control" required="required">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Priority</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-clock"></i></span>
+                                    </div>
+                                    <select class="custom-select form-control" name="priority" required="required">
+                                        <option selected="">Select event priority</option>
+                                        <option value="high">High</option>
+                                        <option value="medium">Medium</option>
+                                        <option value="low">Low</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Location</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-map-pin"></i></span>
+                                    </div>
+                                    <input type="text" name="location" placeholder="Venu of event" class="form-control" required="required">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="basic-url">Describe</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">Comment</span>
+                                    </div>
+                                    <textarea class="form-control" name="details" placeholder="Details about event." aria-label="With textarea"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <input type="checkbox" name="visibility" value="private">
+                                <label for="vehicle2"> Mark this as a private event.</label>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-info">Add Event</button>
+                    </div>                   
+                </form>
             </div>
-            
-            <form action="#" method="POST">
-                <div class="modal-body">
-                    <div class="px-3">
-                        <b>TO:</b> <input id="first_name" type="text" placeholder="Driver Name" class="form-control border-top-0 border-left-0 border-right-0 px-0 rounded-0 fs-md mt-2 pr-5" tabindex="2">
-                        <br>
-                        <b>REF:</b> <input id="v_slct_problem" type="text" placeholder="REF" class="form-control border-top-0 border-left-0 border-right-0 px-0 rounded-0 fs-md mt-2" tabindex="4">
-                        <br>
-                        <b>MESSAGE:</b> <input name="decline_reason" type="text" placeholder="State Reason of Rejection" class="form-control border-top-0 border-left-0 border-right-0 px-0 rounded-0 fs-md mt-2" tabindex="4" required>
-                        <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
-                        <input type="hidden" name="approval_status" value="rejected">
-                        <input type="hidden" name="v_status" value="unfit">
-                        <input type="hidden" name="id" id="id">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-info">Send</button>
-                </div>
-            </form>
+
         </div>
     </div>
 </div>
-
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-
-<script type="text/javascript">
-    // push settings with "false" save to local
-    initApp.pushSettings("nav-function-minify layout-composed", false);
-
-    // the codes below are just for example use, you may need to change the scripts according to your requirement
-    // select all checkbox function
-
-    var title = document.title,
-
-        newEmailDisplayTab = function()
-        {
-            var count = $('#js-emails .unread').length
-            var newTitle = title + ' (' + count + ')';
-            document.title = newTitle;
-            $(".js-unread-emails-count").text(' (' + count + ')');
-        },
-
-        deleteEmail = function(threadID)
-        {
-
-            // delete after animation is complete
-            threadID.animate(
-            {
-                height: 'toggle',
-                opacity: 'toggle'
-            }, '200', 'easeOutExpo', function()
-            {
-                //remove email after animation is complete
-                $(this).remove();
-                //update unread email count
-                newEmailDisplayTab();
-            });
-
-            //we remove any tooltips (this is a bug with bootstrap where the tooltip stays on screen after removing parent)
-            $('.tooltip').tooltip('dispose');
-
-            //uncheck master select all
-            if ($("#js-msg-select-all").is(":checked"))
-            {
-                $("#js-msg-select-all").prop('checked', false);
-            }
-
-            return this;
-        }
-
-    // select all component demo
-    $("#js-msg-select-all").on("change", function(e)
-    {
-        if (this.checked)
-        {
-            $('#js-emails :checkbox').prop("checked", $(this).is(":checked")).closest("li").addClass("state-selected");
-        }
-        else
-        {
-            $('#js-emails :checkbox').prop("checked", $(this).is(":checked")).closest("li").removeClass("state-selected");
-        }
-    });
-
-    // add or remove state-selected class to emails when they are checked
-    $('#js-emails :checkbox').on("change", function()
-    {
-
-        if ($("#js-msg-select-all").is(":checked"))
-        {
-            $('#js-msg-select-all').prop('indeterminate', true);
-        }
-
-        if (this.checked)
-        {
-            $(this).closest("li").addClass("state-selected");
-        }
-        else
-        {
-            $(this).closest("li").removeClass("state-selected");
-        }
-
-    });
-
-    // email delete button triggers
-    $(".js-delete-email").on('click', function()
-    {
-        deleteEmail($(this).closest("li"));
-    })
-    $("#js-delete-selected").on('click', function()
-    {
-        deleteEmail($("#js-emails input:checked").closest("li"))
-    });
-
-
-    // show unread email count (once)
-    newEmailDisplayTab()
-</script>
-
-
-
-
-<script>
-$(document).ready(function(){
-// JS FOR VIEWING ISSUE
-$('#view-issue').on('show.bs.modal', function (event){
-
-    var button = $(event.relatedTarget)
-    var id = button.data('id')
-    var first_name = button.data('first_name')
-    var last_name = button.data('last_name')
-    var v_slct_problem = button.data('v_slct_problem')
-    var v_descr_problem = button.data('v_descr_problem')
-    var dt_issued = button.data('dt_issued')
-    var approval_status = button.data('approval_status')
-    
-    var modal = $(this)
-    modal.find('.modal-body #id').val(id);
-    modal.find('.modal-body #first_name').val(first_name);
-    modal.find('.modal-body #last_name').val(last_name);
-    modal.find('.modal-body #v_slct_problem').val(v_slct_problem);
-    modal.find('.modal-body #v_descr_problem').val(v_descr_problem);
-    modal.find('.modal-body #dt_issued').val(dt_issued);
-    modal.find('.modal-body #approval_status').val(approval_status);
-});
-
-});
-</script>
-
-
-
-
-
-
-
-
-<script>
-$(document).ready(function(){
-// JS FOR REJECTING FIX
-$('#panel-compose').on('show.bs.modal', function (event){
-
-    var button = $(event.relatedTarget)
-    var id = button.data('id')
-    var first_name = button.data('first_name')
-    var last_name = button.data('last_name')
-    var v_slct_problem = button.data('v_slct_problem')
-    var decline_reason = button.data('decline_reason')
-    
-    var modal = $(this)
-    modal.find('.modal-body #id').val(id);
-    modal.find('.modal-body #first_name').val(first_name);
-    modal.find('.modal-body #last_name').val(last_name);
-    modal.find('.modal-body #v_slct_problem').val(v_slct_problem);
-    modal.find('.modal-body #decline_reason').val(decline_reason);
-});
-
-});
-</script>

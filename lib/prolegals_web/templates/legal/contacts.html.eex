@@ -960,6 +960,7 @@
 </div>
 
 
+<<<<<<< HEAD
 
 
 
@@ -970,6 +971,8 @@
 
 
 
+=======
+>>>>>>> 95ced7e87b613b823c3366c8cf6d8031437956c7
 <!-----------------------------------------------------------------------------------------Modal Rendering scripts -->
 <script src="<%= Routes.static_path(@conn, "/js/jquery-1.11.2.min.js") %>"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
