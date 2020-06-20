@@ -490,7 +490,7 @@
                             <td><%= firearm.date_purchased %></td>
                             <td><%= firearm.person_assigned %></td>
                             <td><%= firearm.status %></td>
-                            <td><%= firearm.firearm_image %></td>
+                          
                         </tr>   
                     </tbody>
                 <% end %>   

@@ -7,7 +7,7 @@ defmodule Prolegals.Security.FirearmsInventory do
     field :brand, :string
     field :bullet_id, :string
     field :date_purchased, :string
-    field :firearm_image, :string
+    field :firearm_image, Prolegals.ImageUploader.Type
     field :make_year, :string
     field :model, :string
     field :name, :string
