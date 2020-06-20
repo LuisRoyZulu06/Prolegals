@@ -297,4 +297,201 @@ defmodule Prolegals.Litigation do
   def change_events(%Events{} = events) do
     Events.changeset(events, %{})
   end
+
+
+  # ----------------------------------------------------------------------------------Case Types
+
+  alias Prolegals.Litigation.CaseType
+
+  @doc """
+  Returns the list of li_tbl_case_types.
+
+  ## Examples
+
+      iex> list_li_tbl_case_types()
+      [%CaseType{}, ...]
+
+  """
+  def list_li_tbl_case_types do
+    Repo.all(CaseType)
+  end
+
+  @doc """
+  Gets a single case_type.
+
+  Raises `Ecto.NoResultsError` if the Case type does not exist.
+
+  ## Examples
+
+      iex> get_case_type!(123)
+      %CaseType{}
+
+      iex> get_case_type!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_case_type!(id), do: Repo.get!(CaseType, id)
+
+  @doc """
+  Creates a case_type.
+
+  ## Examples
+
+      iex> create_case_type(%{field: value})
+      {:ok, %CaseType{}}
+
+      iex> create_case_type(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_case_type(attrs \\ %{}) do
+    %CaseType{}
+    |> CaseType.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a case_type.
+
+  ## Examples
+
+      iex> update_case_type(case_type, %{field: new_value})
+      {:ok, %CaseType{}}
+
+      iex> update_case_type(case_type, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_case_type(%CaseType{} = case_type, attrs) do
+    case_type
+    |> CaseType.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a case_type.
+
+  ## Examples
+
+      iex> delete_case_type(case_type)
+      {:ok, %CaseType{}}
+
+      iex> delete_case_type(case_type)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_case_type(%CaseType{} = case_type) do
+    Repo.delete(case_type)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking case_type changes.
+
+  ## Examples
+
+      iex> change_case_type(case_type)
+      %Ecto.Changeset{source: %CaseType{}}
+
+  """
+  def change_case_type(%CaseType{} = case_type) do
+    CaseType.changeset(case_type, %{})
+  end
+
+
+  # ----------------------------------------------------------------------------------Business Category
+  alias Prolegals.Litigation.BusinessCategory
+
+  @doc """
+  Returns the list of li_tbl_business_categories.
+
+  ## Examples
+
+      iex> list_li_tbl_business_categories()
+      [%BusinessCategory{}, ...]
+
+  """
+  def list_li_tbl_business_categories do
+    Repo.all(BusinessCategory)
+  end
+
+  @doc """
+  Gets a single business_category.
+
+  Raises `Ecto.NoResultsError` if the Business category does not exist.
+
+  ## Examples
+
+      iex> get_business_category!(123)
+      %BusinessCategory{}
+
+      iex> get_business_category!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_business_category!(id), do: Repo.get!(BusinessCategory, id)
+
+  @doc """
+  Creates a business_category.
+
+  ## Examples
+
+      iex> create_business_category(%{field: value})
+      {:ok, %BusinessCategory{}}
+
+      iex> create_business_category(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_business_category(attrs \\ %{}) do
+    %BusinessCategory{}
+    |> BusinessCategory.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a business_category.
+
+  ## Examples
+
+      iex> update_business_category(business_category, %{field: new_value})
+      {:ok, %BusinessCategory{}}
+
+      iex> update_business_category(business_category, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_business_category(%BusinessCategory{} = business_category, attrs) do
+    business_category
+    |> BusinessCategory.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a business_category.
+
+  ## Examples
+
+      iex> delete_business_category(business_category)
+      {:ok, %BusinessCategory{}}
+
+      iex> delete_business_category(business_category)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_business_category(%BusinessCategory{} = business_category) do
+    Repo.delete(business_category)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking business_category changes.
+
+  ## Examples
+
+      iex> change_business_category(business_category)
+      %Ecto.Changeset{source: %BusinessCategory{}}
+
+  """
+  def change_business_category(%BusinessCategory{} = business_category) do
+    BusinessCategory.changeset(business_category, %{})
+  end
 end
