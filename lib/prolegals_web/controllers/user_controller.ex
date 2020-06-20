@@ -512,4 +512,9 @@ defmodule ProlegalsWeb.UserController do
         |> redirect(to: Routes.user_path(conn, :user_management))
     end
   end
+
+  def user_logs(conn, _params) do
+    logs = Logs.list_tbl_user_logs()
+    render(conn, "user_logs.html", logs: logs)
+  end
 end

@@ -17,9 +17,10 @@ defmodule Prolegals.Repo.Migrations.CreateLiTblContacts do
       add :country, :string
       add :address, :string
       add :client_portal, :string
+      add :status, :string
 
       timestamps()
     end
 
   end
-end    
+end

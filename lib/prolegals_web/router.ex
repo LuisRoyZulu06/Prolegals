@@ -47,6 +47,7 @@ defmodule ProlegalsWeb.Router do
     # ---------------------------User Maintenance
     get "/User/Maintenance", UserController, :user_management
     post "/Create/User", UserController, :create_user
+    get "/User/Activity/Logs", UserController, :user_logs
 
     # ---------------------------Legal Controller
     get "/Contacts", LegalController, :contacts
@@ -56,6 +57,12 @@ defmodule ProlegalsWeb.Router do
     get "/Notifications", LegalController, :notifications
     get "/Tasks", LegalController, :tasks
     post "/Create/Event", LegalController, :create_task
+    get "/Types/of/Cases", LegalController, :practice_area
+    post "/Create/Case/Type", LegalController, :create_case_type
+    post "/Update/Case/Type", LegalController, :update_case_type
+    get "/Business/Category", LegalController, :bus_category
+    post "/Create/Business/Category", LegalController, :create_business_type
+    post "/Update/Business/Category", LegalController, :update_business_type
 
     # ////////////////////////////////////////////////////////////////// Security Controller
     get "/list/logbook/user", SecurityController, :list_log_book_users
@@ -81,6 +88,8 @@ defmodule ProlegalsWeb.Router do
     # ---------------------------Legal Controller
     get "/Contacts", LegalController, :contacts
     post "/Create/Contact", LegalController, :create_contact
+    post "/update/Contact", LegalController, :update_contact
+    post "/delete/Contact", LegalController, :delete_contact
     get "/Manage/Cases", LegalController, :case_mgt
     post "/Add/New/Case", LegalController, :create_case
     get "/Notifications", LegalController, :notifications

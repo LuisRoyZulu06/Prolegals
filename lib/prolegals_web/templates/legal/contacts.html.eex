@@ -82,13 +82,13 @@
 
                                     <a class="dropdown-item" href="#" data-id="<%= contact.id %>" data-name="<%= contact.name %>" data-email="<%= contact.email %>" data-phone="<%= contact.phone %>" data-company_name="<%= contact.company_name %>" data-job_title="<%= contact.job_title %>" data-id_type="<%= contact.id_type %>" data-id_no="<%= contact.id_no %>" data-address="<%= contact.address %>" data-toggle="modal" data-target="#edit-contact">Edit Contact</a>
 
-                                    <a class="dropdown-item" data-toggle="modal" data-target="#delete-alert">Delete Contact</a>
+                                    <a class="dropdown-item" data-id="<%= contact.id %>" data-csfr="<%= Plug.CSRFProtection.get_csrf_token()%>" id="dt-contact">Delete Contact</a>
                                 <% else %>
                                     <a class="dropdown-item" href="#" data-id="<%= contact.id %>" data-name="<%= contact.name %>" data-email="<%= contact.email %>" data-phone="<%= contact.phone %>" data-company_name="<%= contact.company_name %>" data-job-title="<%= contact.job_title %>" data-bus_category="<%= contact.bus_category %>" data-tel="<%= contact.tel %>" data-city="<%= contact.city %>" data-country="<%= contact.country %>" data-address="<%= contact.address %>" data-job_title="<%= contact.job_title %>" data-toggle="modal" data-target="#view-company">View</a>
 
                                     <a class="dropdown-item" href="#" data-id="<%= contact.id %>" data-name="<%= contact.name %>" data-email="<%= contact.email %>" data-phone="<%= contact.phone %>" data-company_name="<%= contact.company_name %>" data-job-title="<%= contact.job_title %>" data-bus_category="<%= contact.bus_category %>" data-tel="<%= contact.tel %>" data-city="<%= contact.city %>" data-country="<%= contact.country %>" data-address="<%= contact.address %>" data-job_title="<%= contact.job_title %>" data-toggle="modal" data-target="#edit-company">Edit Contact</a>
 
-                                    <a class="dropdown-item" data-toggle="modal" data-target="#delete-alert">Delete Contact</a>
+                                    <a class="dropdown-item" data-id="<%= contact.id %>" data-csfr="<%= Plug.CSRFProtection.get_csrf_token()%>" id="dt-contact">Delete Contact</a>
                                 <% end %>
 
 
@@ -271,7 +271,6 @@
                                         <option selected="">Select ID Type</option>
                                         <option value="NRC">NRC</option>
                                         <option value="PASSPORT">Passport</option>
-                                        <option value="DRIVERS LICENSE">Drivers License</option>
                                     </select>
                                     <input type="text" name="id_no" placeholder="ID Number" class="form-control" required="required">
                                 </div>
@@ -416,7 +415,7 @@
             </div>
 
             <div class="modal-body">
-                <form action="#" method="POST">
+                <form action="<%= Routes.legal_path(@conn, :update_contact)%>" method="POST">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
@@ -960,6 +959,7 @@
 </div>
 
 
+<!-- ############################## DELETE-ALERT MODAL ################################## -->
 <!-----------------------------------------------------------------------------------------Modal Rendering scripts -->
 <script src="<%= Routes.static_path(@conn, "/js/jquery-1.11.2.min.js") %>"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>

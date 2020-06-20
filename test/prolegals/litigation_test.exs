@@ -320,4 +320,126 @@ defmodule Prolegals.LitigationTest do
       assert %Ecto.Changeset{} = Litigation.change_events(events)
     end
   end
+
+  describe "li_tbl_case_types" do
+    alias Prolegals.Litigation.CaseType
+
+    @valid_attrs %{category: "some category", description: "some description"}
+    @update_attrs %{category: "some updated category", description: "some updated description"}
+    @invalid_attrs %{category: nil, description: nil}
+
+    def case_type_fixture(attrs \\ %{}) do
+      {:ok, case_type} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Litigation.create_case_type()
+
+      case_type
+    end
+
+    test "list_li_tbl_case_types/0 returns all li_tbl_case_types" do
+      case_type = case_type_fixture()
+      assert Litigation.list_li_tbl_case_types() == [case_type]
+    end
+
+    test "get_case_type!/1 returns the case_type with given id" do
+      case_type = case_type_fixture()
+      assert Litigation.get_case_type!(case_type.id) == case_type
+    end
+
+    test "create_case_type/1 with valid data creates a case_type" do
+      assert {:ok, %CaseType{} = case_type} = Litigation.create_case_type(@valid_attrs)
+      assert case_type.category == "some category"
+      assert case_type.description == "some description"
+    end
+
+    test "create_case_type/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Litigation.create_case_type(@invalid_attrs)
+    end
+
+    test "update_case_type/2 with valid data updates the case_type" do
+      case_type = case_type_fixture()
+      assert {:ok, %CaseType{} = case_type} = Litigation.update_case_type(case_type, @update_attrs)
+      assert case_type.category == "some updated category"
+      assert case_type.description == "some updated description"
+    end
+
+    test "update_case_type/2 with invalid data returns error changeset" do
+      case_type = case_type_fixture()
+      assert {:error, %Ecto.Changeset{}} = Litigation.update_case_type(case_type, @invalid_attrs)
+      assert case_type == Litigation.get_case_type!(case_type.id)
+    end
+
+    test "delete_case_type/1 deletes the case_type" do
+      case_type = case_type_fixture()
+      assert {:ok, %CaseType{}} = Litigation.delete_case_type(case_type)
+      assert_raise Ecto.NoResultsError, fn -> Litigation.get_case_type!(case_type.id) end
+    end
+
+    test "change_case_type/1 returns a case_type changeset" do
+      case_type = case_type_fixture()
+      assert %Ecto.Changeset{} = Litigation.change_case_type(case_type)
+    end
+  end
+
+  describe "li_tbl_business_categories" do
+    alias Prolegals.Litigation.BusinessCategory
+
+    @valid_attrs %{business_nature: "some business_nature", business_type: "some business_type"}
+    @update_attrs %{business_nature: "some updated business_nature", business_type: "some updated business_type"}
+    @invalid_attrs %{business_nature: nil, business_type: nil}
+
+    def business_category_fixture(attrs \\ %{}) do
+      {:ok, business_category} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Litigation.create_business_category()
+
+      business_category
+    end
+
+    test "list_li_tbl_business_categories/0 returns all li_tbl_business_categories" do
+      business_category = business_category_fixture()
+      assert Litigation.list_li_tbl_business_categories() == [business_category]
+    end
+
+    test "get_business_category!/1 returns the business_category with given id" do
+      business_category = business_category_fixture()
+      assert Litigation.get_business_category!(business_category.id) == business_category
+    end
+
+    test "create_business_category/1 with valid data creates a business_category" do
+      assert {:ok, %BusinessCategory{} = business_category} = Litigation.create_business_category(@valid_attrs)
+      assert business_category.business_nature == "some business_nature"
+      assert business_category.business_type == "some business_type"
+    end
+
+    test "create_business_category/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Litigation.create_business_category(@invalid_attrs)
+    end
+
+    test "update_business_category/2 with valid data updates the business_category" do
+      business_category = business_category_fixture()
+      assert {:ok, %BusinessCategory{} = business_category} = Litigation.update_business_category(business_category, @update_attrs)
+      assert business_category.business_nature == "some updated business_nature"
+      assert business_category.business_type == "some updated business_type"
+    end
+
+    test "update_business_category/2 with invalid data returns error changeset" do
+      business_category = business_category_fixture()
+      assert {:error, %Ecto.Changeset{}} = Litigation.update_business_category(business_category, @invalid_attrs)
+      assert business_category == Litigation.get_business_category!(business_category.id)
+    end
+
+    test "delete_business_category/1 deletes the business_category" do
+      business_category = business_category_fixture()
+      assert {:ok, %BusinessCategory{}} = Litigation.delete_business_category(business_category)
+      assert_raise Ecto.NoResultsError, fn -> Litigation.get_business_category!(business_category.id) end
+    end
+
+    test "change_business_category/1 returns a business_category changeset" do
+      business_category = business_category_fixture()
+      assert %Ecto.Changeset{} = Litigation.change_business_category(business_category)
+    end
+  end
 end

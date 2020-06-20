@@ -98,23 +98,7 @@
 
                                 <!-----------------------------------------------------------------------------------------------------Admin -->
                                 <%= if @user.user_role == "admin" do %>
-                                <li>
-                                    <a href="#" title="User Management" data-filter-tags="theme settings">
-                                        <i class="fal fa-user"></i>
-                                        <span class="nav-link-text" data-i18n="nav.theme_settings">Manage Users</span>
-                                    </a>
-                                    <ul>
-                                        <li>
-                                            <a href="<%= Routes.user_path(@conn, :user_management)%>" title="User Maintenace" data-filter-tags="ui components">
-                                                <i class="fal fa-user-circle"></i>
-                                                <span class="nav-link-text" data-i18n="nav.ui_components">User Maintenance</span>
-                                            </a>
-                                        </li>
-
-                                    </ul>
-                                </li>
-
-                                <li>
+                                    <li>
                                         <a href="#" title="Inventory Management" data-filter-tags="theme settings">
                                             <i class="fal fa-database"></i>
                                             <span class="nav-link-text" data-i18n="nav.theme_settings">Inventory</span>
@@ -134,6 +118,29 @@
                                             </li>
                                         </ul>
                                     </li>
+
+                                    <li>
+                                        <a href="#" title="User Management" data-filter-tags="theme settings">
+                                            <i class="fal fa-user"></i>
+                                            <span class="nav-link-text" data-i18n="nav.theme_settings">Manage Users</span>
+                                        </a>
+                                        <ul>
+                                            <li>
+                                                <a href="<%= Routes.user_path(@conn, :user_management)%>" title="User Maintenace" data-filter-tags="ui components">
+                                                    <i class="fal fa-user-circle"></i>
+                                                    <span class="nav-link-text" data-i18n="nav.ui_components">User Maintenance</span>
+                                                </a>
+                                            </li>
+
+                                            <li>
+                                                <a href="<%= Routes.user_path(@conn, :user_logs)%>" title="User Logs" data-filter-tags="ui components">
+                                                    <i class="fal fa-book"></i>
+                                                    <span class="nav-link-text" data-i18n="nav.ui_components">User Logs</span>
+                                                </a>
+                                            </li>
+
+                                        </ul>
+                                    </li>
                                 <% end %>
                                 <!---------------------------------------------------------------------------------------------------------------->
 
@@ -141,18 +148,40 @@
 
                                 <!----------------------------------------------------------------------------------------------------Litigation -->
                                 <%= if @user.user_role == "litigation" do %>
-                                <li>
-                                    <a href="<%= Routes.legal_path(@conn, :notifications)%>" title="Notifications" data-filter-tags="ui components">
-                                        <i class="fal fa-envelope"></i>
-                                        <span class="nav-link-text" data-i18n="nav.ui_components">Notifications</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="<%= Routes.legal_path(@conn, :case_mgt)%>" title="Case Management" data-filter-tags="ui components">
-                                        <i class="fal fa-building"></i>
-                                        <span class="nav-link-text" data-i18n="nav.ui_components">Case Management</span>
-                                    </a>
-                                </li>
+                                    <li>
+                                        <a href="<%= Routes.legal_path(@conn, :notifications)%>" title="Notifications" data-filter-tags="ui components">
+                                            <i class="fal fa-envelope"></i>
+                                            <span class="nav-link-text" data-i18n="nav.ui_components">Notifications</span>
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a href="<%= Routes.legal_path(@conn, :case_mgt)%>" title="Case Management" data-filter-tags="ui components">
+                                            <i class="fal fa-building"></i>
+                                            <span class="nav-link-text" data-i18n="nav.ui_components">Case Management</span>
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a href="#" title="Maintenance" data-filter-tags="theme settings">
+                                            <i class="fal fa-database"></i>
+                                            <span class="nav-link-text" data-i18n="nav.theme_settings">Maintenance</span>
+                                        </a>
+                                        <ul>
+                                            <li>
+                                                <a href="<%= Routes.legal_path(@conn, :practice_area)%>" title="Case Types" data-filter-tags="ui components">
+                                                    <i class="fal fa-bullseye"></i>
+                                                    <span class="nav-link-text" data-i18n="nav.ui_components">Area of Practice</span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="<%= Routes.legal_path(@conn, :bus_category)%>" title="Business Category" data-filter-tags="ui components">
+                                                    <i class="fal fa-building"></i>
+                                                    <span class="nav-link-text" data-i18n="nav.ui_components">Business Category</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
                                 <% end %>
                                 <!---------------------------------------------------------------------------------------------------------------->
                             </ul>

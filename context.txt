@@ -9,6 +9,10 @@ mix phx.gen.context Litigation Cases li_tbl_case case_name case_no case_status p
 
 mix phx.gen.context Litigation Events li_tbl_tasks case start_date start_time end_date end_time location details visibility
 
+mix phx.gen.context Litigation CaseType li_tbl_case_types category description
+
+mix phx.gen.context Litigation BusinessCategory li_tbl_business_categories business_nature business_type
+
 mix phx.gen.context Security FirearmsInventory sec_tbl_firearms name type brand model serial_number rounds date_purchased purchased_from purchase_price make_year person_assigned status bullet_id firearm_image
 
 mix phx.gen.context Security AmmunitionInventory sec_tbl_ammunition caliber serial_number type quantity firearm_serial_number 
