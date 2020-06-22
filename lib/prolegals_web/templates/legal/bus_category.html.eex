@@ -1,0 +1,225 @@
+<!---------------------------------------------------------------------------------------------Flash -->
+    <div class="row">
+        <div class="col-md-12 col-lg-offset-2">
+            <div class="form-group">
+                <%= if get_flash(@conn, :info) do %>
+                    <div class="alert alert-info alert-styled-left">
+                    <button type="button" class="close" data-dismiss="alert">&times; <span class="sr-only">Close</span></button>
+                    <%= get_flash(@conn, :info) %>
+                    </div>
+                <% end %>
+                <%= if get_flash(@conn, :error) do %>
+                    <div class="alert alert-danger alert-styled-left">
+                    <button type="button" class="close" data-dismiss="alert">&times; <span class="sr-only">Close</span></button>
+                    Opps! <%= get_flash(@conn, :error) %>
+                    </div>
+                <% end %>
+            </div>
+        </div>
+    </div>
+<!----------------------------------------------------------------------------------------------------->
+
+
+<div class="subheader">
+    <h1 class="subheader-title">
+        <i class='subheader-icon fal fa-building'></i> Business Category
+        <small>
+            Add business category here, and view it later on the table.<br>
+            <a href="javascript:void(0);" class="btn btn-light hover-effect" data-toggle="modal" data-target="#add-business-category">
+                Add business category
+            </a>
+        </small>
+    </h1>
+    <div class="subheader-block" id="loggedIn-user">
+        <i class='subheader-icon fal fa-user'></i> <%= "#{String.capitalize(@conn.assigns.user.first_name)}"%> <%= "#{String.capitalize(@conn.assigns.user.last_name)}"%>  | <%= "#{String.capitalize(@conn.assigns.user.user_role)}"%>
+    </div>
+</div>
+
+<div id="panel-1" class="panel">
+    <div class="panel-hdr">
+        <h2>
+            Business categories <i class='subheader-icon fal fa-building'></i>
+        </h2>
+    </div>
+
+    <div class="panel-container show">
+        <div class="panel-content">
+            
+            <!-- datatable start -->
+            <table id="dt-basic-example" class="table table-bordered table-hover table-striped w-100">
+                <thead class="p-3 bg-info-300 rounded overflow-hidden position-relative text-white mb-g">
+                    <tr>
+                        <th>Nature of Business</th>
+                        <th>Type of Business</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <%= for business_type <-@business_type do %>
+                    <tr>
+                        <td><%= business_type.business_nature %></td>
+                        <td><%= business_type.business_type %></td>
+                        <td>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class='subheader-icon fal fa-chevron-down'></i>
+                                    </span>
+                                    <div class="dropdown-menu">
+                                        <a href="" type="button" class="dropdown-item" data-id="<%= business_type.id %>" data-business_nature="<%= business_type.business_nature %>" data-business_type="<%= business_type.business_type %>" data-toggle="modal" data-target="#update-business" >
+                                            <i class='subheader-icon fal fa-edit'></i>
+                                            Edit
+                                        </a>                                        
+                                        <a class="dropdown-item" data-toggle="modal" data-target="#deactivate_user"><i class='subheader-icon fal fa-times'></i>Delete</a>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>       
+                    <% end %>     
+            </table>
+            <!-- datatable end -->
+        </div>
+    </div>
+</div>
+
+
+<!-- ############################### ADD-BUSINESS-CATEGORY MODAL #################################### -->
+<div class="modal fade" id="add-business-category" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">ADD BUSINESS <i class='subheader-icon fal fa-shopping-bag'></i> </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="fal fa-times"></i></span>
+                </button>
+            </div>
+
+            <div class="modal-body">                
+                <form action="<%= Routes.legal_path(@conn, :create_business_type)%>" method="POST">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">Nature of Business</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-building"></i></span>
+                                    </div>
+                                    <input type="text" name="business_nature" placeholder="Nature of Business" class="form-control" required="required">
+                                    <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
+                                </div>
+                                <span class="help-block">
+                                    Enter nature of business e.g. Agriculture, forestry and fishing.
+                                </span>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="basic-url">Type of Business</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-building"></i></span>
+                                    </div>
+                                    <input type="text" name="business_type" placeholder="Type of Business" class="form-control" required="required">
+                                </div>
+                                <span class="help-block">
+                                    Enter type of business e.g. Mixed farming.
+                                </span>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-info">Add Case Type</button>
+                    </div>                   
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- ############################### EDIT-BUSINESS-CATEGORY MODAL #################################### -->
+<div class="modal fade" id="update-business" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">EDIT BUSINESS CATEGORY<i class='subheader-icon fal fa-edit'></i> </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="fal fa-times"></i></span>
+                </button>
+            </div>
+
+            <div class="modal-body">                
+                <form action="<%= Routes.legal_path(@conn, :update_business_type)%>" method="POST">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">Nature of Business</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-building"></i></span>
+                                    </div>
+                                    <input type="text" name="business_nature" id="business_nature" placeholder="Nature of Business" class="form-control" required="required">
+                                    <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
+                                    <input type="hidden" name="id" id="id">
+                                </div>
+                                <span class="help-block">
+                                    Enter nature of business e.g. Agriculture, forestry and fishing.
+                                </span>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="basic-url">Type of Business</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-building"></i></span>
+                                    </div>
+                                    <input type="text" name="business_type" id="business_type" placeholder="Type of Business" class="form-control" required="required">
+                                </div>
+                                <span class="help-block">
+                                    Enter type of business e.g. Mixed farming.
+                                </span>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-info">Update</button>
+                    </div>                   
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-----------------------------------------------------------------------------------------Modal Rendering scripts -->
+<script src="<%= Routes.static_path(@conn, "/js/jquery-1.11.2.min.js") %>"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<!----------------------------------------------------------------Edit Individuals -->
+<script>
+$(document).ready(function(){
+//Edit Buisness Category
+$('#update-business').on('show.bs.modal', function (event){
+    var button = $(event.relatedTarget)
+    var id = button.data('id')
+    var business_nature = button.data('business_nature')
+    var business_type = button.data('business_type')
+    
+    var modal = $(this)
+    modal.find('.modal-body #id').val(id);
+    modal.find('.modal-body #business_nature').val(business_nature);
+    modal.find('.modal-body #business_type').val(business_type);
+});
+});
+</script>

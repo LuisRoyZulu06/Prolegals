@@ -16,7 +16,8 @@ defmodule Prolegals.Litigation.Contacts do
     field :phone, :string
     field :tel, :string
     field :address, :string
-    field :client_portal, :string    
+    field :client_portal, :string
+    field :status, :string
 
     timestamps()
   end
@@ -24,7 +25,7 @@ defmodule Prolegals.Litigation.Contacts do
   @doc false
   def changeset(contacts, attrs) do
     contacts
-    |> cast(attrs, [:name, :email, :phone, :company_name, :job_title, :id_type, :id_no, :bus_category, :contact_type, :tel, :city, :country, :address, :client_portal])
+    |> cast(attrs, [:name, :email, :phone, :company_name, :job_title, :id_type, :id_no, :bus_category, :contact_type, :tel, :city, :country, :address, :client_portal, :status])
     # |> validate_required([:name, :email, :phone, :company_name, :job_title, :id_type, :id_no, :bus_category, :contact_type, :tel, :city, :country, :address, :client_portal])
   end
 end
