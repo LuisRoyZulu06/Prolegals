@@ -28,6 +28,7 @@
             <i class='subheader-icon fal fa-user'></i> <%= "#{String.capitalize(@conn.assigns.user.first_name)}"%> <%= "#{String.capitalize(@conn.assigns.user.last_name)}"%>  | <%= "#{String.capitalize(@conn.assigns.user.user_role)}"%>
         </div>
     </div>
+     
 
     <div class="row">
         <div class="col-xl-12">

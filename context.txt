@@ -13,3 +13,5 @@ mix phx.gen.context Security AmmunitionInventory sec_tbl_ammunition caliber seri
 
 
 mix phx.gen.context Security LogBook sec_tbl_log_book name sex id_type id_no image mobile_no address company person_to_see purpose date time_in time_out
+
+mix phx.gen.context Client Messages cl_tbl_messages sender recipient messages status case_link subject

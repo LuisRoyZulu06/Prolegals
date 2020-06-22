@@ -7,13 +7,17 @@ defmodule ProlegalsWeb.SecurityController do
     alias Prolegals.Accounts
     alias Prolegals.Accounts.User
 
-    def list_log_book_users(conn, _params) do
-      list_log_book_users = Security.list_sec_tbl_log_book()
+    def list_log_book_users(conn, params) do
+
+      IO.inspect "############### QUERY ################"
+      IO.inspect params
+
+      list_log_book_users = Security.list_sec_tbl_log_book(params)
       render(conn, "list_log_book_users.html", list_log_book_users: list_log_book_users)
     end
 
     def create_log_book_user(conn, params) do
-      IO.inspect "###################################### start s#####"
+      IO.inspect "###################################### start #####"
       IO.inspect params
       case Security.create_log_book(params) do
           {:ok, _} ->

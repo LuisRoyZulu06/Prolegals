@@ -84,6 +84,10 @@ defmodule ProlegalsWeb.Router do
     get "/Notifications", LegalController, :notifications
     get "/Tasks", LegalController, :tasks
 
+    # ////////////////////////////////////////////////////////////////// Client Controller
+    get "/messages", ClientController, :list_messages
+    post "/create/messages", ClientController, :create_message
+
   end
 
   scope "/", ProlegalsWeb do
