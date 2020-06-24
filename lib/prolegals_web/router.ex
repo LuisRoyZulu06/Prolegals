@@ -71,19 +71,17 @@ defmodule ProlegalsWeb.Router do
     post "/logbook/update", SecurityController, :edit_log_book_user
     get "/view/logbook/user", SecurityController, :view_log_book_user
 
-    # ---------------------------Firearms Inventory
-    get "/firearms", AdminController, :firearm
-    post "/Create/Firearm", AdminController, :create_firearms_inventory
-    post "/update/Firearm", AdminController, :update_firearms_inventory
-    get "/Delete/Firearm", AdminController, :delete_firearms_inventory
-    get "/Firearms/View", AdminController, :view_firearm
+    # ---------------------------Inventory
+    get "/Inventory", AdminController, :inventory
+    post "/Create/Category", AdminController, :create_inventory
+    post "/Update/Category", AdminController, :update_inventory
+    get "/Delete/Category", AdminController, :delete_inventory
+    get "/Assets", AdminController, :view_assets
 
-    # ---------------------------Ammunition Inventory
-    get "/Ammunition", AdminController, :ammunition
-    post "/Create/Ammunition", AdminController, :create_ammunition_inventory
-    post "/Update/Ammunition", AdminController, :update_ammunition_inventory
-    get "/Delete/Ammunition", AdminController, :delete_ammunition_inventory
-    get "/Ammunition/View", AdminController, :view_ammunition
+     # ---------------------------Assets
+     get "/Asset", AdminController, :asset
+     post "/Create/Asset", AdminController, :create_asset
+     get "/Assets/View_Asset", AdminController, :view_asset
 
     # ---------------------------Legal Controller
     get "/Contacts", LegalController, :contacts

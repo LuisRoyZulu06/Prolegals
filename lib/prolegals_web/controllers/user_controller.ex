@@ -33,9 +33,9 @@ defmodule ProlegalsWeb.UserController do
   # plug(
   #   ProlegalsWeb.Plugs.RequireAdminAccess
   #   when action not in [
-  #     :new_password, 
-  #     :change_password, 
-  #     :dashboard, 
+  #     :new_password,
+  #     :change_password,
+  #     :dashboard,
   #     :user_actitvity
   #   ]
   # )
@@ -497,7 +497,7 @@ defmodule ProlegalsWeb.UserController do
     render(conn, "user_management.html", system_users: system_users)
   end
 
-  def create_user(conn, params) do 
+  def create_user(conn, params) do
     case Accounts.create_user(params) do
       {:ok, _} ->
         conn

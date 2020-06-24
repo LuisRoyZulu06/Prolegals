@@ -99,24 +99,18 @@
                                 <!-----------------------------------------------------------------------------------------------------Admin -->
                                 <%= if @user.user_role == "admin" do %>
                                     <li>
-                                        <a href="#" title="Inventory Management" data-filter-tags="theme settings">
+                                        <a href="<%= Routes.admin_path(@conn, :inventory)%>" title="Inventory Management" data-filter-tags="theme settings">
                                             <i class="fal fa-database"></i>
                                             <span class="nav-link-text" data-i18n="nav.theme_settings">Inventory</span>
                                         </a>
-                                        <ul>
-                                            <li>
-                                                <a href="<%= Routes.admin_path(@conn, :firearm)%>" title="User Maintenace" data-filter-tags="ui components">
-                                                    <i class="fal fa-bolt"></i>
-                                                    <span class="nav-link-text" data-i18n="nav.ui_components">FireArms</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="<%= Routes.admin_path(@conn, :ammunition)%>" title="User Maintenace" data-filter-tags="ui components">
-                                                    <i class="fal fa-bullseye"></i>
-                                                    <span class="nav-link-text" data-i18n="nav.ui_components">Ammunition</span>
-                                                </a>
-                                            </li>
-                                        </ul>
+                                    </li>
+
+                                    <li>
+                                        <a href="<%= Routes.admin_path(@conn, :asset)%>" title="Inventory Management" data-filter-tags="theme settings">
+                                            <i class="fal fa-database"></i>
+                                            <span class="nav-link-text" data-i18n="nav.theme_settings">Assets</span>
+                                        </a>
+                                        
                                     </li>
 
                                     <li>
@@ -662,6 +656,10 @@
         <script src="<%= Routes.static_path(@conn, "/js/notifications/sweetalert2/sweetalert2.bundle.js") %>"></script>
         <script src="<%= Routes.static_path(@conn, "/js/default.js") %>"></script>
         <script src="<%= Routes.static_path(@conn, "/js/dependency/moment/moment.js") %>"></script>
+        <script src="<%= Routes.static_path(@conn, "/js/statistics/chartist/chartist.js") %>"></script>
+        <script src="<%= Routes.static_path(@conn, "/js/vendors.bundle.js") %>"></script>
+        <script src="<%= Routes.static_path(@conn, "/js/app.bundle.js") %>"></script>
+        
 
         <!-------------------------------------------------------------------------Datatables -->
         <script>

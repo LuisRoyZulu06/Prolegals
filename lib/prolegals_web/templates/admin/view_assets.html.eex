@@ -1,0 +1,257 @@
+<main id="js-page-content" role="main" class="page-content">
+
+<!-- ####################################################### FLASH ################## -->
+    <div class="row">
+        <div class="col-md-12 col-lg-offset-2">
+            <div class="form-group">
+                <%= if get_flash(@conn, :info) do %>
+                    <div class="alert alert-info alert-styled-left">
+                    <button type="button" class="close" data-dismiss="alert">&times; <span class="sr-only">Close</span></button>
+                    <%= get_flash(@conn, :info) %>
+                    </div>
+                <% end %>
+                <%= if get_flash(@conn, :error) do %>
+                    <div class="alert alert-danger alert-styled-left">
+                    <button type="button" class="close" data-dismiss="alert">&times; <span class="sr-only">Close</span></button>
+                    Opps! <%= get_flash(@conn, :error) %>
+                    </div>
+                <% end %>
+            </div>
+        </div>
+    </div>
+    <!-- ################################################################################ -->
+
+<div class="subheader">
+        <h1 class="subheader-title">
+            Manage  Assets
+                <br>
+            <a href="javascript:void(0);" class="btn btn-light hover-effect" data-toggle="modal" data-target="#addAssets">
+                Add Categories
+            </a>
+        </h1>
+
+        <div class="subheader-block" id="loggedIn-user">
+            <i class='subheader-icon fal fa-user'></i> <%= "#{String.capitalize(@conn.assigns.user.first_name)}"%> <%= "#{String.capitalize(@conn.assigns.user.last_name)}"%>  | INVENTORY
+        </div>    
+    </div>
+
+ <div class="row">
+        <div class="col-xl-12">
+            <div id="panel-1" class="panel">
+                <div class="panel-hdr">
+                    <h2>
+                       Assets 
+                    </h2>
+                </div>
+
+                <div class="panel-container show">
+                    <div class="panel-content">
+                        
+                        <!-- datatable start -->
+                        <table id="dt-basic-example" class="table table-bordered table-hover table-striped w-100">
+                            <thead class="p-3 bg-info-300 rounded overflow-hidden position-relative text-white mb-g">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Brand</th>
+                                    <th>Category</th>
+                                    <th>Status</th>
+                                    <th>Purchased From</th>
+                                    <th>Type</th>
+                                    <th>Action</th>
+                                </tr>
+                                <%= for asset <- @assets do %>
+                                <tbody>
+                                    <tr>
+                                        <td><%= asset.name %></td>
+                                        <td><%= asset.brand %></td>
+                                        <td><%= asset.category_id %></td>
+                                        <td><%= asset.status %></td>
+                                        <td><%= asset.purchased_from %></td>
+                                        <td><%= asset.type %></td>
+                                        <td class="pull-right">
+                                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#editCategory" >
+                                                Edit
+                                            </button>
+                                            <a class="btn btn-danger" href="<%= Routes.admin_path(@conn, :delete_inventory, id: asset.id)%>">Delete</a>
+                                        </td>
+                                    </tr>   
+                                </tbody>    
+                            <% end %>  
+                            </thead>           
+                        </table>
+                        <!-- datatable end -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+
+
+<!-- ADD INVENTORY CATEGORY MODEL -->
+<div class="modal fade" id="addInvCat" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="text-align: center">
+                <h5 class="modal-title">Add Inventory Category <i class='subheader-icon '></i></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="fal fa-times"></i></span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form class="form-horizontal" action="" enctype="multipart/form-data" method="POST">
+                    <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
+
+
+                    <div class="form-group">
+                        <label class="form-label"></label>
+                        <div class="input-group">
+                            
+                            <input type="text" name="name" placeholder="Category name" class="form-control" required="required">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label"></label>
+                        <div class="input-group">
+                            
+                            <input type="text" name="category_code" placeholder="Category Code" class="form-control" required="required">
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-info">Submit</button>
+                    </div>
+                </form>
+            </div>   
+        </div>
+    </div>
+</div>
+
+<!-- ADD ASSETS MODEL -->
+<div class="modal fade" id="addAssets" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="text-align: center">
+                <h5 class="modal-title">Add Assets <i class='subheader-icon '></i></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="fal fa-times"></i></span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form class="form-horizontal" action="<%= Routes.admin_path(@conn, :create_asset)%>" method="POST">
+                    <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
+                    <input type="hidden" name="id" id="id" value="">
+                    <div class="form-group">
+                        <label class="form-label">Firearm Details</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fal fa-user"></i></span>
+                            </div>
+                            <input type="text" value="" name="name" id="name" placeholder="Name" class="form-control" required="required">
+
+                             <input type="text" value="" name="brand" id="brand" placeholder="Brand" class="form-control" required="required">
+                            
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label"></label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fal fa-window"></i></span>
+                            </div>
+                             <input type="text" value="" name="type" id="type" placeholder="Type" class="form-control" required="required"> 
+                            
+                            
+
+                            <input type="text" value="" name="quantity" id="quantity" placeholder="Quantity" class="form-control" required="required">
+                            
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label"></label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fal fa-user"></i></span>
+                            </div>
+                            <select class="custom-select form-control" id="category_id" name="category_id" required="required">
+                                <option selected="">Category</option>
+                                <%= for inventory <- @inventories do %>
+                                <option value="<%= inventory.id %>"><%= inventory.name %></option>
+                                <% end %>
+                            </select>
+                             <select class="custom-select form-control" id="status" name="status" required="required">
+                                <option selected="">Status</option>
+                                <option value="New">New</option>
+                                <option value="Old">Old</option>
+                            </select>
+                            
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label"></label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fal fa-user"></i></span>
+                            </div>
+                             <input type="text" value="" name="serial_number" id="serial_number" placeholder="Serial  Number" class="form-control" required="required">
+                            
+                            <input type="text" name="purchased_from" value="" id="purchased_from" placeholder="Purchased From" class="form-control" required="required">
+                           
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label"></label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fal fa-calendar-alt"></i></span>
+                            </div>
+                            <input type="date" name="date_purchased" value="" id="date_purchased" placeholder="date_purchased" class="form-control" required="required">
+
+                            
+                            <input type="date" name="make_year" value="" id="make_year" placeholder="Make Year" class="form-control" required="required">
+                             
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-info">Submit</button>
+                    </div>
+                </form>
+            </div>   
+        </div>
+    </div>
+</div>
+
+<script src="<%= Routes.static_path(@conn, "/js/jquery-1.11.2.min.js") %>"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<script>
+$(document).ready(function(){
+
+    $('#editCategory').on('show.bs.modal', function (event){
+        console.log("edit");
+
+        var button = $(event.relatedTarget)
+        var id = button.data('id')
+        var name = button.data('name')
+        var category_code = button.data('category_code')
+      
+        var modal = $(this)
+        
+        modal.find('.modal-body #id').val(id);
+        modal.find('.modal-body #name').val(name);
+        modal.find('.modal-body #category_code').val(category_code);
+       
+    });
+});
+</script>
