@@ -37,8 +37,8 @@ defmodule Prolegals.Security.LogBook do
    wildcard_search = "%#{search_term}%"
 
    from log_book in query,
-   where: ilike(log_book.name, ^wildcard_search)
-  #  or_where: ilike(log_book.name, ^wildcard_search)
+   where: ilike(log_book.name, ^wildcard_search),
+   or_where: ilike(log_book.id_no, ^wildcard_search)
 
   end
 
