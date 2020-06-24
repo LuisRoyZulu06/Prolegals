@@ -178,6 +178,24 @@
                                     </li>
                                 <% end %>
                                 <!---------------------------------------------------------------------------------------------------------------->
+
+                                
+                                <!------------------------------------------------------------------------------------------------------ Client -->
+                                <%= if @user.user_role == "client" do %>
+                                <li>
+                                    <a href="<%= Routes.client_path(@conn, :list_messages)%>" title="Messages" data-filter-tags="ui components">
+                                        <i class="fal fa-envelope"></i>
+                                        <span class="nav-link-text" data-i18n="nav.ui_components">Messages</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" title="Documents" data-filter-tags="ui components">
+                                        <i class="fal fa-building"></i>
+                                        <span class="nav-link-text" data-i18n="nav.ui_components">Documents</span>
+                                    </a>
+                                </li>
+                                <% end %>
+                                <!---------------------------------------------------------------------------------------------------------------->
                             </ul>
 
                         <div class="filter-message js-filter-message bg-success-600"></div>

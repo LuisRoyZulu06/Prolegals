@@ -51,7 +51,9 @@ defmodule Prolegals.MixProject do
       {:timex, "~> 3.6"},
       {:calendar, "~> 0.17.0"},
       {:arc, "~> 0.11.0"},
-      {:arc_ecto, "~> 0.11.3"}
+      {:arc_ecto, "~> 0.11.3"},
+      {:bamboo, "~> 1.3"},
+      {:bamboo_smtp, "~> 2.1.0"}
     ]
   end
 

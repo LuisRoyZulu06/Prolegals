@@ -219,6 +219,16 @@
     <!------------------------------------------------------------------------------------------------------Security -->
     <%= if @user.user_role == "security" do %>
         <div class="container-fluid" style="margin-top: 2em;">
+             <div class="row">
+                    <div class="col-xl-12">
+                        <div class="border-faded bg-faded p-3 mb-g d-flex">
+                            <form action="<%= Routes.security_path(@conn, :list_log_book_users)%>" class="pull-right" method="GET">
+                                <input type="text" id="js-filter-contacts" name="query" class="form-control shadow-inset-2 form-control-lg" placeholder="Search user by NRC" required="required">
+                                <button type="submit" class="btn btn-primary form-control shadow-inset-2 form-control-lg ">Search</button>
+                            </form>
+                        </div>
+                    </div>
+             </div>
             <div class="row">
                 <div class="col-md-4">
                     <a href="#" data-toggle="modal" data-target="#log-book">
@@ -296,6 +306,22 @@
         </div>
     <%end%>
      <!---------------------------------------------------------------------------------------------------------------->
+
+    <!------------------------------------------------------------------------------------------------------- Client -->
+    <%= if @user.user_role == "client" do %>
+        <div id="panel-3" class="panel">
+            <div class="panel-hdr">
+                <h2 class="js-get-date"></h2>
+            </div>
+            <div class="panel-container show">
+                <div class="panel-content">
+                    <div id="calendar"></div>
+                </div>
+            </div>
+        </div> 
+    <% end %>
+    <!----------------------------------------------------------------------------------------------------------------->
+
 </main> 
 
 <!-- ################################ LOG BOOK MODAL ##################################### -->

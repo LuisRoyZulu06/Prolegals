@@ -70,6 +70,7 @@ defmodule ProlegalsWeb.Router do
     post "/add/timeout", SecurityController, :add_time_out
     post "/logbook/update", SecurityController, :edit_log_book_user
     get "/view/logbook/user", SecurityController, :view_log_book_user
+    post "/add/logbook/user", SecurityController, :add_log_book_user
 
     # ---------------------------Inventory
     get "/Inventory", AdminController, :inventory
@@ -92,6 +93,10 @@ defmodule ProlegalsWeb.Router do
     post "/Add/New/Case", LegalController, :create_case
     get "/Notifications", LegalController, :notifications
     get "/Tasks", LegalController, :tasks
+
+    # ////////////////////////////////////////////////////////////////// Client Controller
+    get "/messages", ClientController, :list_messages
+    post "/create/messages", ClientController, :create_message
 
   end
 

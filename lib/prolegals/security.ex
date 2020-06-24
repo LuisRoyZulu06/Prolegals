@@ -20,8 +20,11 @@ defmodule Prolegals.Security do
       [%LogBook{}, ...]
 
   """
-  def list_sec_tbl_log_book do
-    Repo.all(LogBook)
+  def list_sec_tbl_log_book(params) do
+    search_term = get_in(params, ["query"])
+    LogBook
+    |> LogBook.search(search_term)
+    |> Repo.all()
   end
 
   @doc """
