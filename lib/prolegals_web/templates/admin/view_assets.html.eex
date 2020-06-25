@@ -25,6 +25,7 @@
         <h1 class="subheader-title">
             Manage  Assets
                 <br>
+            <small> Add or Edit Assets</small>
             <a href="javascript:void(0);" class="btn btn-light hover-effect" data-toggle="modal" data-target="#addAssets">
                 Add Asset
             </a>
@@ -39,9 +40,8 @@
         <div class="col-xl-12">
             <div id="panel-1" class="panel">
                 <div class="panel-hdr">
-                    <h2>
-                       Assets 
-                    </h2>
+                    <h2> Assets </h2>
+                    <small>Availabe Assets </small>
                 </div>
 
                 <div class="panel-container show">
@@ -83,7 +83,7 @@
                                             >
                                                 Edit
                                             </button>
-                                            <a class="btn btn-danger" href="<%= Routes.admin_path(@conn, :delete_inventory, id: asset.id)%>">Delete</a>
+                                            <a class="btn btn-danger" href="<%= Routes.admin_path(@conn, :delete_asset, id: asset.id)%>">Delete</a>
                                         </td>
                                     </tr>   
                                 </tbody>    
@@ -212,7 +212,7 @@
             </div>
 
             <div class="modal-body">
-                <form class="form-horizontal" action="<%= Routes.admin_path(@conn, :create_asset)%>" method="POST">
+                <form class="form-horizontal" action="<%= Routes.admin_path(@conn, :update_asset)%>" method="POST">
                     <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
                     <input type="hidden" name="id" id="id" value="">
                     <div class="form-group">
@@ -306,7 +306,7 @@
 <script>
 $(document).ready(function(){
 
-    $('#editCategory').on('show.bs.modal', function (event){
+    $('#editAssets').on('show.bs.modal', function (event){
         console.log("edit");
 
         var button = $(event.relatedTarget)

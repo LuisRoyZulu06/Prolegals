@@ -25,6 +25,7 @@
         <h1 class="subheader-title">
             Manage  Assets
                 <br>
+            <small>Add new Assets and Inventory Category </small>
             <a href="javascript:void(0);" class="btn btn-light hover-effect" data-toggle="modal" data-target="#addInvCat">
                 Add Categories
             </a>
@@ -39,7 +40,7 @@
     </div>
 
     <div class="row">
-        <div class="col-xl-3">
+        <div class="col-xl-4">
             <div id="panel-1" class="panel">
                 <div class="panel-hdr">
                     <h2> Inventory Categories </h2>
@@ -64,9 +65,8 @@
         <div class="col-xl-8">
             <div id="panel-1" class="panel">
                 <div class="panel-hdr">
-                    <h2>
-                       Assets 
-                    </h2>
+                    <h2> Assets </h2>
+                       <small> Availabe Assets </small>
                 </div>
 
                 <div class="panel-container show">

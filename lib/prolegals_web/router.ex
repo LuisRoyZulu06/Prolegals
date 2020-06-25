@@ -83,6 +83,8 @@ defmodule ProlegalsWeb.Router do
      get "/Asset", AdminController, :asset
      post "/Create/Asset", AdminController, :create_asset
      get "/Assets/View_Asset", AdminController, :view_asset
+     post "/Update/Asset", AdminController, :update_asset
+     get "/Delete/Asset", AdminController, :delete_asset
 
     # ---------------------------Legal Controller
     get "/Contacts", LegalController, :contacts
