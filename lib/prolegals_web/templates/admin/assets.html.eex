@@ -42,7 +42,7 @@
         <div class="col-xl-3">
             <div id="panel-1" class="panel">
                 <div class="panel-hdr">
-                    <h2> Categories </h2>
+                    <h2> Inventory Categories </h2>
                 </div>
 
                 <div class="panel-container show">

@@ -235,6 +235,10 @@ defmodule Prolegals.Security do
   """
   def get_asset!(id), do: Repo.get!(Asset, id)
 
+  def get_asset_by_category(id) do
+    Repo.get_by(Inventory, category_id: id)
+  end
+
   @doc """
   Creates a asset.
 
@@ -270,6 +274,8 @@ defmodule Prolegals.Security do
     |> Asset.changeset(attrs)
     |> Repo.update()
   end
+
+
 
   @doc """
   Deletes a asset.

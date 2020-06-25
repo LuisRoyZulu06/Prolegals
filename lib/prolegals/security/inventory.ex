@@ -5,6 +5,8 @@ defmodule Prolegals.Security.Inventory do
   schema "sec_tbl_inventory_categories" do
     field :category_code, :string
     field :name, :string
+    field :asset_id, :string
+    field :category_id, :string
 
     timestamps()
   end
@@ -12,7 +14,7 @@ defmodule Prolegals.Security.Inventory do
   @doc false
   def changeset(inventory, attrs) do
     inventory
-    |> cast(attrs, [:name, :category_code])
+    |> cast(attrs, [:name, :category_code, :asset_id])
     |> validate_required([:name, :category_code])
   end
 end

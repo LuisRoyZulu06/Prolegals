@@ -13,8 +13,10 @@ defmodule Prolegals.Security.Asset do
     field :serial_number, :string
     field :status, :string
     field :type, :string
+    # field :asset_id, :string
 
-    timestamps()
+    belongs_to :asset, Prolegals.Security.Inventory, foreign_key: :asset_id, type: :id
+    timestamps(type: :utc_datetime)
   end
 
   @doc false

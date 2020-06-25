@@ -115,14 +115,20 @@ defmodule ProlegalsWeb.AdminController do
     render(conn, "assets.html", assets: assets, inventories: inventories)
   end
 
-  def view_asset(conn, _params) do
+  def view_asset(conn, %{"id" => id}) do
+    IO.inspect "=========================================================="
+    IO.inspect id
     assets = Security.list_sec_tbl_assets()
     inventories = Security.list_sec_tbl_inventory_categories()
-    render(conn, "view_assets.html", assets: assets, inventories: inventories)
+    bluh = Security.get_asset_by_category(id)
+    render(conn, "view_assets.html", assets: assets, inventories: inventories, bluh: bluh)
   end
 
+
   def create_asset(conn, params) do
-  	case Security.create_asset(params) do
+    IO.inspect "=========================================================="
+    IO.inspect conn
+  	case Security.create_asset(Map.put(params, "asset_id", params["category_id"])) do
           {:ok, _} ->
             conn
             |> put_flash(:info, "Asset Added.")
