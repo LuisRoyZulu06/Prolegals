@@ -24,8 +24,16 @@
             <i class='subheader-icon fal fa-plus-circle'></i> Contacts
             <small>
                 Contacts of Business Associates <br>
-                <a href="javascript:void(0);" class="btn btn-light hover-effect" data-toggle="modal" data-target="#promptContact">
+                <a href="javascript:void(0);" class="btn btn-info waves-effect waves-themed" data-toggle="modal" data-target="#promptContact">
                     Add Contact
+                </a>
+
+                <a href="<%= Routes.system_directory_path(@conn, :index)%>" class="btn btn-primary waves-effect waves-themed">
+                    Directories
+                </a>
+
+                <a href="<%= Routes.legal_path(@conn, :contacts_trash)%>" class="btn btn-secondary waves-effect waves-themed">
+                    Deleted Contacts
                 </a>
             </small>
         </h1>
@@ -33,6 +41,7 @@
             <i class='subheader-icon fal fa-user'></i> <%= "#{String.capitalize(@conn.assigns.user.first_name)}"%> <%= "#{String.capitalize(@conn.assigns.user.last_name)}"%>  | <%= "#{String.capitalize(@conn.assigns.user.user_role)}"%>
         </div>
     </div>
+
     <div class="row">
         <div class="col-xl-12">
             <div class="border-faded bg-faded p-3 mb-g d-flex">
@@ -51,93 +60,97 @@
 
     <div class="row" id="js-contacts">
     <!-- Looping through main ocntent-->
-    <%= for contact <- @contacts do %>
-        <div class="col-xl-4">
-            <div id="c_1" class="card border shadow-0 mb-g shadow-sm-hover" data-filter-tags="<%= contact.name %>">
-                <div class="card-body border-faded border-top-0 border-left-0 border-right-0 rounded-top">
-                    <div class="d-flex flex-row align-items-center">
+        <%= for contact <- @contacts do %>
+            <%= if contact.status != "deleted" do %>
+                <div class="col-xl-4">
+                    <div id="c_1" class="card border shadow-0 mb-g shadow-sm-hover" data-filter-tags="<%= contact.name %>">
+                        <div class="card-body border-faded border-top-0 border-left-0 border-right-0 rounded-top">
+                            <div class="d-flex flex-row align-items-center">
 
-                        <span class="status status-success mr-3">
-                            <%= if contact.contact_type == "company" do %>
-                                <img class="profile-image rounded-circle" alt="App user" src="<%= Routes.static_path(@conn, "/images/avatar/7.png") %>"></span>
-                            <% else %>
-                                <img class="profile-image rounded-circle" alt="App user" src="<%= Routes.static_path(@conn, "/images/avatar/1.png") %>"></span>
-                            <% end %>
-                        </span>
-
-                        <div class="info-card-text flex-1">
-                            <a href="javascript:void(0);" class="fs-xl text-truncate text-truncate-lg text-info" data-toggle="dropdown" aria-expanded="false">
-                                <%= if contact.contact_type == "company" do %>
-                                    <%= contact.company_name %>
+                                <span class="status status-success mr-3">
+                                    <%= if contact.contact_type == "company" do %>
+                                        <img class="profile-image rounded-circle" alt="App user" src="<%= Routes.static_path(@conn, "/images/avatar/7.png") %>"></span>
                                     <% else %>
-                                    <%= contact.name %>
-                                <% end %>
-                                <i class="fal fa-angle-down d-inline-block ml-1 fs-md"></i>
-                            </a>
+                                        <img class="profile-image rounded-circle" alt="App user" src="<%= Routes.static_path(@conn, "/images/avatar/1.png") %>"></span>
+                                    <% end %>
+                                </span>
 
-                            <div class="dropdown-menu">
+                                <div class="info-card-text flex-1">
+                                    <a href="javascript:void(0);" class="fs-xl text-truncate text-truncate-lg text-info" data-toggle="dropdown" aria-expanded="false">
+                                        <%= if contact.contact_type == "company" do %>
+                                            <%= contact.company_name %>
+                                            <% else %>
+                                            <%= contact.name %>
+                                        <% end %>
+                                        <i class="fal fa-angle-down d-inline-block ml-1 fs-md"></i>
+                                    </a>
 
-                                <%= if contact.contact_type == "individual" do %>
-                                    <a class="dropdown-item" href="#" data-id="<%= contact.id %>" data-name="<%= contact.name %>" data-email="<%= contact.email %>" data-phone="<%= contact.phone %>" data-company_name="<%= contact.company_name %>" data-job_title="<%= contact.job_title %>" data-id_type="<%= contact.id_type %>" data-id_no="<%= contact.id_no %>" data-address="<%= contact.address %>" data-toggle="modal" data-target="#view-contact">View</a>
+                                    <div class="dropdown-menu">
 
-                                    <a class="dropdown-item" href="#" data-id="<%= contact.id %>" data-name="<%= contact.name %>" data-email="<%= contact.email %>" data-phone="<%= contact.phone %>" data-company_name="<%= contact.company_name %>" data-job_title="<%= contact.job_title %>" data-id_type="<%= contact.id_type %>" data-id_no="<%= contact.id_no %>" data-address="<%= contact.address %>" data-toggle="modal" data-target="#edit-contact">Edit Contact</a>
+                                        <%= if contact.contact_type == "individual" do %>
+                                            <a class="dropdown-item" href="#" data-id="<%= contact.id %>" data-name="<%= contact.name %>" data-email="<%= contact.email %>" data-phone="<%= contact.phone %>" data-company_name="<%= contact.company_name %>" data-job_title="<%= contact.job_title %>" data-id_type="<%= contact.id_type %>" data-id_no="<%= contact.id_no %>" data-address="<%= contact.address %>" data-toggle="modal" data-target="#view-contact">View</a>
 
-                                    <a class="dropdown-item" data-id="<%= contact.id %>" data-csfr="<%= Plug.CSRFProtection.get_csrf_token()%>" id="dt-contact">Delete Contact</a>
-                                <% else %>
-                                    <a class="dropdown-item" href="#" data-id="<%= contact.id %>" data-name="<%= contact.name %>" data-email="<%= contact.email %>" data-phone="<%= contact.phone %>" data-company_name="<%= contact.company_name %>" data-job-title="<%= contact.job_title %>" data-bus_category="<%= contact.bus_category %>" data-tel="<%= contact.tel %>" data-city="<%= contact.city %>" data-country="<%= contact.country %>" data-address="<%= contact.address %>" data-job_title="<%= contact.job_title %>" data-toggle="modal" data-target="#view-company">View</a>
+                                            <a class="dropdown-item" href="#" data-id="<%= contact.id %>" data-name="<%= contact.name %>" data-email="<%= contact.email %>" data-phone="<%= contact.phone %>" data-company_name="<%= contact.company_name %>" data-job_title="<%= contact.job_title %>" data-id_type="<%= contact.id_type %>" data-id_no="<%= contact.id_no %>" data-address="<%= contact.address %>" data-toggle="modal" data-target="#edit-contact">Edit Contact</a>
 
-                                    <a class="dropdown-item" href="#" data-id="<%= contact.id %>" data-name="<%= contact.name %>" data-email="<%= contact.email %>" data-phone="<%= contact.phone %>" data-company_name="<%= contact.company_name %>" data-job-title="<%= contact.job_title %>" data-bus_category="<%= contact.bus_category %>" data-tel="<%= contact.tel %>" data-city="<%= contact.city %>" data-country="<%= contact.country %>" data-address="<%= contact.address %>" data-job_title="<%= contact.job_title %>" data-toggle="modal" data-target="#edit-company">Edit Contact</a>
+                                            <a class="dropdown-item dt-contact" data-id="<%= contact.id %>" data-csfr="<%= Plug.CSRFProtection.get_csrf_token()%>">Delete Contact</a>
 
-                                    <a class="dropdown-item" data-id="<%= contact.id %>" data-csfr="<%= Plug.CSRFProtection.get_csrf_token()%>" id="dt-contact">Delete Contact</a>
-                                <% end %>
+                                        <% else %>
+
+                                            <a class="dropdown-item" href="#" data-id="<%= contact.id %>" data-name="<%= contact.name %>" data-email="<%= contact.email %>" data-phone="<%= contact.phone %>" data-company_name="<%= contact.company_name %>" data-job-title="<%= contact.job_title %>" data-bus_category="<%= contact.bus_category %>" data-tel="<%= contact.tel %>" data-city="<%= contact.city %>" data-country="<%= contact.country %>" data-address="<%= contact.address %>" data-job_title="<%= contact.job_title %>" data-toggle="modal" data-target="#view-company">View</a>
+
+                                            <a class="dropdown-item" href="#" data-id="<%= contact.id %>" data-name="<%= contact.name %>" data-email="<%= contact.email %>" data-phone="<%= contact.phone %>" data-company_name="<%= contact.company_name %>" data-job-title="<%= contact.job_title %>" data-bus_category="<%= contact.bus_category %>" data-tel="<%= contact.tel %>" data-city="<%= contact.city %>" data-country="<%= contact.country %>" data-address="<%= contact.address %>" data-job_title="<%= contact.job_title %>" data-toggle="modal" data-target="#edit-company">Edit Contact</a>
+
+                                            <a class="dropdown-item dt-contact" data-id="<%= contact.id %>" data-csfr="<%= Plug.CSRFProtection.get_csrf_token()%>">Delete Contact</a>
+                                        <% end %>
 
 
 
+                                    </div>
+                                    <span class="text-truncate text-truncate-xl">
+                                        <%= if contact.contact_type == "company" do %> 
+                                            <%= contact.name %> 
+                                        <% else %> 
+                                            <%= contact.company_name %> 
+                                        <% end %> 
+                                            <%= contact.job_title %>.
+                                    </span>
+                                </div>
+
+                                <button class="js-expand-btn btn btn-sm btn-default d-none" data-toggle="collapse" data-target="#c_1 > .card-body + .card-body" aria-expanded="false">
+                                    <span class="collapsed-hidden">+</span>
+                                    <span class="collapsed-reveal">-</span>
+                                </button>
                             </div>
-                            <span class="text-truncate text-truncate-xl">
-                                <%= if contact.contact_type == "company" do %> 
-                                    <%= contact.name %> 
-                                <% else %> 
-                                    <%= contact.company_name %> 
-                                <% end %> 
-                                    <%= contact.job_title %>.
-                            </span>
                         </div>
 
-                        <button class="js-expand-btn btn btn-sm btn-default d-none" data-toggle="collapse" data-target="#c_1 > .card-body + .card-body" aria-expanded="false">
-                            <span class="collapsed-hidden">+</span>
-                            <span class="collapsed-reveal">-</span>
-                        </button>
-                    </div>
-                </div>
+                        <%= if contact.contact_type == "company" do %>
+                        <div class="card-body p-0 collapse show">
+                            <div class="p-3">
+                                <a href="tel:company_tel" class="mt-1 d-block fs-sm fw-400 text-dark">
+                                    <i class="fal fa-mobile-alt text-muted mr-2"> </i><%= contact.tel %></a>
+                                <a href="mailto:company_email" class="mt-1 d-block fs-sm fw-400 text-dark">
+                                    <i class="fal fa-mouse-pointer text-muted mr-2"> </i> <%= contact.email %> </a>
+                                <address class="fs-sm fw-400 mt-4 text-muted">
+                                    <i class="fal fa-map-pin mr-2"> </i> <%= contact.city %> <%= contact.country %> <%= contact.address %> </address>
+                            </div>
+                        </div>
+                        <% else %>
+                        <div class="card-body p-0 collapse show">
+                            <div class="p-3">
+                                <a href="tel:company_tel" class="mt-1 d-block fs-sm fw-400 text-dark">
+                                    <i class="fal fa-mobile-alt text-muted mr-2"> </i><%= contact.phone %></a>
+                                <a href="mailto:company_email" class="mt-1 d-block fs-sm fw-400 text-dark">
+                                    <i class="fal fa-envelope text-muted mr-2"> </i> <%= contact.email %> </a>
+                                <address class="fs-sm fw-400 mt-4 text-muted">
+                                    <i class="fal fa-map-pin mr-2"> </i> <%= contact.address %> </address>
+                            </div>
+                        </div>
+                        <% end %>
 
-                <%= if contact.contact_type == "company" do %>
-                <div class="card-body p-0 collapse show">
-                    <div class="p-3">
-                        <a href="tel:company_tel" class="mt-1 d-block fs-sm fw-400 text-dark">
-                            <i class="fal fa-mobile-alt text-muted mr-2"> </i><%= contact.tel %></a>
-                        <a href="mailto:company_email" class="mt-1 d-block fs-sm fw-400 text-dark">
-                            <i class="fal fa-mouse-pointer text-muted mr-2"> </i> <%= contact.email %> </a>
-                        <address class="fs-sm fw-400 mt-4 text-muted">
-                            <i class="fal fa-map-pin mr-2"> </i> <%= contact.city %> <%= contact.country %> <%= contact.address %> </address>
                     </div>
                 </div>
-                <% else %>
-                <div class="card-body p-0 collapse show">
-                    <div class="p-3">
-                        <a href="tel:company_tel" class="mt-1 d-block fs-sm fw-400 text-dark">
-                            <i class="fal fa-mobile-alt text-muted mr-2"> </i><%= contact.phone %></a>
-                        <a href="mailto:company_email" class="mt-1 d-block fs-sm fw-400 text-dark">
-                            <i class="fal fa-envelope text-muted mr-2"> </i> <%= contact.email %> </a>
-                        <address class="fs-sm fw-400 mt-4 text-muted">
-                            <i class="fal fa-map-pin mr-2"> </i> <%= contact.address %> </address>
-                    </div>
-                </div>
-                <% end %>
-
-            </div>
-        </div> 
-    <% end %>
+            <% end %>     
+        <% end %>
     </div>
 </main>
 
@@ -155,20 +168,20 @@
             <div class="modal-body">
                 
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <a href="javascript:void(0);" data-toggle="modal" data-target="#promptIndividual" data-dismiss="modal" aria-label="Close">
                             <div id="cp-2" class="card border">
                                 <div class="card-header bg-primary-600">
                                     Individual
                                 </div>
-                                <div class="card-body p-0 bg-primary-300" style="height: 160px">
+                                <div class="card-body p-0 bg-primary-300" style="height: 130px">
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <h1 class="opacity-15" id="card-title">INDIVIDUAL</h1>  
                                             </div>
 
                                             <div class="col-sm-6">
-                                                <i class="fal fa-user position-absolute pos-middle pos-middle opacity-30 mb-n1 mr-n1" style="font-size:11rem;"></i>
+                                                <i class="fal fa-user position-absolute pos-middle pos-middle opacity-30 mb-n1 mr-n1" style="font-size:6rem;"></i>
                                             </div>
                                         </div> 
                                     </div>
@@ -179,24 +192,48 @@
                         </a>    
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <a href="javascript:void(0);" data-toggle="modal" data-target="#promptCompany" data-dismiss="modal" aria-label="Close">
                             <div id="cp-2" class="card border">
                                 <div class="card-header bg-info-600">
                                     Company
                                 </div>
-                                <div class="card-body p-0 bg-info-300" style="height: 160px">
+                                <div class="card-body p-0 bg-info-300" style="height: 130px">
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <h1 class="opacity-15" id="card-title">COMPANY</h1>  
                                             </div>
 
                                             <div class="col-sm-6">
-                                                <i class="fal fa-building position-absolute pos-middle pos-middle opacity-30 mb-n1 mr-n1" style="font-size:11rem;"></i>
+                                                <i class="fal fa-building position-absolute pos-middle pos-middle opacity-30 mb-n1 mr-n1" style="font-size:6rem;"></i>
                                             </div>
                                         </div> 
                                     </div>
                                 <div class="card-footer bg-info-800 py-2">
+                                    <br>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="col-md-4">
+                        <a href="javascript:void(0);" data-toggle="modal" data-target="#fileUpload" data-dismiss="modal" aria-label="Close">
+                            <div id="cp-2" class="card border">
+                                <div class="card-header bg-danger-600">
+                                    Bulk Contact Upload
+                                </div>
+                                <div class="card-body p-0 bg-danger-300" style="height: 130px">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <h1 class="opacity-15" id="card-title">BULK</h1>  
+                                            </div>
+
+                                            <div class="col-sm-6">
+                                                <i class="fal fa-folder position-absolute pos-middle pos-middle opacity-30 mb-n1 mr-n1" style="font-size:6rem;"></i>
+                                            </div>
+                                        </div> 
+                                    </div>
+                                <div class="card-footer bg-danger-800 py-2">
                                     <br>
                                 </div>
                             </div>
@@ -211,7 +248,9 @@
     </div>
 </div>
 
-<!-- ############################### ADD-INDIVIDUAL MODAL #################################### -->
+
+<!------------------------------------------------------------------------------------Individual Modals -->
+<!-- ############################### ADD-INDIVIDUAL #################################### -->
 <div class="modal fade" id="promptIndividual" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -223,7 +262,7 @@
             </div>
 
             <div class="modal-body">                
-                <form action="<%= Routes.legal_path(@conn, :create_contact)%>" method="POST">
+                <form action="<%= Routes.legal_path(@conn, :create_contact)%>" enctype="multipart/form-data" method="POST">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
@@ -277,21 +316,9 @@
                             </div>
 
                             <div class="form-group">
-                                <h5 class="frame-heading">Enable or Disable client access portal.</h5>
-                                <div class="frame-wrap demo">
-                                    <div class="demo">
-                                        <div class="custom-control custom-switch">
-                                            <input type="radio" class="custom-control-input" id="customSwitch1radio" name="client_portal">
-                                            <label class="custom-control-label" for="customSwitch1radio">Disable</label>
-                                        </div>
-                                        <div class="custom-control custom-switch">
-                                            <input type="radio" class="custom-control-input" id="customSwitch2radio" checked="" name="client_portal">
-                                            <label class="custom-control-label" for="customSwitch2radio">Enable</label>
-                                        </div>
-                                    </div>
-                                </div>
+                                <input type="checkbox" name="client_portal" value="private">
+                                <label for="vehicle2"> Enable or Disable client access portal.</label>
                             </div>
-
                         </div>
                     </div>
 
@@ -306,7 +333,9 @@
     </div>
 </div>
 
-<!-- ############################### ADD-COMPANY MODAL #################################### -->
+
+<!------------------------------------------------------------------------------------Company Modals -->
+<!-- ############################### ADD-COMPANY #################################### -->
 <div class="modal fade" id="promptCompany" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -318,7 +347,7 @@
             </div>
 
             <div class="modal-body">                
-                <form action="<%= Routes.legal_path(@conn, :create_contact)%>" method="POST">
+                <form action="<%= Routes.legal_path(@conn, :create_contact)%>" enctype="multipart/form-data" method="POST">
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
@@ -330,7 +359,9 @@
                                     <input type="text" name="company_name" placeholder="Name of Company" class="form-control" required="required">
                                     <select class="custom-select form-control" name="bus_category" required="required">
                                         <option selected="">Select Business Category</option>
-                                        <option value="tech">Tech</option>
+                                        <%= for business_type <-@business_type do %>
+                                        <option value="<%= business_type.business_type %>"><%= business_type.business_type %></option>
+                                        <% end %>
                                     </select>
                                     <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
                                     <input type="hidden" name="contact_type" value="company">
@@ -373,21 +404,9 @@
                             </div>
 
                             <div class="form-group">
-                                <h5 class="frame-heading">Enable or Disable client access portal.</h5>
-                                <div class="frame-wrap demo">
-                                    <div class="demo">
-                                        <div class="custom-control custom-switch">
-                                            <input type="checkbox" name="client_portal" class="custom-control-input" id="customSwitch1">
-                                            <label class="custom-control-label" for="customSwitch1">Disable</label>
-                                        </div>
-                                        <div class="custom-control custom-switch">
-                                            <input type="checkbox" name="client_portal" class="custom-control-input" id="customSwitch2" checked="">
-                                            <label class="custom-control-label" for="customSwitch2">Enable</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
+                                <input type="checkbox" name="client_portal" value="private">
+                                <label for="vehicle2"> Enable or Disable client access portal.</label>
+                            </div>                            
                         </div>
                     </div>
 
@@ -401,6 +420,54 @@
         </div>
     </div>
 </div>
+
+<!-----------------------------------------------------------------------------------Bulk Contact Upload-->
+<!-- ############################### INDIVIDUAL-BULK #################################### -->
+<div class="modal fade" id="fileUpload" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">UPLOAD NEW FILE <i class="fal fa-folder-open"></i> </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="fal fa-times"></i></span>
+                </button>
+            </div>
+
+            <div class="modal-body">                
+                <form action="<%= Routes.legal_path(@conn, :create_bulk_contact)%>" enctype="multipart/form-data" method="POST">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">Upload File</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-file"></i></span>
+                                    </div>
+                                    <input type="file" name="contact_bulk_filename" class="form-control" required="required">
+                                    <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
+                                    <input type="hidden" name="contact_type" value="individual">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <input type="checkbox" name="client_portal" value="private">
+                                <label for="vehicle2"> Enable or Disable client access portal.</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-info">Upload</button>
+                    </div>                   
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
 
 <!------------------------------------------------------------------------------------Edit Modals -->
 <!-- ############################### EDIT INDIVIDUAL DETAILS #################################### -->
@@ -507,26 +574,15 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <h5 class="frame-heading">Enable or Disable client access portal.</h5>
-                                <div class="frame-wrap demo">
-                                    <div class="demo">
-                                        <div class="custom-control custom-checkbox custom-control-inline">
-                                            <input type="checkbox" class="custom-control-input" id="defaultInline1">
-                                            <label class="custom-control-label" for="defaultInline1">Disable</label>
-                                        </div>
-                                        <div class="custom-control custom-checkbox custom-control-inline">
-                                            <input type="checkbox" class="custom-control-input" id="defaultInline2" checked="">
-                                            <label class="custom-control-label" for="defaultInline2">Enable</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                                <input type="checkbox" name="client_portal" value="private">
+                                <label for="vehicle2"> Enable or Disable client access portal.</label>
+                            </div>   
                         </div>
                     </div>    
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-info">Edit</button>
+                        <button type="submit" class="btn btn-info">Update</button>
                     </div>                   
                 </form>
             </div>
@@ -534,7 +590,7 @@
         </div>
     </div>
 </div>
-
+    
 <!-- ############################### EDIT COMPANY DETAILS #################################### -->
 <div class="modal fade" id="edit-company" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
@@ -659,26 +715,15 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <h5 class="frame-heading">Enable or Disable client access portal.</h5>
-                                <div class="frame-wrap demo">
-                                    <div class="demo">
-                                        <div class="custom-control custom-checkbox custom-control-inline">
-                                            <input type="checkbox" class="custom-control-input" id="defaultInline1">
-                                            <label class="custom-control-label" for="defaultInline1">Disable</label>
-                                        </div>
-                                        <div class="custom-control custom-checkbox custom-control-inline">
-                                            <input type="checkbox" class="custom-control-input" id="defaultInline2" checked="">
-                                            <label class="custom-control-label" for="defaultInline2">Enable</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                                <input type="checkbox" name="client_portal" value="private">
+                                <label for="vehicle2"> Enable or Disable client access portal.</label>
+                            </div>   
                         </div>
                     </div>    
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-info">Edit</button>
+                        <button type="submit" class="btn btn-info">Update</button>
                     </div>                   
                 </form>
             </div>
@@ -959,7 +1004,6 @@
 </div>
 
 
-<!-- ############################## DELETE-ALERT MODAL ################################## -->
 <!-----------------------------------------------------------------------------------------Modal Rendering scripts -->
 <script src="<%= Routes.static_path(@conn, "/js/jquery-1.11.2.min.js") %>"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
@@ -997,7 +1041,7 @@ $('#edit-contact').on('show.bs.modal', function (event){
 <!----------------------------------------------------------------View Individual Details -->
 <script>
 $(document).ready(function(){
-//Edit Individual
+//View Individual Details
 $('#view-contact').on('show.bs.modal', function (event){
     var button = $(event.relatedTarget)
     var id = button.data('id')
@@ -1061,7 +1105,7 @@ $('#edit-company').on('show.bs.modal', function (event){
 <!--------------------------------------------------------------------View Company Details -->
 <script>
 $(document).ready(function(){
-//Edit Company
+//View Company Details
 $('#view-company').on('show.bs.modal', function (event){
     var button = $(event.relatedTarget)
     var id = button.data('id')
