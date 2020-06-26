@@ -1,4 +1,4 @@
-<!-- ####################################################### FLASH ################## -->
+<!-----------------------------------------------------------------------------------------Flash -->
     <div class="row">
         <div class="col-md-12 col-lg-offset-2">
             <div class="form-group">
@@ -17,24 +17,9 @@
             </div>
         </div>
     </div>
-    <!-- ################################################################################ -->
-<%# <div class="alert alert-primary">
-    <div class="d-flex flex-start w-100">
-        <div class="mr-2 hidden-md-down">
-            <span class="icon-stack icon-stack-lg">
-                <i class="base base-6 icon-stack-3x opacity-100 color-primary-500"></i>
-                <i class="base base-10 icon-stack-2x opacity-100 color-primary-300 fa-flip-vertical"></i>
-                <i class="fal fa-info icon-stack-1x opacity-100 color-white"></i>
-            </span>
-        </div>
-        <div class="d-flex flex-fill">
-            <div class="flex-fill">
-                <span class="h5">Add Case</span>
-                <br>Progress components are built with two HTML elements, some CSS to set the width, and a few attributes. We don’t use <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/progress" target="_blank">the HTML5 <code>&lt;progress&gt;</code> element</a>, ensuring you can stack progress bars, animate them, and place text labels over them.
-            </div>
-        </div>
-    </div>
-</div> %>
+<!------------------------------------------------------------------------------------------------->
+
+
 <div class="subheader">
     <h1 class="subheader-title">
         <i class='subheader-icon fal fa-shopping-bag'></i> Cases
@@ -87,10 +72,24 @@
                                         <i class='subheader-icon fal fa-chevron-down'></i>
                                     </span>
                                     <div class="dropdown-menu">
-                                         <a class="dropdown-item"><i class='subheader-icon fal fa-eye'></i> View</a>
-                                        <button type="button" class="dropdown-item" data-toggle="modal" data-target="#editmodal" ><i class='subheader-icon fal fa-edit'></i>Edit</button>                                         
-                                        <a class="dropdown-item" data-toggle="modal" data-target="#deactivate_user"><i class='subheader-icon fal fa-times'></i>Deactive</a>
-                                        
+                                        <a class="dropdown-item" data-id="<%= case.id %>" data-case_name="<%= case.case_name %>" data-case_no="<%= case.case_no %>" data-case_status="<%= case.case_status %>" data-practice_area="<%= case.practice_area %>" data-case_description="<%= case.case_description %>" data-client="<%= case.client %>" data-staff="<%= case.staff %>" data-incident_date="<%= case.incident_date %>" data-date_case_opened="<%= case.date_case_opened %>" data-toggle="modal" data-target="#view-case">
+                                            <i class='subheader-icon fal fa-eye'></i> 
+                                            View
+                                        </a>
+
+                                        <a class="dropdown-item" data-id="<%= case.id %>" data-case_name="<%= case.case_name %>" data-case_no="<%= case.case_no %>" data-case_status="<%= case.case_status %>" data-practice_area="<%= case.practice_area %>" data-case_description="<%= case.case_description %>" data-client="<%= case.client %>" data-staff="<%= case.staff %>" data-incident_date="<%= case.incident_date %>" data-date_case_opened="<%= case.date_case_opened %>" data-toggle="modal" data-target="#edit-case">
+                                            <i class='subheader-icon fal fa-edit'></i> 
+                                            Edit
+                                        </a>
+
+                                        <a href="<%= Routes.legal_path(@conn, :case_update)%>" type="button" class="dropdown-item">
+                                            <i class='subheader-icon fal fa-file'></i>
+                                            Report
+                                        </a>                                         
+                                        <a class="dropdown-item" data-toggle="modal" data-target="#deactivate_user">
+                                            <i class='subheader-icon fal fa-times'></i>
+                                            Close Case
+                                        </a>                                        
                                     </div>
                                 </div>
                             </div>
@@ -140,10 +139,17 @@
                                     </div>
                                     <select class="custom-select form-control" name="practice_area" required="required">
                                         <option selected="">Select Practice Area</option>
-                                        <option value="option 1">Option 1</option>
+                                        <%= for case_type<-@case_type do %>
+                                            <option value="<%= case_type.category %>"><%= case_type.category %></option>
+                                        <% end %>
                                     </select>
 
-                                    <input type="text" name="case_description" placeholder="Case Description" class="form-control" required="required">
+                                    <select class="custom-select form-control" name="case_description" required="required">
+                                        <option selected="">Select case decription</option>
+                                        <%= for case_type<-@case_type do %>
+                                            <option value="<%= case_type.description %>"><%= case_type.description %></option>
+                                        <% end %>
+                                    </select>
                                 </div>
                             </div>
 
@@ -155,12 +161,18 @@
                                     </div>
                                     <select class="custom-select form-control" name="client" required="required">
                                         <option selected="">Select client</option>
-                                        <option value="client 1">Client 1</option>
+                                        <%= for contact <-@contacts do %>
+                                            <option value="<%= contact.name %>"><%= contact.name %></option>
+                                        <% end %>
                                     </select>
 
                                     <select class="custom-select form-control" name="staff" required="required">
                                         <option selected="">Select staff</option>
-                                        <option value="staff 1">Staff 1</option>
+                                        <%= for user <-@users do %>
+                                            <%= if user.user_role == "litigation" do %>
+                                                <option value="<%= user.first_name %> <%= user.last_name %>"><%= user.first_name %> <%= user.last_name %></option>
+                                            <% end %>
+                                        <% end %>
                                     </select>
                                 </div>
                             </div>
@@ -203,3 +215,250 @@
         </div>
     </div>
 </div>
+
+<!-- ############################### VIEW-CASE MODAL #################################### -->
+<div class="modal fade" id="view-case" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">VIEW CASE <i class='subheader-icon fal fa-eye'></i> </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="fal fa-times"></i></span>
+                </button>
+            </div>
+
+            <div class="modal-body">                
+                <form action="#" method="POST">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">Case ID</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-shopping-bag"></i></span>
+                                    </div>
+                                    <input type="text" id="case_name" class="form-control" disabled="disabled">
+                                    <input type="text" id="case_no" class="form-control" disabled="disabled">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Case Details</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-shopping-bag"></i></span>
+                                    </div>
+                                    <input type="text" id="practice_area" class="form-control" disabled="disabled">
+                                    <input type="text" id="case_description" class="form-control" disabled="disabled">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Client</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-user"></i></span>
+                                    </div>
+                                    <input type="text" id="client" class="form-control" disabled="disabled">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Staff</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-user"></i></span>
+                                    </div>
+                                    <input type="text" id="staff" class="form-control" disabled="disabled">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Date of Incident</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-clock"></i></span>
+                                    </div>
+                                    <input type="text" id="incident_date" class="form-control" disabled="disabled">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Case Date</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-clock"></i></span>
+                                    </div>
+                                    <input type="text" id="date_case_opened" class="form-control" disabled="disabled">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>                   
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- ############################### EDIT-CASE MODAL #################################### -->
+<div class="modal fade" id="edit-case" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">EDIT CASE <i class='subheader-icon fal fa-edit'></i> </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="fal fa-times"></i></span>
+                </button>
+            </div>
+
+            <div class="modal-body">                
+                <form action="<%= Routes.legal_path(@conn, :edit_case)%>" method="POST">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">Case ID</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-shopping-bag"></i></span>
+                                    </div>
+                                    <input type="text" name="case_name" id="case_name" class="form-control" required="required">
+                                    <input type="text" name="case_no" id="case_no" class="form-control" required="required">
+                                    <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
+                                    <input type="hidden" name="id" id="id">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Case Details</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-shopping-bag"></i></span>
+                                    </div>
+                                    <input type="text" name="practice_area" id="practice_area" class="form-control" required="required">
+                                    <input type="text" name="case_description" id="case_description" class="form-control" required="required">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Client</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-user"></i></span>
+                                    </div>
+                                    <input type="text" name="client" id="client" class="form-control" required="required">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Staff</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-user"></i></span>
+                                    </div>
+                                    <input type="text" name="staff" id="staff" class="form-control" required="required">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Date of Incident</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-clock"></i></span>
+                                    </div>
+                                    <input type="text" name="incident_date" id="incident_date" class="form-control" required="required">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Case Date</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-clock"></i></span>
+                                    </div>
+                                    <input type="text" name="date_case_opened" id="date_case_opened" class="form-control" required="required">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-info">Update</button>
+                    </div>                   
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-----------------------------------------------------------------------------------------Modal Rendering scripts -->
+<script src="<%= Routes.static_path(@conn, "/js/jquery-1.11.2.min.js") %>"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<!----------------------------------------------------------------View Case Details -->
+<script>
+$(document).ready(function(){
+//View Case Details
+$('#view-case').on('show.bs.modal', function (event){
+    var button = $(event.relatedTarget)
+    var id = button.data('id')
+    var case_name = button.data('case_name')
+    var case_no = button.data('case_no')
+    var practice_area = button.data('practice_area')
+    var case_description = button.data('case_description')
+    var client = button.data('client')
+    var staff = button.data('staff')
+    var incident_date = button.data('incident_date')
+    var date_case_opened = button.data('date_case_opened')
+    
+    var modal = $(this)
+    modal.find('.modal-body #id').val(id);
+    modal.find('.modal-body #case_name').val(case_name);
+    modal.find('.modal-body #case_no').val(case_no);
+    modal.find('.modal-body #practice_area').val(practice_area);
+    modal.find('.modal-body #case_description').val(case_description);
+    modal.find('.modal-body #client').val(client);
+    modal.find('.modal-body #staff').val(staff);
+    modal.find('.modal-body #incident_date').val(incident_date);
+    modal.find('.modal-body #date_case_opened').val(date_case_opened);
+});
+});
+</script>
+
+
+<!----------------------------------------------------------------Edit Case Details -->
+<script>
+$(document).ready(function(){
+//View Case Details
+$('#edit-case').on('show.bs.modal', function (event){
+    var button = $(event.relatedTarget)
+    var id = button.data('id')
+    var case_name = button.data('case_name')
+    var case_no = button.data('case_no')
+    var practice_area = button.data('practice_area')
+    var case_description = button.data('case_description')
+    var client = button.data('client')
+    var staff = button.data('staff')
+    var incident_date = button.data('incident_date')
+    var date_case_opened = button.data('date_case_opened')
+    
+    var modal = $(this)
+    modal.find('.modal-body #id').val(id);
+    modal.find('.modal-body #case_name').val(case_name);
+    modal.find('.modal-body #case_no').val(case_no);
+    modal.find('.modal-body #practice_area').val(practice_area);
+    modal.find('.modal-body #case_description').val(case_description);
+    modal.find('.modal-body #client').val(client);
+    modal.find('.modal-body #staff').val(staff);
+    modal.find('.modal-body #incident_date').val(incident_date);
+    modal.find('.modal-body #date_case_opened').val(date_case_opened);
+});
+});
+</script>

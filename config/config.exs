@@ -17,6 +17,24 @@ config :prolegals, ProlegalsWeb.Endpoint,
   render_errors: [view: ProlegalsWeb.ErrorView, accepts: ~w(html json)],
   pubsub: [name: Prolegals.PubSub, adapter: Phoenix.PubSub.PG2]
 
+
+# ------------------------Email Config -------------------------------#
+config :Prolegals, Prolegals.Emails.Mailer,
+  adapter: Bamboo.SMTPAdapter,
+  server: "smtp.gmail.com",
+  port: 587,
+  # or {:system, "SMTP_USERNAME"}
+  username: "johnmfula360@gmail.com",
+  # or {:system, "SMTP_PASSWORD"}
+  password: "john@360",
+  # can be `:always` or `:never`
+  tls: :if_available,
+  allowed_tls_versions: [:tlsv1, :"tlsv1.1", :"tlsv1.2"],
+  # can be `true`
+  ssl: false,
+  retries: 2
+
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",

@@ -3,44 +3,49 @@ defmodule ProlegalsWeb.AdminController do
 
   alias Prolegals.{Logs, Repo, Logs.UserLogs, Auth}
   alias Prolegals.Security
-  alias Prolegals.Security.AmmunitionInventory
-  alias Prolegals.Security.FirearmsInventory
+  alias Prolegals.Security.Inventory
+  alias Prolegals.Security.Asset
 
   def index(conn, _params) do
     render(conn, "index.html")
   end
 
 
-  #------------------------------create ammo ontroller
+  #------------------------------Inventory controller
 
-  def ammunition(conn, _params) do
-    ammunitions = Security.list_sec_tbl_ammunition()
-    render(conn, "ammunition.html", ammunitions: ammunitions)
+  def inventory(conn, _params) do
+    inventories = Security.list_sec_tbl_inventory_categories()
+    render(conn, "inventory.html", inventories: inventories)
   end
 
-  def create_ammunition_inventory(conn, params) do
-  	case Security.create_ammunition_inventory(params) do
+  def view_assets(conn, %{"id" => id}) do
+    inventories = Security.get_inventory!(id)
+    render(conn, "view_assets.html", inventories: inventories)
+  end
+
+  def create_inventory(conn, params) do
+  	case Security.create_inventory(params) do
           {:ok, _} ->
             conn
-            |> put_flash(:info, "Ammunition Added.")
-            |> redirect(to: Routes.admin_path(conn, :ammunition))
+            |> put_flash(:info, "A New Inventory Category Has Been Added Successfully.")
+            |> redirect(to: Routes.admin_path(conn, :inventory))
 
             conn
 
           {:error, _} ->
             conn
-            |> put_flash(:error, "Failed to add ammunition!")
-            |> redirect(to: Routes.admin_path(conn, :ammunition))
+            |> put_flash(:error, "Failed To Add A New Category!")
+            |> redirect(to: Routes.admin_path(conn, :inventory))
     end
   end
 
-  def update_ammunition_inventory(conn, %{"id" => id} = params) do
-    ammunition = Security.get_ammunition_inventory!(id)
+  def update_inventory(conn, %{"id" => id} = params) do
+    inventories = Security.get_inventory!(id)
 
     Ecto.Multi.new()
-    |> Ecto.Multi.update(:ammunition, AmmunitionInventory.changeset(ammunition, params))
-    |> Ecto.Multi.run(:userlogs, fn %{ammunition: ammunition} ->
-      activity = "Ammuntion updated with ID \"#{ammunition.id}\""
+    |> Ecto.Multi.update(:inventories, Inventory.changeset(inventories, params))
+    |> Ecto.Multi.run(:userlogs, fn %{inventories: inventories} ->
+      activity = "Category updated with ID \"#{inventories.id}\""
 
       userlogs = %{
         user_id: conn.assigns.user.id,
@@ -52,150 +57,158 @@ defmodule ProlegalsWeb.AdminController do
     end)
     |> Repo.transaction()
     |> case do
-      {:ok, %{ammunition: _ammunition, userlogs: _userlogs}} ->
+      {:ok, %{inventories: _inventories, userlogs: _userlogs}} ->
         conn
-        |> put_flash(:info, "Ammunition updated")
-        |> redirect(to: Routes.admin_path(conn, :ammunition))
-
-        {:error, %{ammunition: _ammunition, userlogs: _userlogs}} ->
-          conn
-          |> put_flash(:error, "Failed to update ammunition details.")
-          |> redirect(to: Routes.admin_path(conn, :ammunition))
-        # {:error, failed_operation, failed_value, changes_so_far} ->
-        #   reason = VehicleController.traverse_errors(failed_value.errors) |> List.first()
-
-        # conn
-        # |> put_flash(:error, reason)
-        # |> redirect(to: Routes.vehicle_path(conn, :list_vehicles))
-    end
-end
-
-def delete_ammunition_inventory(conn, %{"id" => id}) do
-  ammunition = Security.get_ammunition_inventory!(id)
-
-  Ecto.Multi.new()
-  |> Ecto.Multi.delete(:ammunition, ammunition)
-  |> Ecto.Multi.run(:userlogs, fn %{ammunition: ammunition} ->
-    activity = "Ammunition Removed From Inventory with ID \"#{ammunition.id}\""
-
-    userlogs = %{
-      user_id: conn.assigns.user.id,
-      activity: activity
-    }
-
-    UserLogs.changeset(%UserLogs{}, userlogs)
-    |> Repo.insert()
-  end)
-  |> Repo.transaction()
-  |> case do
-    {:ok, %{ammunition: _ammunition, userlogs: _userlogs}} ->
-      conn
-      |> put_flash(:info, "Ammunition deleted from system.")
-      |> redirect(to: Routes.admin_path(conn, :ammunition))
-
-    # {:error, _failed_operation, failed_value, _changes_so_far} ->
-    #  reason = AdminController._traverse_errors(failed_value.errors) |> List.first()
-
-    #  conn
-    #  |> put_flash(:error, reason)
-    #  |> redirect(to: Routes.admin_path(conn, :ammunition))
-  end
-end
-
-  #------------------------------create gun controller
-
-  def firearm(conn, _params) do
-    firearms = Security.list_sec_tbl_firearms()
-    render(conn, "firearm.html", firearms: firearms)
-  end
-
-  def view_firearm(conn, _params) do
-    firearms = Security.list_sec_tbl_firearms()
-    render(conn, "view_firearm.html", firearms: firearms)
-  end
-
-  def create_firearms_inventory(conn, params) do
-  	case Security.create_firearms_inventory(params) do
-          {:ok, _} ->
-            conn
-            |> put_flash(:info, "Firearm Added.")
-            |> redirect(to: Routes.admin_path(conn, :firearm))
-
-            conn
-
-          {:error, _} ->
-            conn
-            |> put_flash(:error, "Failed to add Firearm!")
-            |> redirect(to: Routes.admin_path(conn, :firearm))
-    end
-  end
-
-  def update_firearms_inventory(conn, %{"id" => id} = params) do
-    firearms = Security.get_firearms_inventory!(id)
-
-    Ecto.Multi.new()
-    |> Ecto.Multi.update(:firearms, FirearmsInventory.changeset(firearms, params))
-    |> Ecto.Multi.run(:userlogs, fn %{firearms: firearms} ->
-      activity = "firearms updated with ID \"#{firearms.id}\""
-
-      userlogs = %{
-        user_id: conn.assigns.user.id,
-        activity: activity
-      }
-
-      UserLogs.changeset(%UserLogs{}, userlogs)
-      |> Repo.insert()
-    end)
-    |> Repo.transaction()
-    |> case do
-      {:ok, %{firearms: _firearms, userlogs: _userlogs}} ->
-        conn
-        |> put_flash(:info, "firearms updated")
-        |> redirect(to: Routes.admin_path(conn, :firearm))
+        |> put_flash(:info, "Category Has Been Updated Successfully")
+        |> redirect(to: Routes.admin_path(conn, :inventory))
 
         {:error, %{firearms: _firearms, userlogs: _userlogs}} ->
           conn
-          |> put_flash(:error, "Failed to update firearms details.")
-          |> redirect(to: Routes.admin_path(conn, :firearm))
+          |> put_flash(:error, "Failed To Update Category Details.")
+          |> redirect(to: Routes.admin_path(conn, :inventory))
         # {:error, failed_operation, failed_value, changes_so_far} ->
         #   reason = VehicleController.traverse_errors(failed_value.errors) |> List.first()
 
         # conn
         # |> put_flash(:error, reason)
         # |> redirect(to: Routes.vehicle_path(conn, :list_vehicles))
-    end
-end
-
-def delete_firearms_inventory(conn, %{"id" => id}) do
-  firearms = Security.get_firearms_inventory!(id)
-
-  Ecto.Multi.new()
-  |> Ecto.Multi.delete(:firearms, firearms)
-  |> Ecto.Multi.run(:userlogs, fn %{firearms: firearms} ->
-    activity = "Firearm Removed From Inventory with ID \"#{firearms.id}\""
-
-    userlogs = %{
-      user_id: conn.assigns.user.id,
-      activity: activity
-    }
-
-    UserLogs.changeset(%UserLogs{}, userlogs)
-    |> Repo.insert()
-  end)
-  |> Repo.transaction()
-  |> case do
-    {:ok, %{firearms: _firearms, userlogs: _userlogs}} ->
-      conn
-      |> put_flash(:info, "Firearm deleted from system.")
-      |> redirect(to: Routes.admin_path(conn, :firearm))
-
-    # {:error, _failed_operation, failed_value, _changes_so_far} ->
-    #  reason = AdminController._traverse_errors(failed_value.errors) |> List.first()
-
-    #  conn
-    #  |> put_flash(:error, reason)
-    #  |> redirect(to: Routes.admin_path(conn, :ammunition))
+      end
   end
-end
+
+  def delete_inventory(conn, %{"id" => id}) do
+    inventories = Security.get_inventory!(id)
+
+    Ecto.Multi.new()
+    |> Ecto.Multi.delete(:inventories, inventories)
+    |> Ecto.Multi.run(:userlogs, fn %{inventories: inventories} ->
+      activity = "Category Deleted \"#{inventories.id}\""
+
+      userlogs = %{
+        user_id: conn.assigns.user.id,
+        activity: activity
+      }
+
+      UserLogs.changeset(%UserLogs{}, userlogs)
+      |> Repo.insert()
+    end)
+    |> Repo.transaction()
+    |> case do
+      {:ok, %{inventories: _inventories, userlogs: _userlogs}} ->
+        conn
+        |> put_flash(:info, "Category Has Been Deleted.")
+        |> redirect(to: Routes.admin_path(conn, :inventory))
+
+      # {:error, _failed_operation, failed_value, _changes_so_far} ->
+      #  reason = AdminController._traverse_errors(failed_value.errors) |> List.first()
+
+      #  conn
+      #  |> put_flash(:error, reason)
+      #  |> redirect(to: Routes.admin_path(conn, :inventory))
+    end
+  end
+
+  # ------------------------------------ Assets Controller
+
+  def asset(conn, _params) do
+    assets = Security.list_sec_tbl_assets()
+    inventories = Security.list_sec_tbl_inventory_categories()
+    render(conn, "assets.html", assets: assets, inventories: inventories)
+  end
+
+  def view_asset(conn, %{"id" => id}) do
+    IO.inspect "=========================================================="
+    IO.inspect id
+    assets = Security.list_sec_tbl_assets()
+    inventories = Security.list_sec_tbl_inventory_categories()
+    bluh = Security.get_asset_by_category(id)
+    render(conn, "view_assets.html", assets: assets, inventories: inventories, bluh: bluh)
+  end
+
+
+  def create_asset(conn, params) do
+    IO.inspect "=========================================================="
+    IO.inspect conn
+  	case Security.create_asset(Map.put(params, "asset_id", params["category_id"])) do
+          {:ok, _} ->
+            conn
+            |> put_flash(:info, "A New Asset Has Been Added successfully.")
+            |> redirect(to: Routes.admin_path(conn, :asset))
+
+            conn
+
+          {:error, _} ->
+            conn
+            |> put_flash(:error, "Failed To Add Asset!")
+            |> redirect(to: Routes.admin_path(conn, :asset))
+    end
+  end
+
+  def update_asset(conn, %{"id" => id} = params) do
+    assets = Security.get_asset!(id)
+
+    Ecto.Multi.new()
+    |> Ecto.Multi.update(:assets, Asset.changeset(assets, params))
+    |> Ecto.Multi.run(:userlogs, fn %{assets: assets} ->
+      activity = "Asset updated with ID \"#{assets.id}\""
+
+      userlogs = %{
+        user_id: conn.assigns.user.id,
+        activity: activity
+      }
+
+      UserLogs.changeset(%UserLogs{}, userlogs)
+      |> Repo.insert()
+    end)
+    |> Repo.transaction()
+    |> case do
+      {:ok, %{assets: _assets, userlogs: _userlogs}} ->
+        conn
+        |> put_flash(:info, "The Asset Has Been Updated Successfully")
+        |> redirect(to: Routes.admin_path(conn, :asset))
+
+        {:error, %{firearms: _firearms, userlogs: _userlogs}} ->
+          conn
+          |> put_flash(:error, "Failed To uUpdate The Asset details.")
+          |> redirect(to: Routes.admin_path(conn, :asset))
+        # {:error, failed_operation, failed_value, changes_so_far} ->
+        #   reason = VehicleController.traverse_errors(failed_value.errors) |> List.first()
+
+        # conn
+        # |> put_flash(:error, reason)
+        # |> redirect(to: Routes.vehicle_path(conn, :list_vehicles))
+      end
+  end
+
+  def delete_asset(conn, %{"id" => id}) do
+    assets = Security.get_asset!(id)
+
+    Ecto.Multi.new()
+    |> Ecto.Multi.delete(:assets, assets)
+    |> Ecto.Multi.run(:userlogs, fn %{assets: assets} ->
+      activity = "Asset Deleted \"#{assets.id}\""
+
+      userlogs = %{
+        user_id: conn.assigns.user.id,
+        activity: activity
+      }
+
+      UserLogs.changeset(%UserLogs{}, userlogs)
+      |> Repo.insert()
+    end)
+    |> Repo.transaction()
+    |> case do
+      {:ok, %{assets: _assets, userlogs: _userlogs}} ->
+        conn
+        |> put_flash(:info, "Asset Deleted.")
+        |> redirect(to: Routes.admin_path(conn, :asset))
+
+      # {:error, _failed_operation, failed_value, _changes_so_far} ->
+      #  reason = AdminController._traverse_errors(failed_value.errors) |> List.first()
+
+      #  conn
+      #  |> put_flash(:error, reason)
+      #  |> redirect(to: Routes.admin_path(conn, :inventory))
+    end
+  end
 
 end

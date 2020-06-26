@@ -47,17 +47,41 @@ defmodule ProlegalsWeb.Router do
     # ---------------------------User Maintenance
     get "/User/Maintenance", UserController, :user_management
     post "/Create/User", UserController, :create_user
+    get "/User/Activity/Logs", UserController, :user_logs
 
-    # ---------------------------Legal Controller
-    get "/Contacts", LegalController, :contacts
-    post "/Create/Contact", LegalController, :create_contact
+    # ---------------------------------------------------LEGAL CONTROLLER
+    # ------------------------------ Case_Mgt
     get "/Manage/Cases", LegalController, :case_mgt
     post "/Add/New/Case", LegalController, :create_case
+    post "/Update/Case/Details", LegalController, :edit_case
+    get "/Case/Updates", LegalController, :case_update
+    post "/New/Evidence", LegalController, :evidence_update
     get "/Notifications", LegalController, :notifications
+
+    # ------------------------------ Task_Mgt
     get "/Tasks", LegalController, :tasks
     post "/Create/Event", LegalController, :create_task
+    get "/Types/of/Cases", LegalController, :practice_area
+    post "/Create/Case/Type", LegalController, :create_case_type
+    post "/Update/Case/Type", LegalController, :update_case_type
+    get "/Business/Category", LegalController, :bus_category
+    post "/Create/Business/Category", LegalController, :create_business_type
+    post "/Update/Business/Category", LegalController, :update_business_type
 
-    # ////////////////////////////////////////////////////////////////// Security Controller
+    # ---------------------------Contact_Mgt
+    get "/Contacts", LegalController, :contacts
+    post "/Create/Contact", LegalController, :create_contact
+    post "/Update/Contact", LegalController, :update_contact
+    delete "/Delete/Contact", LegalController, :delete_contact
+    post "/Retore/Contact", LegalController, :restore
+    post "/Create/Bulk/Contacts", LegalController, :create_bulk_contact
+    get "/Delete/Contact/Forever", LegalController, :delete_forever
+    get "/Deleted/Contacts", LegalController, :contacts_trash
+
+
+
+    # ---------------------------------------------------SECURITY CONTROLLER
+    # ----------------------------Security Controller
     get "/list/logbook/user", SecurityController, :list_log_book_users
     post "/create/logbook/user", SecurityController, :create_log_book_user
     post "/add/timeout", SecurityController, :add_time_out
@@ -76,6 +100,31 @@ defmodule ProlegalsWeb.Router do
     post "/Create/Ammunition", AdminController, :create_ammunition_inventory
     post "/Update/Ammunition", AdminController, :update_ammunition_inventory
     get "/Delete/Ammunition", AdminController, :delete_ammunition_inventory
+    get "/Ammunition/View", AdminController, :view_ammunition  
+
+    # --------------------------------------------- System_Directory CONTROLLER
+    get "System/Directory", SystemDirectoryController, :index
+    post "System/Directory", SystemDirectoryController, :create
+    post "/add/logbook/user", SecurityController, :add_log_book_user
+
+    # ---------------------------Inventory
+    get "/Inventory", AdminController, :inventory
+    post "/Create/Category", AdminController, :create_inventory
+    post "/Update/Category", AdminController, :update_inventory
+    get "/Delete/Category", AdminController, :delete_inventory
+    get "/Assets", AdminController, :view_assets
+
+     # ---------------------------Assets
+     get "/Asset", AdminController, :asset
+     post "/Create/Asset", AdminController, :create_asset
+     get "/Assets/View_Asset", AdminController, :view_asset
+     post "/Update/Asset", AdminController, :update_asset
+     get "/Delete/Asset", AdminController, :delete_asset
+
+    
+    get "/messages", ClientController, :list_messages
+    post "/create/messages", ClientController, :create_message
+
   end
 
   scope "/", ProlegalsWeb do

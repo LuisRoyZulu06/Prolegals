@@ -2,15 +2,35 @@ mix phx.gen.context Accounts User tbl_users first_name last_name email password 
 
 mix phx.gen.context Logs UserLogs tbl_user_logs activity user_id
 
-
 mix phx.gen.context Litigation Contacts li_tbl_contacts name email phone company_name job_title id_type id_no compnay_rep bus_category contact_type fax tel city country
 
 mix phx.gen.context Litigation Cases li_tbl_case case_name case_no case_status practice_area case_description client staff incident_date date_case_opened
 
 mix phx.gen.context Litigation Events li_tbl_tasks case start_date start_time end_date end_time location details visibility
 
+mix phx.gen.context Litigation CaseType li_tbl_case_types category description
+
+mix phx.gen.context Litigation BusinessCategory li_tbl_business_categories business_nature business_type
+
+mix phx.gen.context Litigation Evidence li_tbl_evidence evidence_type source description date_evidence_presented evidence_file
+
 mix phx.gen.context Security FirearmsInventory sec_tbl_firearms name type brand model serial_number rounds date_purchased purchased_from purchase_price make_year person_assigned status bullet_id firearm_image
 
 mix phx.gen.context Security AmmunitionInventory sec_tbl_ammunition caliber serial_number type quantity firearm_serial_number 
 
 mix phx.gen.context Security LogBook sec_tbl_log_book name sex id_type id_no image mobile_no address company person_to_see purpose date time_in time_out
+
+<<<<<<< HEAD
+mix phx.gen.context SystemDirectories Directory tbl_system_directories failed processed
+=======
+<<<<<<< HEAD
+mix phx.gen.context Security Inventory sec_tbl_inventory_categories name category_code 
+
+mix phx.gen.context Security Assets sec_tbl_assets name brand category_id type quantity serial_number status date_purchased purchased_from make_year 
+=======
+mix phx.gen.context Client Messages cl_tbl_messages sender recipient messages status case_link subject
+
+mix phx.gen.context Security LogBook sec_tbl_log_book name sex id_type id_no image mobile_no address company person_to_see purpose date time_in time_out
+
+>>>>>>> 733e161d38d59a7a241e69cf1fbfa199798d8391
+>>>>>>> 3dba6f4c1632310109cb594638fd71b06c861972

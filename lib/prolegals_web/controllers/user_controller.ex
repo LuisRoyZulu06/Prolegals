@@ -33,9 +33,9 @@ defmodule ProlegalsWeb.UserController do
   # plug(
   #   ProlegalsWeb.Plugs.RequireAdminAccess
   #   when action not in [
-  #     :new_password, 
-  #     :change_password, 
-  #     :dashboard, 
+  #     :new_password,
+  #     :change_password,
+  #     :dashboard,
   #     :user_actitvity
   #   ]
   # )
@@ -497,7 +497,7 @@ defmodule ProlegalsWeb.UserController do
     render(conn, "user_management.html", system_users: system_users)
   end
 
-  def create_user(conn, params) do 
+  def create_user(conn, params) do
     case Accounts.create_user(params) do
       {:ok, _} ->
         conn
@@ -511,5 +511,10 @@ defmodule ProlegalsWeb.UserController do
         |> put_flash(:error, "Failed to add user to system.")
         |> redirect(to: Routes.user_path(conn, :user_management))
     end
+  end
+
+  def user_logs(conn, _params) do
+    logs = Logs.list_tbl_user_logs()
+    render(conn, "user_logs.html", logs: logs)
   end
 end

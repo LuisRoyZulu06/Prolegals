@@ -138,10 +138,10 @@ defmodule Prolegals.Accounts do
               :inserted_at,
               :updated_at,
               :first_name,
-              :last_name,             
+              :last_name,
               :email,
               :department_id,
-              :status,            
+              :status,
               :user_type,
               :user_role,
               user: [:first_name, :last_name]

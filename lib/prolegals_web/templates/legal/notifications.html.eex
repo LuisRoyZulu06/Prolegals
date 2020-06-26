@@ -63,8 +63,9 @@
                 </div>
             </div>
         </div>
-        <div class="slide-backdrop" data-action="toggle" data-class="slide-on-mobile-left-show" data-target="#js-inbox-menu"></div> 
         <!-- end left slider -->
+
+        <div class="slide-backdrop" data-action="toggle" data-class="slide-on-mobile-left-show" data-target="#js-inbox-menu"></div> 
         
         <!-- inbox container -->
         <div class="d-flex flex-column flex-grow-1 bg-white"> 
