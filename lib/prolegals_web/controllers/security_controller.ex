@@ -7,13 +7,17 @@ defmodule ProlegalsWeb.SecurityController do
     alias Prolegals.Accounts
     alias Prolegals.Accounts.User
 
-    def list_log_book_users(conn, _params) do
-      list_log_book_users = Security.list_sec_tbl_log_book()
+    def list_log_book_users(conn, params) do
+
+      IO.inspect "############### QUERY ################"
+      IO.inspect params
+
+      list_log_book_users = Security.list_sec_tbl_log_book(params)
       render(conn, "list_log_book_users.html", list_log_book_users: list_log_book_users)
     end
 
     def create_log_book_user(conn, params) do
-      IO.inspect "###################################### start s#####"
+      IO.inspect "###################################### start #####"
       IO.inspect params
       case Security.create_log_book(params) do
           {:ok, _} ->
@@ -28,7 +32,7 @@ defmodule ProlegalsWeb.SecurityController do
             |> put_flash(:error, "Failed To Add New User To system.")
             |> redirect(to: Routes.user_path(conn, :dashboard))
       end
-  end
+    end
 
    def add_time_out(conn, %{"id" => id} = params) do
     list_log_book_user = Security.get_log_book!(id)
@@ -99,8 +103,22 @@ defmodule ProlegalsWeb.SecurityController do
     render(conn, "view_log_book_user.html", logbook_users: logbook_users )
    end
 
+   def add_log_book_user(conn, params) do
 
+    case Security.create_log_book(params) do
+        {:ok, _} ->
+          conn
+          |> put_flash(:info, "New User Added To System")
+          |> redirect(to: Routes.security_path(conn, :list_log_book_users))
 
+          conn
+
+        {:error, _} ->
+          conn
+          |> put_flash(:error, "Failed To Add New User To system.")
+          |> redirect(to: Routes.security_path(conn, :list_log_book_users))
+    end
+  end
 
   def traverse_errors(errors) do
     for {key, {msg, _opts}} <- errors, do: "#{key} #{msg}"

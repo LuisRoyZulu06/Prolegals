@@ -49,19 +49,14 @@ defmodule ProlegalsWeb.Router do
     post "/Create/User", UserController, :create_user
     get "/User/Activity/Logs", UserController, :user_logs
 
-    # ---------------------------Legal Controller
-    get "/Contacts", LegalController, :contacts
-    post "/Create/Contact", LegalController, :create_contact
-    get "/Notifications", LegalController, :notifications
-    get "/Deleted/Contacts", LegalController, :contacts_trash
-
+    # ---------------------------------------------------LEGAL CONTROLLER
     # ------------------------------ Case_Mgt
     get "/Manage/Cases", LegalController, :case_mgt
     post "/Add/New/Case", LegalController, :create_case
     post "/Update/Case/Details", LegalController, :edit_case
     get "/Case/Updates", LegalController, :case_update
     post "/New/Evidence", LegalController, :evidence_update
-
+    get "/Notifications", LegalController, :notifications
 
     # ------------------------------ Task_Mgt
     get "/Tasks", LegalController, :tasks
@@ -81,7 +76,11 @@ defmodule ProlegalsWeb.Router do
     post "/Retore/Contact", LegalController, :restore
     post "/Create/Bulk/Contacts", LegalController, :create_bulk_contact
     get "/Delete/Contact/Forever", LegalController, :delete_forever
+    get "/Deleted/Contacts", LegalController, :contacts_trash
 
+
+
+    # ---------------------------------------------------SECURITY CONTROLLER
     # ----------------------------Security Controller
     get "/list/logbook/user", SecurityController, :list_log_book_users
     post "/create/logbook/user", SecurityController, :create_log_book_user
@@ -106,6 +105,26 @@ defmodule ProlegalsWeb.Router do
     # --------------------------------------------- System_Directory CONTROLLER
     get "System/Directory", SystemDirectoryController, :index
     post "System/Directory", SystemDirectoryController, :create
+    post "/add/logbook/user", SecurityController, :add_log_book_user
+
+    # ---------------------------Inventory
+    get "/Inventory", AdminController, :inventory
+    post "/Create/Category", AdminController, :create_inventory
+    post "/Update/Category", AdminController, :update_inventory
+    get "/Delete/Category", AdminController, :delete_inventory
+    get "/Assets", AdminController, :view_assets
+
+     # ---------------------------Assets
+     get "/Asset", AdminController, :asset
+     post "/Create/Asset", AdminController, :create_asset
+     get "/Assets/View_Asset", AdminController, :view_asset
+     post "/Update/Asset", AdminController, :update_asset
+     get "/Delete/Asset", AdminController, :delete_asset
+
+    
+    get "/messages", ClientController, :list_messages
+    post "/create/messages", ClientController, :create_message
+
   end
 
   scope "/", ProlegalsWeb do

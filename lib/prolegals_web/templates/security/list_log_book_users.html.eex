@@ -25,9 +25,10 @@
             <i class='subheader-icon fal fa-user'></i> LogBook Management
         </h1>
         <div class="subheader-block" id="loggedIn-user">
-            <i class='subheader-icon fal fa-user'></i> <%= "#{String.capitalize(@conn.assigns.user.first_name)}"%> <%= "#{String.capitalize(@conn.assigns.user.last_name)}"%>  | FleetHUB
+            <i class='subheader-icon fal fa-user'></i> <%= "#{String.capitalize(@conn.assigns.user.first_name)}"%> <%= "#{String.capitalize(@conn.assigns.user.last_name)}"%>  | <%= "#{String.capitalize(@conn.assigns.user.user_role)}"%>
         </div>
     </div>
+     
 
     <div class="row">
         <div class="col-xl-12">
@@ -89,6 +90,7 @@
                                                     <div class="dropdown-menu">
                                                         <a class="dropdown-item" data-id="<%= list_log_book_user.id %>"  data-toggle="modal" data-target="#time_out_modal">Add Time Out</a>
                                                         <a class="dropdown-item" data-id="<%= list_log_book_user.id %>" data-name="<%= list_log_book_user.name %>" data-sex="<%= list_log_book_user.sex %>" data-mobile_no="<%= list_log_book_user.mobile_no %>" data-address="<%= list_log_book_user.address %>" data-id_type="<%= list_log_book_user.id_type %>" data-id_no="<%= list_log_book_user.id_no %>" data-company="<%= list_log_book_user.company %>" data-person_to_see="<%= list_log_book_user.person_to_see %>" data-purpose="<%= list_log_book_user.purpose %>" data-date="<%= list_log_book_user.date %>" data-time_in="<%= list_log_book_user.time_in %>" data-time_out="<%= list_log_book_user.time_out %>" data-toggle="modal" data-target="#edit-modal">Edit</a>
+                                                        <a class="dropdown-item" data-id="<%= list_log_book_user.id %>" data-name="<%= list_log_book_user.name %>" data-sex="<%= list_log_book_user.sex %>" data-mobile_no="<%= list_log_book_user.mobile_no %>" data-address="<%= list_log_book_user.address %>" data-id_type="<%= list_log_book_user.id_type %>" data-id_no="<%= list_log_book_user.id_no %>" data-company="<%= list_log_book_user.company %>" data-person_to_see="<%= list_log_book_user.person_to_see %>" data-purpose="<%= list_log_book_user.purpose %>" data-date="<%= list_log_book_user.date %>" data-time_in="<%= list_log_book_user.time_in %>" data-time_out="<%= list_log_book_user.time_out %>" data-toggle="modal" data-target="#add-modal">Readd User</a>
                                                         <a class="dropdown-item"  href="<%= Routes.security_path(@conn, :view_log_book_user, id: list_log_book_user.id)%>">View</a>
                                                     </div>
                                                 </div>
@@ -149,10 +151,9 @@
         </div>
     </div>
 </div>
-
 <!-- ########################################################################-->
 
-<!-- ################################ EDIT MODAL ############################ -->
+<!-- ################################ EDIT MODAL ############################# -->
 <div class="modal fade" id="edit-modal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -263,8 +264,9 @@
         </div>
     </div>
 </div>
+<!-- #########################################################################-->
 
-<!-- ############################### PROFILE MODAL ########################## -->
+<!-- ############################### PROFILE MODAL ########################### -->
 <div class="modal fade" id="profile-modal"  tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -370,8 +372,129 @@
         </div>
     </div>
 </div>
+<!-- #########################################################################-->
 
-<!-- ######################################################################## -->
+<!-- ################################ RE ADD MODAL ############################ -->
+<div class="modal fade" id="add-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add User<i class='subheader-icon fal fa-user-circle'></i></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="fal fa-times"></i></span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form class="form-horizontal" action="<%= Routes.security_path(@conn, :add_log_book_user)%>" enctype="multipart/form-data"  method="post">
+                    <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
+                    <input type="hidden" name="id" id="id" value="">
+                    <div class="form-group">
+                        <label class="form-label">Personal Details</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fal fa-user"></i></span>
+                            </div>
+                            <input type="text" name="name" id="name" class="form-control" placeholder="Full Names" required="required">
+                            <select class="custom-select form-control" name="sex" id="sex" required="required">
+                                <option selected="">Select Gender</option>
+                                <option value="M">Male</option>
+                                <option value="F">Female</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Contact Details</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fal fa-phone"></i></span>
+                            </div>
+                            <input type="text" name="mobile_no" id="mobile_no" placeholder="Phone Number" value="+260" class="form-control" required="required">
+                            <input type="text" name="address" id="address" placeholder="Physical Address" class="form-control" required="required">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Identity Details</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fal fa-id-card"></i></span>
+                            </div>
+                            <select class="custom-select form-control" name="id_type"id="id_type" required="required">
+                                <option selected="">Select ID Type</option>
+                                <option value="NRC">NRC</option>
+                                <option value="PASSPORT">Passport</option>
+                                <option value="DRIVERS LICENSE">Drivers License</option>
+                            </select>
+                            <input type="text" name="id_no" id="id_no" placeholder="Enter ID Number" class="form-control" required="required">
+                        </div>
+                    </div>
+
+                     <div class="form-group">
+                        <label class="form-label">Company Details</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fal fa-home"></i></span>
+                            </div>
+                            <input type="text" name="company" id="company" placeholder="Company Name" class="form-control" required="required">
+                        
+                        </div>
+                    </div>
+
+                     <div class="form-group">
+                        <label class="form-label">Details for visit</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fal fa-home"></i></span>
+                            </div>
+                            <input type="text" name="person_to_see" id="person_to_see" placeholder="Person To See"  class="form-control" required="required">
+                            <input type="text" name="purpose" id="purpose" placeholder="Purpose for Visit" class="form-control" required="required">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label"> Date of visit</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fal fa-clock"></i></span>
+                            </div>
+                            <input type="date" name="date" id="date" placeholder="Date of Visit" class="form-control" required="required">
+                            
+                        </div>
+                    </div>
+
+                     <div class="form-group">
+                        <label class="form-label"> Time Details</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fal fa-clock"></i></span>
+                            </div>
+                            <input type="text" name="time_in" id="time_in" placeholder="Time In" class="form-control" required="required">              
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Facial image </label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fal fa-user"></i></span>
+                            </div>
+                            <input type="file" name="image" placeholder="Facial image of the person" class="form-control" required="required">
+                            
+                        </div>
+                     </div>
+     
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Update user</button>
+                    </div>
+                </form>
+            </div>   
+        </div>
+    </div>
+</div>
+<!-- ########################################################################## -->
 <script src="<%= Routes.static_path(@conn, "/js/jquery-1.11.2.min.js") %>"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
@@ -462,6 +585,44 @@ $('#edit-modal').on('show.bs.modal', function (event){
           
     });
     });
+</script>
+
+<script>
+$(document).ready(function(){
+//Add User
+$('#add-modal').on('show.bs.modal', function (event){
+
+    var button = $(event.relatedTarget)
+    var id = button.data('id')
+    var name = button.data('name')
+    var sex = button.data('sex')
+    var mobile_no = button.data('mobile_no')
+    var address = button.data('address')
+    var id_type = button.data('id_type')
+    var id_no = button.data('id_no')
+    var company  = button.data('company')
+    var person_to_see = button.data('person_to_see')
+    var purpose = button.data('purpose')
+    var date = button.data('date')
+    var time_in = button.data('time_in')
+    var time_out = button.data('time_out')
+    
+    var modal = $(this)
+    modal.find('.modal-body #id').val(id);
+    modal.find('.modal-body #name').val(name);
+    modal.find('.modal-body #sex').val(sex);
+    modal.find('.modal-body #mobile_no').val(mobile_no);
+    modal.find('.modal-body #address').val(address);
+    modal.find('.modal-body #id_type').val(id_type);
+    modal.find('.modal-body #id_no').val(id_no);
+    modal.find('.modal-body #company').val(company);
+    modal.find('.modal-body #person_to_see').val(person_to_see);
+    modal.find('.modal-body #purpose').val(purpose);
+    modal.find('.modal-body #date').val(date);
+    modal.find('.modal-body #time_in').val(time_in);
+    modal.find('.modal-body #time_out').val(time_out);
+});
+});
 </script>
 
 

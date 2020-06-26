@@ -389,4 +389,280 @@ defmodule Prolegals.SecurityTest do
       assert %Ecto.Changeset{} = Security.change_ammunition_inventory(ammunition_inventory)
     end
   end
+
+  describe "sec_tbl_categories" do
+    alias Prolegals.Security.CategoriesInventory
+
+    @valid_attrs %{category_code: "some category_code", name: "some name"}
+    @update_attrs %{category_code: "some updated category_code", name: "some updated name"}
+    @invalid_attrs %{category_code: nil, name: nil}
+
+    def categories_inventory_fixture(attrs \\ %{}) do
+      {:ok, categories_inventory} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Security.create_categories_inventory()
+
+      categories_inventory
+    end
+
+    test "list_sec_tbl_categories/0 returns all sec_tbl_categories" do
+      categories_inventory = categories_inventory_fixture()
+      assert Security.list_sec_tbl_categories() == [categories_inventory]
+    end
+
+    test "get_categories_inventory!/1 returns the categories_inventory with given id" do
+      categories_inventory = categories_inventory_fixture()
+      assert Security.get_categories_inventory!(categories_inventory.id) == categories_inventory
+    end
+
+    test "create_categories_inventory/1 with valid data creates a categories_inventory" do
+      assert {:ok, %CategoriesInventory{} = categories_inventory} = Security.create_categories_inventory(@valid_attrs)
+      assert categories_inventory.category_code == "some category_code"
+      assert categories_inventory.name == "some name"
+    end
+
+    test "create_categories_inventory/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Security.create_categories_inventory(@invalid_attrs)
+    end
+
+    test "update_categories_inventory/2 with valid data updates the categories_inventory" do
+      categories_inventory = categories_inventory_fixture()
+      assert {:ok, %CategoriesInventory{} = categories_inventory} = Security.update_categories_inventory(categories_inventory, @update_attrs)
+      assert categories_inventory.category_code == "some updated category_code"
+      assert categories_inventory.name == "some updated name"
+    end
+
+    test "update_categories_inventory/2 with invalid data returns error changeset" do
+      categories_inventory = categories_inventory_fixture()
+      assert {:error, %Ecto.Changeset{}} = Security.update_categories_inventory(categories_inventory, @invalid_attrs)
+      assert categories_inventory == Security.get_categories_inventory!(categories_inventory.id)
+    end
+
+    test "delete_categories_inventory/1 deletes the categories_inventory" do
+      categories_inventory = categories_inventory_fixture()
+      assert {:ok, %CategoriesInventory{}} = Security.delete_categories_inventory(categories_inventory)
+      assert_raise Ecto.NoResultsError, fn -> Security.get_categories_inventory!(categories_inventory.id) end
+    end
+
+    test "change_categories_inventory/1 returns a categories_inventory changeset" do
+      categories_inventory = categories_inventory_fixture()
+      assert %Ecto.Changeset{} = Security.change_categories_inventory(categories_inventory)
+    end
+  end
+
+  describe "sec_tbl_inventory_categories" do
+    alias Prolegals.Security.Inventory
+
+    @valid_attrs %{category_code: "some category_code", name: "some name"}
+    @update_attrs %{category_code: "some updated category_code", name: "some updated name"}
+    @invalid_attrs %{category_code: nil, name: nil}
+
+    def inventory_fixture(attrs \\ %{}) do
+      {:ok, inventory} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Security.create_inventory()
+
+      inventory
+    end
+
+    test "list_sec_tbl_inventory_categories/0 returns all sec_tbl_inventory_categories" do
+      inventory = inventory_fixture()
+      assert Security.list_sec_tbl_inventory_categories() == [inventory]
+    end
+
+    test "get_inventory!/1 returns the inventory with given id" do
+      inventory = inventory_fixture()
+      assert Security.get_inventory!(inventory.id) == inventory
+    end
+
+    test "create_inventory/1 with valid data creates a inventory" do
+      assert {:ok, %Inventory{} = inventory} = Security.create_inventory(@valid_attrs)
+      assert inventory.category_code == "some category_code"
+      assert inventory.name == "some name"
+    end
+
+    test "create_inventory/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Security.create_inventory(@invalid_attrs)
+    end
+
+    test "update_inventory/2 with valid data updates the inventory" do
+      inventory = inventory_fixture()
+      assert {:ok, %Inventory{} = inventory} = Security.update_inventory(inventory, @update_attrs)
+      assert inventory.category_code == "some updated category_code"
+      assert inventory.name == "some updated name"
+    end
+
+    test "update_inventory/2 with invalid data returns error changeset" do
+      inventory = inventory_fixture()
+      assert {:error, %Ecto.Changeset{}} = Security.update_inventory(inventory, @invalid_attrs)
+      assert inventory == Security.get_inventory!(inventory.id)
+    end
+
+    test "delete_inventory/1 deletes the inventory" do
+      inventory = inventory_fixture()
+      assert {:ok, %Inventory{}} = Security.delete_inventory(inventory)
+      assert_raise Ecto.NoResultsError, fn -> Security.get_inventory!(inventory.id) end
+    end
+
+    test "change_inventory/1 returns a inventory changeset" do
+      inventory = inventory_fixture()
+      assert %Ecto.Changeset{} = Security.change_inventory(inventory)
+    end
+  end
+
+  describe "sec_tbl_assets" do
+    alias Prolegals.Security.Assets
+
+    @valid_attrs %{brand: "some brand", category_id: "some category_id", date_purchased: "some date_purchased", make_year: "some make_year", name: "some name", purchased_from: "some purchased_from", quantity: "some quantity", serial_number: "some serial_number", status: "some status", type: "some type"}
+    @update_attrs %{brand: "some updated brand", category_id: "some updated category_id", date_purchased: "some updated date_purchased", make_year: "some updated make_year", name: "some updated name", purchased_from: "some updated purchased_from", quantity: "some updated quantity", serial_number: "some updated serial_number", status: "some updated status", type: "some updated type"}
+    @invalid_attrs %{brand: nil, category_id: nil, date_purchased: nil, make_year: nil, name: nil, purchased_from: nil, quantity: nil, serial_number: nil, status: nil, type: nil}
+
+    def assets_fixture(attrs \\ %{}) do
+      {:ok, assets} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Security.create_assets()
+
+      assets
+    end
+
+    test "list_sec_tbl_assets/0 returns all sec_tbl_assets" do
+      assets = assets_fixture()
+      assert Security.list_sec_tbl_assets() == [assets]
+    end
+
+    test "get_assets!/1 returns the assets with given id" do
+      assets = assets_fixture()
+      assert Security.get_assets!(assets.id) == assets
+    end
+
+    test "create_assets/1 with valid data creates a assets" do
+      assert {:ok, %Assets{} = assets} = Security.create_assets(@valid_attrs)
+      assert assets.brand == "some brand"
+      assert assets.category_id == "some category_id"
+      assert assets.date_purchased == "some date_purchased"
+      assert assets.make_year == "some make_year"
+      assert assets.name == "some name"
+      assert assets.purchased_from == "some purchased_from"
+      assert assets.quantity == "some quantity"
+      assert assets.serial_number == "some serial_number"
+      assert assets.status == "some status"
+      assert assets.type == "some type"
+    end
+
+    test "create_assets/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Security.create_assets(@invalid_attrs)
+    end
+
+    test "update_assets/2 with valid data updates the assets" do
+      assets = assets_fixture()
+      assert {:ok, %Assets{} = assets} = Security.update_assets(assets, @update_attrs)
+      assert assets.brand == "some updated brand"
+      assert assets.category_id == "some updated category_id"
+      assert assets.date_purchased == "some updated date_purchased"
+      assert assets.make_year == "some updated make_year"
+      assert assets.name == "some updated name"
+      assert assets.purchased_from == "some updated purchased_from"
+      assert assets.quantity == "some updated quantity"
+      assert assets.serial_number == "some updated serial_number"
+      assert assets.status == "some updated status"
+      assert assets.type == "some updated type"
+    end
+
+    test "update_assets/2 with invalid data returns error changeset" do
+      assets = assets_fixture()
+      assert {:error, %Ecto.Changeset{}} = Security.update_assets(assets, @invalid_attrs)
+      assert assets == Security.get_assets!(assets.id)
+    end
+
+    test "delete_assets/1 deletes the assets" do
+      assets = assets_fixture()
+      assert {:ok, %Assets{}} = Security.delete_assets(assets)
+      assert_raise Ecto.NoResultsError, fn -> Security.get_assets!(assets.id) end
+    end
+
+    test "change_assets/1 returns a assets changeset" do
+      assets = assets_fixture()
+      assert %Ecto.Changeset{} = Security.change_assets(assets)
+    end
+  end
+
+  describe "sec_tbl_assets" do
+    alias Prolegals.Security.Asset
+
+    @valid_attrs %{brand: "some brand", category_id: "some category_id", date_purchased: "some date_purchased", make_year: "some make_year", name: "some name", purchased_from: "some purchased_from", quantity: "some quantity", serial_number: "some serial_number", status: "some status", type: "some type"}
+    @update_attrs %{brand: "some updated brand", category_id: "some updated category_id", date_purchased: "some updated date_purchased", make_year: "some updated make_year", name: "some updated name", purchased_from: "some updated purchased_from", quantity: "some updated quantity", serial_number: "some updated serial_number", status: "some updated status", type: "some updated type"}
+    @invalid_attrs %{brand: nil, category_id: nil, date_purchased: nil, make_year: nil, name: nil, purchased_from: nil, quantity: nil, serial_number: nil, status: nil, type: nil}
+
+    def asset_fixture(attrs \\ %{}) do
+      {:ok, asset} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Security.create_asset()
+
+      asset
+    end
+
+    test "list_sec_tbl_assets/0 returns all sec_tbl_assets" do
+      asset = asset_fixture()
+      assert Security.list_sec_tbl_assets() == [asset]
+    end
+
+    test "get_asset!/1 returns the asset with given id" do
+      asset = asset_fixture()
+      assert Security.get_asset!(asset.id) == asset
+    end
+
+    test "create_asset/1 with valid data creates a asset" do
+      assert {:ok, %Asset{} = asset} = Security.create_asset(@valid_attrs)
+      assert asset.brand == "some brand"
+      assert asset.category_id == "some category_id"
+      assert asset.date_purchased == "some date_purchased"
+      assert asset.make_year == "some make_year"
+      assert asset.name == "some name"
+      assert asset.purchased_from == "some purchased_from"
+      assert asset.quantity == "some quantity"
+      assert asset.serial_number == "some serial_number"
+      assert asset.status == "some status"
+      assert asset.type == "some type"
+    end
+
+    test "create_asset/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Security.create_asset(@invalid_attrs)
+    end
+
+    test "update_asset/2 with valid data updates the asset" do
+      asset = asset_fixture()
+      assert {:ok, %Asset{} = asset} = Security.update_asset(asset, @update_attrs)
+      assert asset.brand == "some updated brand"
+      assert asset.category_id == "some updated category_id"
+      assert asset.date_purchased == "some updated date_purchased"
+      assert asset.make_year == "some updated make_year"
+      assert asset.name == "some updated name"
+      assert asset.purchased_from == "some updated purchased_from"
+      assert asset.quantity == "some updated quantity"
+      assert asset.serial_number == "some updated serial_number"
+      assert asset.status == "some updated status"
+      assert asset.type == "some updated type"
+    end
+
+    test "update_asset/2 with invalid data returns error changeset" do
+      asset = asset_fixture()
+      assert {:error, %Ecto.Changeset{}} = Security.update_asset(asset, @invalid_attrs)
+      assert asset == Security.get_asset!(asset.id)
+    end
+
+    test "delete_asset/1 deletes the asset" do
+      asset = asset_fixture()
+      assert {:ok, %Asset{}} = Security.delete_asset(asset)
+      assert_raise Ecto.NoResultsError, fn -> Security.get_asset!(asset.id) end
+    end
+
+    test "change_asset/1 returns a asset changeset" do
+      asset = asset_fixture()
+      assert %Ecto.Changeset{} = Security.change_asset(asset)
+    end
+  end
 end

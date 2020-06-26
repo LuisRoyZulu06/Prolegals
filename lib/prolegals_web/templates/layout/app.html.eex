@@ -99,24 +99,18 @@
                                 <!-----------------------------------------------------------------------------------------------------Admin -->
                                 <%= if @user.user_role == "admin" do %>
                                     <li>
-                                        <a href="#" title="Inventory Management" data-filter-tags="theme settings">
+                                        <a href="<%= Routes.admin_path(@conn, :inventory)%>" title="Inventory Management" data-filter-tags="theme settings">
                                             <i class="fal fa-database"></i>
                                             <span class="nav-link-text" data-i18n="nav.theme_settings">Inventory</span>
                                         </a>
-                                        <ul>
-                                            <li>
-                                                <a href="<%= Routes.admin_path(@conn, :firearm)%>" title="User Maintenace" data-filter-tags="ui components">
-                                                    <i class="fal fa-bolt"></i>
-                                                    <span class="nav-link-text" data-i18n="nav.ui_components">FireArms</span>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="<%= Routes.admin_path(@conn, :ammunition)%>" title="User Maintenace" data-filter-tags="ui components">
-                                                    <i class="fal fa-bullseye"></i>
-                                                    <span class="nav-link-text" data-i18n="nav.ui_components">Ammunition</span>
-                                                </a>
-                                            </li>
-                                        </ul>
+                                    </li>
+
+                                    <li>
+                                        <a href="<%= Routes.admin_path(@conn, :asset)%>" title="Inventory Management" data-filter-tags="theme settings">
+                                            <i class="fal fa-database"></i>
+                                            <span class="nav-link-text" data-i18n="nav.theme_settings">Assets</span>
+                                        </a>
+                                        
                                     </li>
 
                                     <li>
@@ -182,6 +176,24 @@
                                             </li>
                                         </ul>
                                     </li>
+                                <% end %>
+                                <!---------------------------------------------------------------------------------------------------------------->
+
+                                
+                                <!------------------------------------------------------------------------------------------------------ Client -->
+                                <%= if @user.user_role == "client" do %>
+                                <li>
+                                    <a href="<%= Routes.client_path(@conn, :list_messages)%>" title="Messages" data-filter-tags="ui components">
+                                        <i class="fal fa-envelope"></i>
+                                        <span class="nav-link-text" data-i18n="nav.ui_components">Messages</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" title="Documents" data-filter-tags="ui components">
+                                        <i class="fal fa-building"></i>
+                                        <span class="nav-link-text" data-i18n="nav.ui_components">Documents</span>
+                                    </a>
+                                </li>
                                 <% end %>
                                 <!---------------------------------------------------------------------------------------------------------------->
                             </ul>

@@ -3,6 +3,9 @@ defmodule Prolegals.Security.LogBook do
   use Arc.Ecto.Schema
   import Ecto.Changeset
 
+  import Ecto.Query, only: [from: 2]
+
+
   schema "sec_tbl_log_book" do
     field :address, :string
     field :company, :string
@@ -29,4 +32,15 @@ defmodule Prolegals.Security.LogBook do
     |> cast(attrs, [:name, :sex, :id_type, :id_no, :image, :mobile_no, :address, :company, :person_to_see, :purpose, :date, :time_in, :time_out])
     # |> validate_required([:name, :sex, :id_type, :id_no, :image, :mobile_no, :address, :company, :person_to_see, :purpose, :date, :time_in, :time_out])
   end
+
+  def search(query, search_term)do
+   wildcard_search = "%#{search_term}%"
+
+   from log_book in query,
+   where: ilike(log_book.name, ^wildcard_search),
+   or_where: ilike(log_book.id_no, ^wildcard_search)
+
+  end
+
+
 end
