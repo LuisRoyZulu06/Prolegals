@@ -1,0 +1,360 @@
+<!-----------------------------------------------------------------------------------------Flash -->
+    <div class="row">
+        <div class="col-md-12 col-lg-offset-2">
+            <div class="form-group">
+                <%= if get_flash(@conn, :info) do %>
+                    <div class="alert alert-info alert-styled-left">
+                    <button type="button" class="close" data-dismiss="alert">&times; <span class="sr-only">Close</span></button>
+                    <%= get_flash(@conn, :info) %>
+                    </div>
+                <% end %>
+                <%= if get_flash(@conn, :error) do %>
+                    <div class="alert alert-danger alert-styled-left">
+                    <button type="button" class="close" data-dismiss="alert">&times; <span class="sr-only">Close</span></button>
+                    Opps! <%= get_flash(@conn, :error) %>
+                    </div>
+                <% end %>
+            </div>
+        </div>
+    </div>
+<!------------------------------------------------------------------------------------------------->
+
+<div class="subheader">
+    <h1 class="subheader-title">
+        <i class='subheader-icon fal fa-shopping-bag'></i> Update Cases
+        <small>
+            Add new evidence and information recieved partaining to this case here.<br>
+            <a href="javascript:void(0);" class="btn btn-light hover-effect" data-toggle="modal" data-target="#evidence-update">
+                Add Evidence
+            </a>
+        </small>
+    </h1>
+    <div class="subheader-block" id="loggedIn-user">
+        <i class='subheader-icon fal fa-user'></i> <%= "#{String.capitalize(@conn.assigns.user.first_name)}"%> <%= "#{String.capitalize(@conn.assigns.user.last_name)}"%>  | <%= "#{String.capitalize(@conn.assigns.user.user_role)}"%>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">CASE DETAILS <i class='subheader-icon fal fa-building'></i> </h5>
+            </div>
+
+            <div class="modal-body">  
+                <%= for case <-@cases do %>              
+                <form action="#" method="POST">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p>
+                                <b>Name of case:</b>
+                                <%= case.case_name %>
+                            </p>
+
+                            <p>
+                                <b>Case Number:</b>
+                                <%= case.case_no %>
+                            </p>
+
+                            <p>
+                                <b>Case Category:</b>
+                                <%= case.practice_area %>
+                            </p>
+
+                            <p>
+                                <b>Type of case:</b>
+                                <%= case.case_description %>
+                            </p>
+
+                            <p>
+                                <b>Date of Incident:</b>
+                                <%= case.incident_date %>
+                            </p>
+
+                            <p>
+                                <b>Date case opened:</b>
+                                <%= case.date_case_opened %>
+                            </p>
+
+                            <p>
+                                <b>Client:</b>
+                                <%= case.client %>
+                            </p>
+
+                            <p>
+                                <b>Staff:</b>
+                                <%= case.staff %>
+                            </p>
+                        </div>
+                    </div>
+                </form>
+                <% end %>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <div id="panel-1" class="panel">
+            <div class="panel-hdr">
+                <h2>
+                    Case updates <i class='subheader-icon fal fa-building'></i>
+                </h2>
+            </div>
+
+            <div class="panel-container show">
+                <div class="panel-content">
+                    
+                    <!-- datatable start -->
+                    <table id="dt-basic-example" class="table table-bordered table-hover table-striped w-100">
+                        <thead class="p-3 bg-info-300 rounded overflow-hidden position-relative text-white mb-g">
+                            <tr>
+                                <th>Evidence Type</th>
+                                <th>Source</th>
+                                <th>Date Presented</th>
+                                <%# <th>Case Status</th> %>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%= for evidence <-@evidence do %>
+                            <tr>
+                                <td><%= evidence.evidence_type %></td>
+                                <td><%= evidence.source %></td>
+                                <td><%= evidence.date_evidence_presented %></td>
+                                <td>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class='subheader-icon fal fa-chevron-down'></i>
+                                            </span>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item" data-id="<%= evidence.id %>" data-evidence_type="<%= evidence.evidence_type %>" data-source="<%= evidence.source %>" data-date_evidence_presented="<%= evidence.date_evidence_presented %>" data-description="<%= evidence.description %>" data-toggle="modal" data-target="#view-evidence">
+                                                    <i class='subheader-icon fal fa-eye'></i> 
+                                                    View
+                                                </a>
+                                   
+                                                <a class="dropdown-item" data-toggle="modal" data-target="#deactivate_user"><i class='subheader-icon fal fa-times'></i>Close case</a>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr> 
+                            <% end %>            
+                    </table>
+                    <!-- datatable end -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- ############################### ADD-NEW-EVIDENCE MODAL #################################### -->
+<div class="modal fade" id="evidence-update" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">ADD NEW EVIDENCE TO CASE <i class='subheader-icon fal fa-folder-open'></i> </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="fal fa-times"></i></span>
+                </button>
+            </div>
+
+            <div class="modal-body">                
+                <form action="<%= Routes.legal_path(@conn, :evidence_update)%>" enctype="multipart/form-data" method="POST">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="form-label">Evidence Type</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-building"></i></span>
+                                    </div>
+                                    <select class="custom-select form-control" name="evidence_type" required="required">
+                                        <option selected="">Select Evidence Type</option>
+                                        <option value="audio">Audio</option>
+                                        <option value="image">Image</option>
+                                        <option value="video">Video</option>
+                                        <option value="document">Document</option>
+                                        <option value="text">Text</option>
+                                    </select>
+                                    <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
+                                </div>
+                                <span class="help-block">
+                                    Enter evidence type e.g. Audio, Image, Document, or/and Video.
+                                </span>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="basic-url">Source</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-building"></i></span>
+                                    </div>
+                                    <input type="text" name="source" placeholder="Source of evidence" class="form-control" required="required">
+                                </div>
+                                <span class="help-block">
+                                    Enter source of evidence.
+                                </span>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="basic-url">Description</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-book"></i></span>
+                                    </div>
+                                    <textarea type="text" name="description" placeholder="Short description of evidence" class="form-control" required="required"></textarea>
+                                </div>
+                                <span class="help-block">
+                                    Short description of evidence.
+                                </span>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="basic-url">Date evidence presented</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-watch"></i></span>
+                                    </div>
+                                    <input type="date" name="date_evidence_presented" placeholder="Date evidence presented" class="form-control" required="required">
+                                </div>
+                                <span class="help-block">
+                                    Enter the date when the evidence was presented.
+                                </span>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="basic-url">Date evidence presented</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-folder"></i></span>
+                                    </div>
+                                    <input type="file" name="evidence_file" class="form-control" required="required" multiple>
+                                </div>
+                                <span class="help-block">
+                                    Upload media is available.
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-info">Update</button>
+                    </div>                   
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+<!-------------------------------------------------------------------------------------------View-Evidence -->
+<div class="modal fade" id="view-evidence" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">View Evidence</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="fal fa-times"></i></span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <%= for evidence <-@evidence do %>
+                            <img class="shadow-2 img-thumbnail"  src="<%= Prolegals.ImageUploader.url({evidence.evidence_file, evidence})%>">
+                        <% end %>
+                    </div>
+
+                    <div class="col-md-6">
+                        <form action="#" enctype="multipart/form-data" method="POST">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="form-label">Evidence Type</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fal fa-file"></i></span>
+                                            </div>
+                                            <input type="text" name="evidence_type" id="evidence_type" class="form-control" disabled="disabled">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label">Source of Evidence</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fal fa-edit"></i></span>
+                                            </div>
+                                            <input type="text" name="source" id="source" class="form-control" disabled="disabled">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label">Date Evidence was Presented</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fal fa-watch"></i></span>
+                                            </div>
+                                            <input type="text" name="date_evidence_presented" id="date_evidence_presented" class="form-control" disabled="disabled">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label">Date Evidence was Presented</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Details</span>
+                                            </div>
+                                            <textarea type="text" name="description" id="description" class="form-control" disabled="disabled"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>             
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-----------------------------------------------------------------------------------------Modal Rendering scripts -->
+<script src="<%= Routes.static_path(@conn, "/js/jquery-1.11.2.min.js") %>"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<!----------------------------------------------------------------View Individual Details -->
+<script>
+$(document).ready(function(){
+//View Individual Details
+$('#view-evidence').on('show.bs.modal', function (event){
+    var button = $(event.relatedTarget)
+    var id = button.data('id')
+    var evidence_type = button.data('evidence_type')
+    var source = button.data('source')
+    var evidence_file = button.data('evidence_file')
+    var description = button.data('description')
+    var date_evidence_presented = button.data('date_evidence_presented')
+    
+    var modal = $(this)
+    modal.find('.modal-body #id').val(id);
+    modal.find('.modal-body #evidence_type').val(evidence_type);
+    modal.find('.modal-body #source').val(source);
+    modal.find('.modal-body #evidence_file').val(evidence_file);
+    modal.find('.modal-body #description').val(description);
+    modal.find('.modal-body #date_evidence_presented').val(date_evidence_presented);
+});
+});
+</script>

@@ -7,8 +7,7 @@ defmodule Prolegals.Security do
   alias Prolegals.Repo
 
   alias Prolegals.Security.LogBook
-  alias Prolegals.Security.AmmunitionInventory
-  alias Prolegals.Security.FirearmsInventory
+  alias Prolegals.Security.Inventory
 
 
 
@@ -136,194 +135,202 @@ defmodule Prolegals.Security do
 
   alias Prolegals.Security.FirearmsInventory
 
+  alias Prolegals.Security.Inventory
+
+
   @doc """
-  Returns the list of sec_tbl_firearms.
+  Returns the list of sec_tbl_inventory_categories.
 
   ## Examples
 
-      iex> list_sec_tbl_firearms()
-      [%FirearmsInventory{}, ...]
+      iex> list_sec_tbl_inventory_categories()
+      [%Inventory{}, ...]
 
   """
-  def list_sec_tbl_firearms do
-    Repo.all(FirearmsInventory)
+  def list_sec_tbl_inventory_categories do
+    Repo.all(Inventory)
   end
 
   @doc """
-  Gets a single firearms_inventory.
+  Gets a single inventory.
 
-  Raises `Ecto.NoResultsError` if the Firearms inventory does not exist.
+  Raises `Ecto.NoResultsError` if the Inventory does not exist.
 
   ## Examples
 
-      iex> get_firearms_inventory!(123)
-      %FirearmsInventory{}
+      iex> get_inventory!(123)
+      %Inventory{}
 
-      iex> get_firearms_inventory!(456)
+      iex> get_inventory!(456)
       ** (Ecto.NoResultsError)
 
   """
-  def get_firearms_inventory!(id), do: Repo.get!(FirearmsInventory, id)
+  def get_inventory!(id), do: Repo.get!(Inventory, id)
 
   @doc """
-  Creates a firearms_inventory.
+  Creates a inventory.
 
   ## Examples
 
-      iex> create_firearms_inventory(%{field: value})
-      {:ok, %FirearmsInventory{}}
+      iex> create_inventory(%{field: value})
+      {:ok, %Inventory{}}
 
-      iex> create_firearms_inventory(%{field: bad_value})
+      iex> create_inventory(%{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_firearms_inventory(attrs \\ %{}) do
-    %FirearmsInventory{}
-    |> FirearmsInventory.changeset(attrs)
+  def create_inventory(attrs \\ %{}) do
+    %Inventory{}
+    |> Inventory.changeset(attrs)
     |> Repo.insert()
   end
 
   @doc """
-  Updates a firearms_inventory.
+  Updates a inventory.
 
   ## Examples
 
-      iex> update_firearms_inventory(firearms_inventory, %{field: new_value})
-      {:ok, %FirearmsInventory{}}
+      iex> update_inventory(inventory, %{field: new_value})
+      {:ok, %Inventory{}}
 
-      iex> update_firearms_inventory(firearms_inventory, %{field: bad_value})
+      iex> update_inventory(inventory, %{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def update_firearms_inventory(%FirearmsInventory{} = firearms_inventory, attrs) do
-    firearms_inventory
-    |> FirearmsInventory.changeset(attrs)
+  def update_inventory(%Inventory{} = inventory, attrs) do
+    inventory
+    |> Inventory.changeset(attrs)
     |> Repo.update()
   end
 
   @doc """
-  Deletes a firearms_inventory.
+  Deletes a inventory.
 
   ## Examples
 
-      iex> delete_firearms_inventory(firearms_inventory)
-      {:ok, %FirearmsInventory{}}
+      iex> delete_inventory(inventory)
+      {:ok, %Inventory{}}
 
-      iex> delete_firearms_inventory(firearms_inventory)
+      iex> delete_inventory(inventory)
       {:error, %Ecto.Changeset{}}
 
   """
-  def delete_firearms_inventory(%FirearmsInventory{} = firearms_inventory) do
-    Repo.delete(firearms_inventory)
+  def delete_inventory(%Inventory{} = inventory) do
+    Repo.delete(inventory)
   end
 
   @doc """
-  Returns an `%Ecto.Changeset{}` for tracking firearms_inventory changes.
+  Returns an `%Ecto.Changeset{}` for tracking inventory changes.
 
   ## Examples
 
-      iex> change_firearms_inventory(firearms_inventory)
-      %Ecto.Changeset{source: %FirearmsInventory{}}
+      iex> change_inventory(inventory)
+      %Ecto.Changeset{source: %Inventory{}}
 
   """
-  def change_firearms_inventory(%FirearmsInventory{} = firearms_inventory) do
-    FirearmsInventory.changeset(firearms_inventory, %{})
+  def change_inventory(%Inventory{} = inventory) do
+    Inventory.changeset(inventory, %{})
   end
 
-  # --------------------------------------------------------------------------------- Ammunition Inventory
-  alias Prolegals.Security.AmmunitionInventory
+  alias Prolegals.Security.Asset
 
   @doc """
-  Returns the list of sec_tbl_ammunition.
+  Returns the list of sec_tbl_assets.
 
   ## Examples
 
-      iex> list_sec_tbl_ammunition()
-      [%AmmunitionInventory{}, ...]
+      iex> list_sec_tbl_assets()
+      [%Asset{}, ...]
 
   """
-  def list_sec_tbl_ammunition do
-    Repo.all(AmmunitionInventory)
+  def list_sec_tbl_assets do
+    Repo.all(Asset)
   end
 
   @doc """
-  Gets a single ammunition_inventory.
+  Gets a single asset.
 
-  Raises `Ecto.NoResultsError` if the Ammunition inventory does not exist.
+  Raises `Ecto.NoResultsError` if the Asset does not exist.
 
   ## Examples
 
-      iex> get_ammunition_inventory!(123)
-      %AmmunitionInventory{}
+      iex> get_asset!(123)
+      %Asset{}
 
-      iex> get_ammunition_inventory!(456)
+      iex> get_asset!(456)
       ** (Ecto.NoResultsError)
 
   """
-  def get_ammunition_inventory!(id), do: Repo.get!(AmmunitionInventory, id)
+  def get_asset!(id), do: Repo.get!(Asset, id)
+
+  def get_asset_by_category(id) do
+    Repo.get_by(Inventory, category_id: id)
+  end
 
   @doc """
-  Creates a ammunition_inventory.
+  Creates a asset.
 
   ## Examples
 
-      iex> create_ammunition_inventory(%{field: value})
-      {:ok, %AmmunitionInventory{}}
+      iex> create_asset(%{field: value})
+      {:ok, %Asset{}}
 
-      iex> create_ammunition_inventory(%{field: bad_value})
+      iex> create_asset(%{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_ammunition_inventory(attrs \\ %{}) do
-    %AmmunitionInventory{}
-    |> AmmunitionInventory.changeset(attrs)
+  def create_asset(attrs \\ %{}) do
+    %Asset{}
+    |> Asset.changeset(attrs)
     |> Repo.insert()
   end
 
   @doc """
-  Updates a ammunition_inventory.
+  Updates a asset.
 
   ## Examples
 
-      iex> update_ammunition_inventory(ammunition_inventory, %{field: new_value})
-      {:ok, %AmmunitionInventory{}}
+      iex> update_asset(asset, %{field: new_value})
+      {:ok, %Asset{}}
 
-      iex> update_ammunition_inventory(ammunition_inventory, %{field: bad_value})
+      iex> update_asset(asset, %{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def update_ammunition_inventory(%AmmunitionInventory{} = ammunition_inventory, attrs) do
-    ammunition_inventory
-    |> AmmunitionInventory.changeset(attrs)
+  def update_asset(%Asset{} = asset, attrs) do
+    asset
+    |> Asset.changeset(attrs)
     |> Repo.update()
   end
 
+
+
   @doc """
-  Deletes a ammunition_inventory.
+  Deletes a asset.
 
   ## Examples
 
-      iex> delete_ammunition_inventory(ammunition_inventory)
-      {:ok, %AmmunitionInventory{}}
+      iex> delete_asset(asset)
+      {:ok, %Asset{}}
 
-      iex> delete_ammunition_inventory(ammunition_inventory)
+      iex> delete_asset(asset)
       {:error, %Ecto.Changeset{}}
 
   """
-  def delete_ammunition_inventory(%AmmunitionInventory{} = ammunition_inventory) do
-    Repo.delete(ammunition_inventory)
+  def delete_asset(%Asset{} = asset) do
+    Repo.delete(asset)
   end
 
   @doc """
-  Returns an `%Ecto.Changeset{}` for tracking ammunition_inventory changes.
+  Returns an `%Ecto.Changeset{}` for tracking asset changes.
 
   ## Examples
 
-      iex> change_ammunition_inventory(ammunition_inventory)
-      %Ecto.Changeset{source: %AmmunitionInventory{}}
+      iex> change_asset(asset)
+      %Ecto.Changeset{source: %Asset{}}
 
   """
-  def change_ammunition_inventory(%AmmunitionInventory{} = ammunition_inventory) do
-    AmmunitionInventory.changeset(ammunition_inventory, %{})
+  def change_asset(%Asset{} = asset) do
+    Asset.changeset(asset, %{})
   end
 end

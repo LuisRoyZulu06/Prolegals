@@ -53,6 +53,8 @@ defmodule Prolegals.MixProject do
       {:calendar, "~> 0.17.0"},
       {:arc, "~> 0.11.0"},
       {:arc_ecto, "~> 0.11.3"},
+      {:xlsxir, "~> 1.6.2"},
+      {:csv, "~>2.3"},
       {:bamboo, "~> 1.3"},
       {:bamboo_smtp, "~> 2.1.0"}
     ]

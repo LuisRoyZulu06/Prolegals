@@ -1,0 +1,83 @@
+<ol class="breadcrumb page-breadcrumb">
+    <li class="breadcrumb-item"><a href="javascript:void(0);">Contact Directories</a></li>
+    <li class="position-absolute pos-top pos-right d-none d-sm-block"><span class="js-get-date"></span></li>
+</ol>
+<div class="subheader">
+    <h1 class="subheader-title">
+        <i class='subheader-icon fal fa-wrench'></i> Manage: <span class='fw-300'>Contact File Directories</span>
+    </h1>
+</div>
+<div class="row">
+    <div class="col-xl-12 text-center" id="loader" style="display: none;">
+        <button class="btn btn-info" type="button" disabled>
+            <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+            Loading...
+        </button>
+    </div>
+</div><br>
+
+<div class="row">
+    <div class="col-md-12 col-lg-offset-2">
+        <div class="form-group">
+            <%= if get_flash(@conn, :info) do %>
+                <div class="alert alert-success alert-styled-left">
+                <button type="button" class="close" data-dismiss="alert">&times; <span class="sr-only">Close</span></button>
+                <%= get_flash(@conn, :info) %>
+                </div>
+            <% end %>
+            <%= if get_flash(@conn, :error) do %>
+                <div class="alert alert-danger alert-styled-left">
+                <button type="button" class="close" data-dismiss="alert">&times; <span class="sr-only">Close</span></button>
+                Opps! <%= get_flash(@conn, :error) %>
+                </div>
+            <% end %>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xl-12">
+        
+        <div id="panel-1" class="panel">
+            <div class="panel-hdr">
+                <h2>
+                    System <span class="fw-300"><i>Directories</i></span>
+                </h2>
+                <div class="panel-toolbar">
+                    <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
+                    <button class="btn btn-panel" data-action="panel-fullscreen" data-toggle="tooltip" data-offset="0,10" data-original-title="Fullscreen"></button>
+                    <button class="btn btn-panel" data-action="panel-close" data-toggle="tooltip" data-offset="0,10" data-original-title="Close"></button>
+                </div>
+            </div>
+
+            <div class="panel-container show">
+                <div class="panel-content">
+                    <form action="<%= Routes.system_directory_path(@conn, :create)%>" method="POST">
+                        <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
+                        <div class="row form-group">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label text-muted" for="simpleinput-disabled"id="companyInformationLabels">Processed<span class="text-danger">*</span></label>
+                                    <input type="text" name="processed" id="simpleinput-disabled" class="form-control" placeholder="D:\FILES\PROCESSED" value="<%= @sys_dirs && @sys_dirs.processed %>">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label text-muted" for="simpleinput-disabled"id="companyInformationLabels">Errors<span class="text-danger">*</span></label>
+                                    <input type="text" name="failed" id="simpleinput-disabled" class="form-control" placeholder="D:\FILES\ERRORS" value="<%= @sys_dirs && @sys_dirs.failed %>">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-content border-faded border-left-0 border-right-0 border-bottom-0 d-flex flex-row">
+                            <button type="button" class="btn btn-secondary submit ml-auto" onclick="history.back(-1)">Go Back</button>
+                            <button class="btn btn-info submit ml-2" type="submit">Set Directories</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
