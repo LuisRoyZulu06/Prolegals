@@ -43,17 +43,19 @@ defmodule Prolegals.Emails.Email do
     |> render("token_content.html")
   end
 
-  def send_alert(receipient ) do
+  def send_alert(recipient, messages) do
     new_email()
     |> from("johnmfula360@gmail.com")
-    |> to(receipient)
+    |> to(recipient)
     |> subject("Case in Prolegals")
     |> text_body(
       """
       Dear User, \r\n Kindly note that there is a pending case . \r\n
-      Please login to prolegals and process it. \r\n Regards ZRL
+      #{messages}
       """
     )
     |> Mailer.deliver_later()
   end
+
+
 end

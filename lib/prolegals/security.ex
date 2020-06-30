@@ -2,7 +2,7 @@ defmodule Prolegals.Security do
   @moduledoc """
   The Security context.
   """
-
+  import Ecto.Query, only: [from: 2]
   import Ecto.Query, warn: false
   alias Prolegals.Repo
 
@@ -108,6 +108,27 @@ defmodule Prolegals.Security do
   def change_log_book(%LogBook{} = log_book) do
     LogBook.changeset(log_book, %{})
   end
+
+  # --------------------------------- Security Statistic-----------------------
+  # def frequent_visitors do
+  #   query =
+  #   """
+  #   SELECT id_no, COUNT(*)
+  #   FROM sec_tbl_log_book
+  #   GROUP BY id_no
+  #   HAVING COUNT(*) > 1
+  #   """
+  #   {:ok, %{columns: columns, rows: rows}} = Repo.query(query, [])
+  #   rows |> Enum.map(&Enum.zip(columns, &1)) |> Enum.map(&Enum.into(&1, %{}))
+  # end
+
+  def total_visitors do
+    Repo.one(from p in "sec_tbl_log_book", select:  count(p.id))
+  end
+
+
+
+
 
 
 

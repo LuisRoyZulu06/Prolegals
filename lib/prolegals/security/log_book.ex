@@ -5,6 +5,8 @@ defmodule Prolegals.Security.LogBook do
 
   import Ecto.Query, only: [from: 2]
 
+  @timestamps_opts [type: Timex.Ecto.TimestampWithTimezone,
+  autogenerate: {Timex.Ecto.TimestampWithTimezone, :autogenerate, []}]
 
   schema "sec_tbl_log_book" do
     field :address, :string
@@ -27,20 +29,18 @@ defmodule Prolegals.Security.LogBook do
   @doc false
   def changeset(log_book, attrs) do
     log_book
-    |> cast(attrs, [:image])
-    |> cast_attachments(attrs, [:image])
     |> cast(attrs, [:name, :sex, :id_type, :id_no, :image, :mobile_no, :address, :company, :person_to_see, :purpose, :date, :time_in, :time_out])
-    # |> validate_required([:name, :sex, :id_type, :id_no, :image, :mobile_no, :address, :company, :person_to_see, :purpose, :date, :time_in, :time_out])
+    |> validate_required([:name, :sex, :id_type, :id_no, :mobile_no, :address, :company, :person_to_see, :purpose])
+    # |> unique_constraint(:id_no)
   end
 
   def search(query, search_term)do
-   wildcard_search = "%#{search_term}%"
+    wildcard_search = "%#{search_term}%"
 
-   from log_book in query,
-   where: ilike(log_book.name, ^wildcard_search),
-   or_where: ilike(log_book.id_no, ^wildcard_search)
+    from log_book in query,
+    where: ilike(log_book.name, ^wildcard_search),
+    or_where: ilike(log_book.id_no, ^wildcard_search)
 
-  end
-
+   end
 
 end

@@ -17,9 +17,10 @@ mix phx.gen.context Security FirearmsInventory sec_tbl_firearms name type brand 
 
 mix phx.gen.context Security AmmunitionInventory sec_tbl_ammunition caliber serial_number type quantity firearm_serial_number 
 
-mix phx.gen.context Security LogBook sec_tbl_log_book name sex id_type id_no image mobile_no address company person_to_see purpose date time_in time_out
+mix phx.gen.context Security LogBook sec_tbl_log_book name sex id_type id_no:unique image mobile_no address company person_to_see purpose date time_in time_out
 
 mix phx.gen.context Client Messages cl_tbl_messages sender recipient messages status case_link subject
 
 mix phx.gen.context Security LogBook sec_tbl_log_book name sex id_type id_no image mobile_no address company person_to_see purpose date time_in time_out
 
+mix phx.gen.context Notifications Email Messages tbl_email_alerts email type

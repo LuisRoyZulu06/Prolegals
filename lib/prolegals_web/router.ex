@@ -70,7 +70,8 @@ defmodule ProlegalsWeb.Router do
     post "/add/timeout", SecurityController, :add_time_out
     post "/logbook/update", SecurityController, :edit_log_book_user
     get "/view/logbook/user", SecurityController, :view_log_book_user
-    post "/add/logbook/user", SecurityController, :add_log_book_user
+    post "/check/in/logbook/user", SecurityController, :check_in_log_book_user
+    get "/history/logbook/user", SecurityController, :history_log_book_users
 
     # ---------------------------Firearms Inventory
     get "/firearms", AdminController, :firearm

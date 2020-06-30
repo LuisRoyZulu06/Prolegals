@@ -6,7 +6,8 @@ defmodule ProlegalsWeb.UserController do
   alias Prolegals.Accounts.User
   alias Prolegals.Emails.Email
   alias ProlegalsWeb.Plugs.EnforcePasswordPolicy
-
+  alias Prolegals.Security.LogBook
+  alias Prolegals.Security
   plug(
     ProlegalsWeb.Plugs.RequireAuth
     when action in [
@@ -33,9 +34,9 @@ defmodule ProlegalsWeb.UserController do
   # plug(
   #   ProlegalsWeb.Plugs.RequireAdminAccess
   #   when action not in [
-  #     :new_password, 
-  #     :change_password, 
-  #     :dashboard, 
+  #     :new_password,
+  #     :change_password,
+  #     :dashboard,
   #     :user_actitvity
   #   ]
   # )
@@ -54,7 +55,9 @@ defmodule ProlegalsWeb.UserController do
     # conn.assigns.user
     IO.inspect "----------------------------------------------------"
     IO.inspect conn
-    render(conn, "dashboard.html")
+    total_visitors = Security.total_visitors()
+
+    render(conn, "dashboard.html", total_visitors: total_visitors)
   end
 
   defp prepare_dash_result(results) do
@@ -497,7 +500,7 @@ defmodule ProlegalsWeb.UserController do
     render(conn, "user_management.html", system_users: system_users)
   end
 
-  def create_user(conn, params) do 
+  def create_user(conn, params) do
     case Accounts.create_user(params) do
       {:ok, _} ->
         conn

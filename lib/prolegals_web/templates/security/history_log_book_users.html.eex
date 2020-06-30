@@ -22,7 +22,7 @@
     
     <div class="subheader">
         <h1 class="subheader-title">
-            <i class='subheader-icon fal fa-book'></i> LogBook Management
+            <i class='subheader-icon fal fa-book'></i>Past LogBook 
         </h1>
         <div class="subheader-block" id="loggedIn-user">
             <i class='subheader-icon fal fa-user'></i> <%= "#{String.capitalize(@conn.assigns.user.first_name)}"%> <%= "#{String.capitalize(@conn.assigns.user.last_name)}"%>  | <%= "#{String.capitalize(@conn.assigns.user.user_role)}"%>
@@ -65,60 +65,57 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <%= for list_log_book_user <- @list_log_book_users do %>
-                                 <%= if Date.to_string(Timex.today)  ==  Date.to_string(list_log_book_user.inserted_at) do %>
+                                <%= for history_log_book_user <- @history_log_book_users do %>
+                                   <%= if Date.to_string(Timex.today)  !=  Date.to_string(history_log_book_user.inserted_at) do %>
                                     <tr>
-                                        <td><%= list_log_book_user.name%></td>
-                                        <td><%= list_log_book_user.sex%></td>
-                                        <td><%= list_log_book_user.mobile_no%></td>
-                                        <td><%= list_log_book_user.address%></td>
-                                        <td><%= list_log_book_user.id_type%></td>
-                                        <td><%= list_log_book_user.id_no%></td>
-                                        <td><%= list_log_book_user.company%></td>
-                                        <td><%= list_log_book_user.person_to_see%></td>
-                                        <td><%= list_log_book_user.purpose%></td>
-                                        <td> <%= Date.to_string(list_log_book_user.inserted_at)%></td> 
-                                        <td><%= String.slice(to_string( Time.to_string(list_log_book_user.inserted_at)), 0..4) %></td>
+                                        <td><%= history_log_book_user.name%></td>
+                                        <td><%= history_log_book_user.sex%></td>
+                                        <td><%= history_log_book_user.mobile_no%></td>
+                                        <td><%= history_log_book_user.address%></td>
+                                        <td><%= history_log_book_user.id_type%></td>
+                                        <td><%= history_log_book_user.id_no%></td>
+                                        <td><%= history_log_book_user.company%></td>
+                                        <td><%= history_log_book_user.person_to_see%></td>
+                                        <td><%= history_log_book_user.purpose%></td>
+                                        <td> <%= Date.to_string(history_log_book_user.inserted_at)%></td> 
+                                        <td><%= String.slice(to_string( Time.to_string(history_log_book_user.inserted_at)), 0..4)%></td>
                                         <td>
-                                        <%= if Time.to_string(list_log_book_user.updated_at) == Time.to_string(list_log_book_user.inserted_at) do %>
+                                           <%= if Time.to_string(history_log_book_user.updated_at) == Time.to_string(history_log_book_user.inserted_at) do %>
                                                <!--Empty Check out--->    
                                             <% else %> 
-                                             <%= String.slice(to_string( Time.to_string(list_log_book_user.updated_at)), 0..4) %>
-                                         <% end %>  
-                                        </td>
-                                       
+                                             <%= String.slice(to_string( Time.to_string(history_log_book_user.updated_at)), 0..4) %>
+                                          <% end %>
+                                        </td>                  
                                         <td>
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
                                                     <span data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                         <i class='subheader-icon fal fa-chevron-down'></i>
                                                     </span>
-                                                    <div class="dropdown-menu"> 
-                                                    
-                                                        <!-- <a class="dropdown-item" data-id="<%= list_log_book_user.id %>" data-name="<%= list_log_book_user.name %>" data-sex="<%= list_log_book_user.sex %>" data-mobile_no="<%= list_log_book_user.mobile_no %>" data-address="<%= list_log_book_user.address %>" data-id_type="<%= list_log_book_user.id_type %>" data-id_no="<%= list_log_book_user.id_no %>" data-company="<%= list_log_book_user.company %>" data-person_to_see="<%= list_log_book_user.person_to_see %>" data-purpose="<%= list_log_book_user.purpose %>" data-date="<%= list_log_book_user.date %>" data-time_in="<%= list_log_book_user.time_in %>" data-time_out="<%= list_log_book_user.time_out %>" data-toggle="modal" data-target="#edit-modal">Edit</a> %>-->
-                                                        <a class="dropdown-item" data-id="<%= list_log_book_user.id %>"
-                                                                                data-name="<%= list_log_book_user.name %>" 
-                                                                                data-sex="<%= list_log_book_user.sex %>" 
-                                                                                data-mobile_no="<%= list_log_book_user.mobile_no %>"
-                                                                                data-address="<%= list_log_book_user.address %>" 
-                                                                                data-id_type="<%= list_log_book_user.id_type %>"
-                                                                                data-id_no="<%= list_log_book_user.id_no %>" 
-                                                                                data-company="<%= list_log_book_user.company %>" 
-                                                                                data-person_to_see="<%= list_log_book_user.person_to_see %>" 
-                                                                                data-purpose="<%= list_log_book_user.purpose %>" 
-                                                                                data-date="<%= list_log_book_user.date %>" 
-                                                                                data-time_in="<%= list_log_book_user.time_in %>"
-                                                                                data-time_out="<%= list_log_book_user.time_out %>" 
-                                                                                data-toggle="modal" data-target="#check-in-modal">Chech In</a>
+                                                    <div class="dropdown-menu">
+                                                       
+                                                        <!-- <a class="dropdown-item" data-id="<%= history_log_book_user.id %>" data-name="<%= history_log_book_user.name %>" data-sex="<%= history_log_book_user.sex %>" data-mobile_no="<%= history_log_book_user.mobile_no %>" data-address="<%= history_log_book_user.address %>" data-id_type="<%= history_log_book_user.id_type %>" data-id_no="<%= history_log_book_user.id_no %>" data-company="<%= history_log_book_user.company %>" data-person_to_see="<%= history_log_book_user.person_to_see %>" data-purpose="<%= history_log_book_user.purpose %>" data-date="<%= history_log_book_user.date %>" data-time_in="<%= history_log_book_user.time_in %>" data-time_out="<%= history_log_book_user.time_out %>" data-toggle="modal" data-target="#edit-modal">Edit</a> %>-->
+                                                          <a class="dropdown-item" data-id="<%= history_log_book_user.id %>"
+                                                                                data-name="<%= history_log_book_user.name %>" 
+                                                                                data-sex="<%= history_log_book_user.sex %>" 
+                                                                                data-mobile_no="<%= history_log_book_user.mobile_no %>" 
+                                                                                data-address="<%= history_log_book_user.address %>" 
+                                                                                data-id_type="<%= history_log_book_user.id_type %>" 
+                                                                                data-id_no="<%= history_log_book_user.id_no %>" 
+                                                                                data-company="<%= history_log_book_user.company %>"
+                                                                                data-person_to_see="<%= history_log_book_user.person_to_see %>" 
+                                                                                data-purpose="<%= history_log_book_user.purpose %>" 
+                                                                                data-date="<%= history_log_book_user.date %>" 
+                                                                                data-time_in="<%= history_log_book_user.time_in %>" 
+                                                                                data-time_out="<%= history_log_book_user.time_out %>" data-toggle="modal" data-target="#check-in-modal">Check In</a>
 
-                                                         <!--- Check Out Action --->
-                                                        <form action="<%= Routes.security_path(@conn, :add_time_out)%>" method="POST">
+                                                        <!--- Check Out Action ---->
+                                                        <!-- <form action="<%= Routes.security_path(@conn, :add_time_out)%>" method="POST">
                                                             <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
-                                                            <input type="hidden" name="id" id="id" value="<%= list_log_book_user.id %>">
+                                                            <input type="hidden" name="id" id="id" value="<%= history_log_book_user.id %>">
                                                             <button class="dropdown-item" type="submit" >Check Out</button> 
-                                                        </form>
-                                                                                
-                                                        <a class="dropdown-item"  href="<%= Routes.security_path(@conn, :view_log_book_user, id: list_log_book_user.id)%>">View</a>
+                                                        </form>      -->                        
+                                                        <a class="dropdown-item"  href="<%= Routes.security_path(@conn, :view_log_book_user, id: history_log_book_user.id)%>">View</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -405,7 +402,7 @@
 </div>
 <!-- #########################################################################-->
 
-<!-- ################################ RE ADD MODAL ############################ -->
+<!-- ################################ CHECK IN MODAL ############################ -->
 <div class="modal fade" id="check-in-modal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -518,7 +515,7 @@
      
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Update Visitor</button>
+                        <button type="submit" class="btn btn-primary">check in</button>
                     </div>
                 </form>
             </div>   
@@ -647,8 +644,6 @@ $('#check-in-modal').on('show.bs.modal', function (event){
 });
 });
 </script>
-
-
 
 
 
