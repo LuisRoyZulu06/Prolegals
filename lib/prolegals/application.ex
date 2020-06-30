@@ -14,6 +14,7 @@ defmodule Prolegals.Application do
       ProlegalsWeb.Endpoint,
       # Starts a worker by calling: Prolegals.Worker.start_link(arg)
       # {Prolegals.Worker, arg},
+      {Prolegals.Scheduler, []},
       {Task.Supervisor, name: Prolegals.TaskSupervisor, restart: :transient}
     ]
 

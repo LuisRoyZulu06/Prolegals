@@ -56,7 +56,8 @@ defmodule Prolegals.MixProject do
       {:xlsxir, "~> 1.6.2"},
       {:csv, "~>2.3"},
       {:bamboo, "~> 1.3"},
-      {:bamboo_smtp, "~> 2.1.0"}
+      {:bamboo_smtp, "~> 2.1.0"},
+      {:quantum, "~> 2.2.7"}
     ]
   end
 

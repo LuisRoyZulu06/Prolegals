@@ -34,6 +34,38 @@ config :Prolegals, Prolegals.Emails.Mailer,
   ssl: false,
   retries: 2
 
+  # quantum jobs config
+config :logger, level: :debug
+
+config :Prolegals, Prolegals.Scheduler,
+  overlap: false,
+  timeout: 300_000,
+  timezone: "Africa/Cairo",
+  jobs: [
+    # cust_penalty: [
+    #   # schedule: {:extended, "*/30"},
+    #   schedule: "@weekly",
+    #   task: {BankLinkWeb.EftTransController, :cust_penalty, []}
+    # ],
+    internet_file: [
+      # schedule: {:extended, "*/10"},
+      # schedule: {:extended, "*/30"},
+      task: {ProlegalsWeb.ClientController, :send_emails, []}
+    ]
+    # channel_entries: [
+    #   # schedule: {:extended, "*/30"},
+    #   # schedule: "*/10 * * * * *",
+    #   schedule: "@weekly",
+    #   task: {BankLink.Workers.Channel, :perform, []}
+    # ],
+    # branch_list: [
+    #   # schedule: "*/5 8,9,10,18 * * * *",
+    #   schedule: "@weekly",
+    #   task: {BankLink.Workers.Branchs, :perform, []}
+    # ]
+  ]
+
+
 
 # Configures Elixir's Logger
 config :logger, :console,

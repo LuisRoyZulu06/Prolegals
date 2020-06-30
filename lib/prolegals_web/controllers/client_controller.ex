@@ -32,6 +32,10 @@ defmodule ProlegalsWeb.ClientController do
     #   Email.send_alert(map["recipient"]) |> Mailer.deliver_later()
 
     # end
+    def send_emails do
+
+      Email.send_alert("coilardium@gmail.com", " helooooooo")
+    end
 
     def create_message(conn, params) do
       IO.inspect  "********************Start**************************"
