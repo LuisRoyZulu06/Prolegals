@@ -527,6 +527,13 @@ defmodule Prolegals.Litigation do
   """
   def get_evidence!(id), do: Repo.get!(Evidence, id)
 
+
+  def get_all_evidences(id) do
+    Evidence
+    |> where([e], e.case_id == ^id)
+    |> Repo.all()
+  end
+
   @doc """
   Creates a evidence.
 

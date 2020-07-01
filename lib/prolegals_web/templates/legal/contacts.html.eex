@@ -28,12 +28,8 @@
                     Add Contact
                 </a>
 
-                <a href="<%= Routes.system_directory_path(@conn, :index)%>" class="btn btn-primary waves-effect waves-themed">
-                    Directories
-                </a>
-
                 <a href="<%= Routes.legal_path(@conn, :contacts_trash)%>" class="btn btn-secondary waves-effect waves-themed">
-                    Deleted Contacts
+                    Disabled Contacts
                 </a>
             </small>
         </h1>
@@ -64,6 +60,7 @@
             <%= if contact.status != "deleted" do %>
                 <div class="col-xl-4">
                     <div id="c_1" class="card border shadow-0 mb-g shadow-sm-hover" data-filter-tags="<%= contact.name %>">
+
                         <div class="card-body border-faded border-top-0 border-left-0 border-right-0 rounded-top">
                             <div class="d-flex flex-row align-items-center">
 
@@ -92,7 +89,9 @@
 
                                             <a class="dropdown-item" href="#" data-id="<%= contact.id %>" data-name="<%= contact.name %>" data-email="<%= contact.email %>" data-phone="<%= contact.phone %>" data-company_name="<%= contact.company_name %>" data-job_title="<%= contact.job_title %>" data-id_type="<%= contact.id_type %>" data-id_no="<%= contact.id_no %>" data-address="<%= contact.address %>" data-toggle="modal" data-target="#edit-contact">Edit Contact</a>
 
-                                            <a class="dropdown-item dt-contact" data-id="<%= contact.id %>" data-csfr="<%= Plug.CSRFProtection.get_csrf_token()%>">Delete Contact</a>
+                                            <a class="dropdown-item" href="#" data-id="<%= contact.id %>" data-name="<%= contact.name %>" data-email="<%= contact.email %>" data-phone="<%= contact.phone %>" data-id_no="<%= contact.id_no %>" data-address="<%= contact.address %>" data-toggle="modal" data-target="#individualPortalAlert">Enable Client Portal</a>
+
+                                            <a class="dropdown-item dt-contact" data-id="<%= contact.id %>" data-csfr="<%= Plug.CSRFProtection.get_csrf_token()%>">Disable Contact</a>
 
                                         <% else %>
 
@@ -100,7 +99,16 @@
 
                                             <a class="dropdown-item" href="#" data-id="<%= contact.id %>" data-name="<%= contact.name %>" data-email="<%= contact.email %>" data-phone="<%= contact.phone %>" data-company_name="<%= contact.company_name %>" data-job-title="<%= contact.job_title %>" data-bus_category="<%= contact.bus_category %>" data-tel="<%= contact.tel %>" data-city="<%= contact.city %>" data-country="<%= contact.country %>" data-address="<%= contact.address %>" data-job_title="<%= contact.job_title %>" data-toggle="modal" data-target="#edit-company">Edit Contact</a>
 
-                                            <a class="dropdown-item dt-contact" data-id="<%= contact.id %>" data-csfr="<%= Plug.CSRFProtection.get_csrf_token()%>">Delete Contact</a>
+
+
+                                            <%= if contact.client_portal != "on" do %>
+                                            <a class="dropdown-item" href="#" data-id="<%= contact.id %>" data-email="<%= contact.email %>" data-company_name="<%= contact.company_name %>" data-tel="<%= contact.tel %>"  data-address="<%= contact.address %>" data-toggle="modal" data-target="#companyPortalAlert">Enable Client Portal</a>
+                                            <% else %>
+                                            <a class="dropdown-item disable-contact" href="#" data-id="<%= contact.id %>" data-csfr="<%= Plug.CSRFProtection.get_csrf_token()%>">Disable Client Portal</a>
+                                            <% end %>
+
+
+                                            <a class="dropdown-item dt-contact" data-id="<%= contact.id %>" data-csfr="<%= Plug.CSRFProtection.get_csrf_token()%>">Disable Contact</a>
                                         <% end %>
 
 
@@ -124,17 +132,18 @@
                         </div>
 
                         <%= if contact.contact_type == "company" do %>
-                        <div class="card-body p-0 collapse show">
-                            <div class="p-3">
-                                <a href="tel:company_tel" class="mt-1 d-block fs-sm fw-400 text-dark">
-                                    <i class="fal fa-mobile-alt text-muted mr-2"> </i><%= contact.tel %></a>
-                                <a href="mailto:company_email" class="mt-1 d-block fs-sm fw-400 text-dark">
-                                    <i class="fal fa-mouse-pointer text-muted mr-2"> </i> <%= contact.email %> </a>
-                                <address class="fs-sm fw-400 mt-4 text-muted">
-                                    <i class="fal fa-map-pin mr-2"> </i> <%= contact.city %> <%= contact.country %> <%= contact.address %> </address>
+                            <div class="card-body p-0 collapse show">
+                                <div class="p-3">
+                                    <a href="tel:company_tel" class="mt-1 d-block fs-sm fw-400 text-dark">
+                                        <i class="fal fa-mobile-alt text-muted mr-2"> </i><%= contact.tel %></a>
+                                    <a href="mailto:company_email" class="mt-1 d-block fs-sm fw-400 text-dark">
+                                        <i class="fal fa-mouse-pointer text-muted mr-2"> </i> <%= contact.email %> </a>
+                                    <address class="fs-sm fw-400 mt-4 text-muted">
+                                        <i class="fal fa-map-pin mr-2"> </i> <%= contact.city %> <%= contact.country %> <%= contact.address %> </address>
+                                </div>
                             </div>
-                        </div>
                         <% else %>
+
                         <div class="card-body p-0 collapse show">
                             <div class="p-3">
                                 <a href="tel:company_tel" class="mt-1 d-block fs-sm fw-400 text-dark">
@@ -145,7 +154,7 @@
                                     <i class="fal fa-map-pin mr-2"> </i> <%= contact.address %> </address>
                             </div>
                         </div>
-                        <% end %>
+            <% end %>
 
                     </div>
                 </div>
@@ -315,10 +324,10 @@
                                 </div>
                             </div>
 
-                            <div class="form-group">
+                            <%# <div class="form-group">
                                 <input type="checkbox" name="client_portal" value="private">
                                 <label for="vehicle2"> Enable or Disable client access portal.</label>
-                            </div>
+                            </div> %>
                         </div>
                     </div>
 
@@ -403,10 +412,10 @@
                                 </div>
                             </div>
 
-                            <div class="form-group">
+                            <%# <div class="form-group">
                                 <input type="checkbox" name="client_portal" value="private">
                                 <label for="vehicle2"> Enable or Disable client access portal.</label>
-                            </div>                            
+                            </div>  %>                           
                         </div>
                     </div>
 
@@ -422,7 +431,7 @@
 </div>
 
 <!-----------------------------------------------------------------------------------Bulk Contact Upload-->
-<!-- ############################### INDIVIDUAL-BULK #################################### -->
+<!-- ############################### BULK CONTACT UPLOAD #################################### -->
 <div class="modal fade" id="fileUpload" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -449,10 +458,10 @@
                                 </div>
                             </div>
 
-                            <div class="form-group">
+                            <%# <div class="form-group">
                                 <input type="checkbox" name="client_portal" value="private">
                                 <label for="vehicle2"> Enable or Disable client access portal.</label>
-                            </div>
+                            </div> %>
                         </div>
                     </div>
 
@@ -571,14 +580,14 @@
                         </div>
                     </div>
 
-                    <div class="row">
+                    <%# <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
                                 <input type="checkbox" name="client_portal" value="private">
                                 <label for="vehicle2"> Enable or Disable client access portal.</label>
                             </div>   
                         </div>
-                    </div>    
+                    </div> %>    
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -603,7 +612,7 @@
             </div>
 
             <div class="modal-body">
-                <form action="#" method="POST">
+                <form action="<%= Routes.legal_path(@conn, :update_contact)%>" method="POST">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
@@ -712,14 +721,14 @@
                         </div>
                     </div>    
 
-                    <div class="row">
+                    <%# <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
                                 <input type="checkbox" name="client_portal" value="private">
                                 <label for="vehicle2"> Enable or Disable client access portal.</label>
                             </div>   
                         </div>
-                    </div>    
+                    </div> %>    
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -828,29 +837,14 @@
                                     </div>
                                     <input type="text" name="id_no" id="id_no" class="form-control" disabled>
                                 </div>
+                            </div>   
+
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             </div>                          
                         </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <h5 class="frame-heading">Enable or Disable client access portal.</h5>
-                                <div class="frame-wrap demo">
-                                    <div class="demo">
-                                        <div class="custom-control custom-checkbox custom-control-inline">
-                                            <input type="checkbox" class="custom-control-input" id="defaultInline1">
-                                            <label class="custom-control-label" for="defaultInline1">Disable</label>
-                                        </div>
-                                        <div class="custom-control custom-checkbox custom-control-inline">
-                                            <input type="checkbox" class="custom-control-input" id="defaultInline2" checked="">
-                                            <label class="custom-control-label" for="defaultInline2">Enable</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>             
+                    </div>            
                 </form>
             </div>
 
@@ -974,34 +968,130 @@
                                     <input type="text" name="job_title" id="job_title" class="form-control" disabled>
                                 </div>
                             </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>      
                         </div>
                     </div>    
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <h5 class="frame-heading">Enable or Disable client access portal.</h5>
-                                <div class="frame-wrap demo">
-                                    <div class="demo">
-                                        <div class="custom-control custom-checkbox custom-control-inline">
-                                            <input type="checkbox" class="custom-control-input" id="defaultInline1">
-                                            <label class="custom-control-label" for="defaultInline1">Disable</label>
-                                        </div>
-                                        <div class="custom-control custom-checkbox custom-control-inline">
-                                            <input type="checkbox" class="custom-control-input" id="defaultInline2" checked="">
-                                            <label class="custom-control-label" for="defaultInline2">Enable</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>               
+             
                 </form>
             </div>
 
         </div>
     </div>
 </div>
+
+<!-- ############################### CLIENT PORTAL MODAL #################################### -->
+<div class="modal modal-alert fade" id="individualPortalAlert" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <form action="<%= Routes.legal_path(@conn, :enable_client_portal)%>" method="POST">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Enable Client Portal?</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true"><i class="fal fa-times"></i></span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Are your sure to enable client portal for this client? 
+                    </div>
+
+                    <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
+                    <input type="hidden" name="password" value="password04">
+                    <input type="hidden" name="user_type" value="4">
+                    <input type="hidden" name="user_role" value="client">
+                    <input type="hidden" name="auto_password" value="Y">
+                    <input type="hidden" name="status" value="1">
+                    <input type="hidden" name="first_name" id="name" idclass="form-control">
+                    <input type="hidden" name="phone" id="phone" class="form-control">
+                    <input type="hidden" name="email" id="email" class="form-control"> 
+                    <input type="hidden" name="home_add" id="address" class="form-control">
+                    <input type="hidden" name="nrc_no" id="id_no" class="form-control">
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Enable</button>
+                    </div>
+                </form>                
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ############################### COMPANY PORTAL MODAL #################################### -->
+<div class="modal modal-alert fade" id="companyPortalAlert" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <form action="<%= Routes.legal_path(@conn, :enable_client_portal)%>" method="POST">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Enable Client Portal?</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true"><i class="fal fa-times"></i></span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Are your sure to enable client portal for this client? 
+                    </div>
+
+                    <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
+                    <input type="hidden" name="password" value="password04">
+                    <input type="hidden" name="user_type" value="4">
+                    <input type="hidden" name="id" id="id">
+                    <input type="hidden" name="user_role" value="client">
+                    <input type="hidden" name="auto_password" value="Y">
+                    <input type="hidden" name="status" value="1">
+                    <input type="hidden" name="first_name" id="company_name" idclass="form-control">
+                    <input type="hidden" name="phone" id="tel" class="form-control">
+                    <input type="hidden" name="email" id="email" class="form-control"> 
+                    <input type="hidden" name="home_add" id="address" class="form-control">
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Enable</button>
+                    </div>
+                </form>                
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ############################### DISABLE PORTAL MODAL #################################### -->
+<div class="modal modal-alert fade" id="disablePortal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <form action="<%= Routes.legal_path(@conn, :disable_client_portal)%>" method="POST">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Disable Client Portal?</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true"><i class="fal fa-times"></i></span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to disable client portal for this client? 
+                    </div>
+
+                    <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
+                    <input type="hidden" name="status" value="0">
+                    <input type="hidden" name="id" id="id">
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Disable</button>
+                    </div>
+                </form>                
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
 
 
 <!-----------------------------------------------------------------------------------------Modal Rendering scripts -->
@@ -1131,6 +1221,69 @@ $('#view-company').on('show.bs.modal', function (event){
     modal.find('.modal-body #country').val(country);
     modal.find('.modal-body #city').val(city);
     modal.find('.modal-body #bus_category').val(bus_category);
+    modal.find('.modal-body #address').val(address);
+});
+});
+</script>
+
+
+<!----------------------------------------------------------------Enable Client Portal -->
+<script>
+$(document).ready(function(){
+//Enable Client Portal
+$('#individualPortalAlert').on('show.bs.modal', function (event){
+    var button = $(event.relatedTarget)
+    var id = button.data('id')
+    var name = button.data('name')
+    var email = button.data('email')
+    var phone = button.data('phone')
+    var id_no = button.data('id_no')
+    var address = button.data('address')
+    
+    var modal = $(this)
+    modal.find('.modal-body #id').val(id);
+    modal.find('.modal-body #name').val(name);
+    modal.find('.modal-body #email').val(email);
+    modal.find('.modal-body #phone').val(phone);
+    modal.find('.modal-body #id_no').val(id_no);
+    modal.find('.modal-body #address').val(address);
+});
+});
+</script>
+
+<!----------------------------------------------------------------Enable Client Portal: Company -->
+<script>
+$(document).ready(function(){
+//Enable Client Portal: Company
+$('#companyPortalAlert').on('show.bs.modal', function (event){
+    var button = $(event.relatedTarget)
+    var id = button.data('id')
+    var company_name = button.data('company_name')
+    var email = button.data('email')
+    var tel = button.data('tel')
+    var address = button.data('address')
+    
+    var modal = $(this)
+    modal.find('.modal-body #id').val(id);
+    modal.find('.modal-body #company_name').val(company_name);
+    modal.find('.modal-body #email').val(email);
+    modal.find('.modal-body #tel').val(tel);
+    modal.find('.modal-body #address').val(address);
+});
+});
+</script>
+
+<!----------------------------------------------------------------Disable Client Portal-->
+<script>
+$(document).ready(function(){
+//Disable Client Portal
+$('#disablePortal').on('show.bs.modal', function (event){
+    var button = $(event.relatedTarget)
+    var id = button.data('id')
+    var address = button.data('address')
+    
+    var modal = $(this)
+    modal.find('.modal-body #id').val(id);
     modal.find('.modal-body #address').val(address);
 });
 });

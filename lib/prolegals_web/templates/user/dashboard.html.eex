@@ -27,7 +27,7 @@
             </small>
         </h1>
         <div class="subheader-block">
-            <i class='subheader-icon fal fa-user'></i> <%= "#{String.capitalize(@conn.assigns.user.first_name)}"%> <%= "#{String.capitalize(@conn.assigns.user.last_name)}"%>  | <%= "#{String.capitalize(@conn.assigns.user.user_role)}"%>
+            <i class='subheader-icon fal fa-user'></i> <%= "#{(@conn.assigns.user.first_name)}"%> | <%= "#{String.capitalize(@conn.assigns.user.user_role)}"%>
         </div>
     </div>
 

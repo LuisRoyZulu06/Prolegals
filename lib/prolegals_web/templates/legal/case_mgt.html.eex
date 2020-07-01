@@ -82,10 +82,20 @@
                                             Edit
                                         </a>
 
-                                        <a href="<%= Routes.legal_path(@conn, :case_update)%>" type="button" class="dropdown-item">
+                                        <a href="<%= Routes.legal_path(@conn, :case_update, id: case.id)%>" type="button" class="dropdown-item">
                                             <i class='subheader-icon fal fa-file'></i>
-                                            Report
+                                            New Reports
+                                        </a>  
+
+                                        
+
+
+
+                                        <a href="<%= Routes.legal_path(@conn, :view_case_history, id: case.id)%>" type="button" class="dropdown-item">
+                                            <i class='subheader-icon fal fa-eye'></i>
+                                            View case history
                                         </a>                                         
+
                                         <a class="dropdown-item" data-toggle="modal" data-target="#deactivate_user">
                                             <i class='subheader-icon fal fa-times'></i>
                                             Close Case
@@ -230,46 +240,34 @@
             <div class="modal-body">                
                 <form action="#" method="POST">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="form-group">
-                                <label class="form-label">Case ID</label>
+                                <label class="form-label">Case Name</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fal fa-shopping-bag"></i></span>
                                     </div>
-                                    <input type="text" id="case_name" class="form-control" disabled="disabled">
-                                    <input type="text" id="case_no" class="form-control" disabled="disabled">
+                                    <input type="text" name="case_name" id="case_name" class="form-control" disabled="disabled">
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label class="form-label">Case Details</label>
+                                <label class="form-label">Practice Area</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fal fa-shopping-bag"></i></span>
                                     </div>
-                                    <input type="text" id="practice_area" class="form-control" disabled="disabled">
-                                    <input type="text" id="case_description" class="form-control" disabled="disabled">
+                                    <input type="text" name="practice_area" id="practice_area" class="form-control" disabled="disabled">
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label class="form-label">Client</label>
+                                <label class="form-label">Client Name</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fal fa-user"></i></span>
                                     </div>
-                                    <input type="text" id="client" class="form-control" disabled="disabled">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label">Staff</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fal fa-user"></i></span>
-                                    </div>
-                                    <input type="text" id="staff" class="form-control" disabled="disabled">
+                                    <input type="text" name="client" id="client" class="form-control" disabled="disabled">
                                 </div>
                             </div>
 
@@ -279,25 +277,59 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fal fa-clock"></i></span>
                                     </div>
-                                    <input type="text" id="incident_date" class="form-control" disabled="disabled">
+                                    <input type="text" name="incident_date" id="incident_date" class="form-control" disabled="disabled">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Case No</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-shopping-bag"></i></span>
+                                    </div>
+                                    <input type="text" name="case_no" id="case_no" class="form-control" disabled="disabled">
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label class="form-label">Case Date</label>
+                                <label class="form-label">Case Description</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-shopping-bag"></i></span>
+                                    </div>
+                                    <input type="text" name="case_description" id="case_description" class="form-control" disabled="disabled">
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="form-label">Staff on Case</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-user"></i></span>
+                                    </div>
+                                    <input type="text" name="staff" id="staff" class="form-control" disabled="disabled">
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="form-label">Date Case Reported</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fal fa-clock"></i></span>
                                     </div>
-                                    <input type="text" id="date_case_opened" class="form-control" disabled="disabled">
+                                    <input type="text" name="date_case_opened" id="date_case_opened" class="form-control" disabled="disabled">
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> 
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    </div>                   
+                    </div>        
                 </form>
             </div>
 
@@ -316,51 +348,37 @@
                 </button>
             </div>
 
-            <div class="modal-body">                
-                <form action="<%= Routes.legal_path(@conn, :edit_case)%>" method="POST">
+            <div class="modal-body"> 
+                <form action="<%= Routes.legal_path(@conn, :edit_case)%>" method="POST"> 
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="form-group">
-                                <label class="form-label">Case ID</label>
+                                <label class="form-label">Case Name</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fal fa-shopping-bag"></i></span>
                                     </div>
                                     <input type="text" name="case_name" id="case_name" class="form-control" required="required">
-                                    <input type="text" name="case_no" id="case_no" class="form-control" required="required">
-                                    <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
-                                    <input type="hidden" name="id" id="id">
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label class="form-label">Case Details</label>
+                                <label class="form-label">Practice Area</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fal fa-shopping-bag"></i></span>
                                     </div>
                                     <input type="text" name="practice_area" id="practice_area" class="form-control" required="required">
-                                    <input type="text" name="case_description" id="case_description" class="form-control" required="required">
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label class="form-label">Client</label>
+                                <label class="form-label">Client Name</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fal fa-user"></i></span>
                                     </div>
                                     <input type="text" name="client" id="client" class="form-control" required="required">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label">Staff</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fal fa-user"></i></span>
-                                    </div>
-                                    <input type="text" name="staff" id="staff" class="form-control" required="required">
                                 </div>
                             </div>
 
@@ -373,9 +391,43 @@
                                     <input type="text" name="incident_date" id="incident_date" class="form-control" required="required">
                                 </div>
                             </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Case No</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-shopping-bag"></i></span>
+                                    </div>
+                                    <input type="text" name="case_no" id="case_no" class="form-control" required="required">
+                                </div>
+                            </div>
 
                             <div class="form-group">
-                                <label class="form-label">Case Date</label>
+                                <label class="form-label">Case Description</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-shopping-bag"></i></span>
+                                    </div>
+                                    <input type="text" name="case_description" id="case_description" class="form-control" required="required">
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="form-label">Staff on Case</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-user"></i></span>
+                                    </div>
+                                    <input type="text" name="staff" id="staff" class="form-control" required="required">
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="form-label">Date Case Reported</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text"><i class="fal fa-clock"></i></span>
@@ -384,7 +436,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> 
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -436,7 +488,7 @@ $('#view-case').on('show.bs.modal', function (event){
 <!----------------------------------------------------------------Edit Case Details -->
 <script>
 $(document).ready(function(){
-//View Case Details
+//Editr Case Details
 $('#edit-case').on('show.bs.modal', function (event){
     var button = $(event.relatedTarget)
     var id = button.data('id')

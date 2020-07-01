@@ -12,14 +12,15 @@ defmodule Prolegals.Litigation.Cases do
     field :incident_date, :string
     field :practice_area, :string
     field :staff, :string
+    field :case_id, :string
 
-    timestamps()
+    timestamps(type: :utc_datetime)
   end
 
   @doc false
   def changeset(cases, attrs) do
     cases
-    |> cast(attrs, [:case_name, :case_no, :case_status, :practice_area, :case_description, :client, :staff, :incident_date, :date_case_opened])
+    |> cast(attrs, [:case_name, :case_no, :case_status, :practice_area, :case_description, :client, :staff, :incident_date, :date_case_opened, :case_id])
     |> validate_required([:case_name, :case_no, :case_status, :practice_area, :case_description, :client, :staff, :incident_date, :date_case_opened])
   end
 end
