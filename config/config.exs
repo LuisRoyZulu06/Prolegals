@@ -56,12 +56,12 @@ config :Prolegals, Prolegals.Scheduler,
     #   # schedule: {:extended, "*/30"},
     #   # schedule: "*/10 * * * * *",
     #   schedule: "@weekly",
-    #   task: {BankLink.Workers.Channel, :perform, []}
+    #   task: {Prolegals.Workers.Channel, :perform, []}
     # ],
     # branch_list: [
     #   # schedule: "*/5 8,9,10,18 * * * *",
     #   schedule: "@weekly",
-    #   task: {BankLink.Workers.Branchs, :perform, []}
+    #   task: {Prolegals.Workers.Branchs, :perform, []}
     # ]
   ]
 

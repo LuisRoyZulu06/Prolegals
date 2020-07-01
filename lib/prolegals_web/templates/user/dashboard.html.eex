@@ -230,7 +230,7 @@
             <!-- Statistics -->
             <div class="row">
                 <div class="col-sm-6 col-xl-4">
-                    <div class="p-3 bg-secondary rounded overflow-hidden position-relative text-white mb-g">
+                    <div class="p-3 bg-secondary rounded overflow-hidden position-relative text-white mb-g  ">
                         <div class="">
                             <h3 class="display-4 d-block l-h-n m-0 fw-500">
                                     <%= @total_visitors %>
@@ -268,7 +268,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <a href="#" data-toggle="modal" data-target="#log-book">
-                        <div id="cp-2" class="card border">
+                        <div id="cp-2" class="card border ">
                             <div class="card-header bg-info-600">
                               Log Book
                             </div>

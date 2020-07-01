@@ -94,9 +94,9 @@
                                                         <i class='subheader-icon fal fa-chevron-down'></i>
                                                     </span>
                                                     <div class="dropdown-menu"> 
-                                                    
+
                                                         <!-- <a class="dropdown-item" data-id="<%= list_log_book_user.id %>" data-name="<%= list_log_book_user.name %>" data-sex="<%= list_log_book_user.sex %>" data-mobile_no="<%= list_log_book_user.mobile_no %>" data-address="<%= list_log_book_user.address %>" data-id_type="<%= list_log_book_user.id_type %>" data-id_no="<%= list_log_book_user.id_no %>" data-company="<%= list_log_book_user.company %>" data-person_to_see="<%= list_log_book_user.person_to_see %>" data-purpose="<%= list_log_book_user.purpose %>" data-date="<%= list_log_book_user.date %>" data-time_in="<%= list_log_book_user.time_in %>" data-time_out="<%= list_log_book_user.time_out %>" data-toggle="modal" data-target="#edit-modal">Edit</a> %>-->
-                                                        <a class="dropdown-item" data-id="<%= list_log_book_user.id %>"
+                                                        <!-- <a class="dropdown-item" data-id="<%= list_log_book_user.id %>"
                                                                                 data-name="<%= list_log_book_user.name %>" 
                                                                                 data-sex="<%= list_log_book_user.sex %>" 
                                                                                 data-mobile_no="<%= list_log_book_user.mobile_no %>"
@@ -109,7 +109,7 @@
                                                                                 data-date="<%= list_log_book_user.date %>" 
                                                                                 data-time_in="<%= list_log_book_user.time_in %>"
                                                                                 data-time_out="<%= list_log_book_user.time_out %>" 
-                                                                                data-toggle="modal" data-target="#check-in-modal">Chech In</a>
+                                                                                data-toggle="modal" data-target="#check-in-modal">Chech In</a> -->
 
                                                          <!--- Check Out Action --->
                                                         <form action="<%= Routes.security_path(@conn, :add_time_out)%>" method="POST">
