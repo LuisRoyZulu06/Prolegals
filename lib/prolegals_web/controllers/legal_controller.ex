@@ -13,6 +13,26 @@ alias Prolegals.Litigation.BusinessCategory
 alias Prolegals.SystemDirectories.Directory
 alias Prolegals.{Logs, Repo, Logs.UserLogs, Auth}
 
+plug(
+    ProlegalsWeb.Plugs.RequireAuth
+    when action in [
+    	:contacts,
+    	:create_contact,
+        :contacts_trash,
+        :case_mgt,
+        :case_update,
+        :create_case,
+        :case_update,
+        :notifications,
+        :tasks,
+        :practice_area,
+        :bus_category,
+        :view_case_history
+         ]
+  )
+
+
+
 @headers ~w/sn name email phone company_name job_title id_type id_no bus_category contact_type tel city country address client_portal status/a
 # @data_dir Path.join([__DIR__, "../../../", "priv/static/uploads"])
 
@@ -71,7 +91,8 @@ alias Prolegals.{Logs, Repo, Logs.UserLogs, Auth}
 
 	def contacts_trash(conn, _params)do
 		contacts = Litigation.list_li_tbl_contacts()
-		render(conn, "contacts_trash.html", contacts: contacts)
+		client = Accounts.list_tbl_users()
+		render(conn, "contacts_trash.html", contacts: contacts, client: client)
 	end
 
 	def restore(conn, %{"id" => id}) do
@@ -119,6 +140,66 @@ alias Prolegals.{Logs, Repo, Logs.UserLogs, Auth}
 	    end
   	end
 
+  	def enable_client_portal(conn, %{"id" => id} = params) do
+  		contact=Litigation.get_contacts!(id)
+
+  		 Ecto.Multi.new()
+	     |> Ecto.Multi.update(:update, Contacts.changeset(contact, %{client_portal: "on"}))
+	     |> Ecto.Multi.insert(:insert, User.changeset(%User{}, params)) 
+	     |> Repo.transaction()
+         |>	case  do
+		    {:ok, _} ->
+		      conn
+		      |> put_flash(:info, "Client Portal Enabled.")
+		      |> redirect(to: Routes.legal_path(conn, :contacts))
+
+		      conn
+
+		    {:error, _failed_operation, failed_value, _changes_so_far} ->
+		      conn
+		      |> put_flash(:error, "Failed To Enable Client Portal.")
+		      |> redirect(to: Routes.legal_path(conn, :contacts))
+        	end
+    end
+
+
+
+
+
+    def disable_client_portal(conn, %{"id" => id} = params) do
+      client = Accounts.get_user!(id)
+      contact=Litigation.get_contacts!(id)
+
+      Ecto.Multi.new()
+      |> Ecto.Multi.update(:client, User.changeset(client, %{status: "0"}))
+      |> Ecto.Multi.update(:update, Contacts.changeset(contact, %{client_portal: "off"}))
+      |> Ecto.Multi.run(:userlogs, fn %{client: client} ->
+        activity = "Client updated with ID \"#{client.id}\""
+
+        userlogs = %{
+          user_id: conn.assigns.user.id,
+          activity: activity
+        }
+
+        UserLogs.changeset(%UserLogs{}, userlogs)
+        |> Repo.insert()
+      end)
+      |> Repo.transaction()
+      |> case do
+        {:ok, %{client: client, userlogs: _userlogs}} ->
+          conn
+          |> put_flash(:info, "Client Portal Disabled")
+          |> redirect(to: Routes.legal_path(conn, :contacts))
+
+        {:error, _failed_operation, failed_value, _changes_so_far} ->
+          reason = LegalController.traverse_errors(failed_value.errors) |> List.first()
+
+          conn
+          |> put_flash(:error, reason)
+          |> redirect(to: Routes.legal_path(conn, :contacts))
+      end
+    end
+
 
 
 # ---------------------------------- Case Mgt
@@ -146,26 +227,29 @@ alias Prolegals.{Logs, Repo, Logs.UserLogs, Auth}
 	  	end
 	end
 
-	def case_update(conn, _params) do
-		cases = Litigation.list_li_tbl_case()
-		evidence = Litigation.list_li_tbl_evidence()
-		render(conn, "case_update.html", cases: cases, evidence: evidence)
+	def case_update(conn, %{"id" => id}) do
+		list_case = Litigation.get_cases!(id)
+		evidences = Litigation.get_all_evidences(id)	
+		render(conn, "case_update.html", list_case: list_case, evidences: evidences)
 	end
 
-	def evidence_update(conn, params) do
+	def evidence_update(conn, %{"case_id" => case_id}=params) do
 		case Litigation.create_evidence(params) do
-	        {:ok, _} ->
+					{:ok, _} ->
+						list_case = Litigation.get_cases!(case_id)
+						evidences = Litigation.get_all_evidences(case_id)
 	        	conn
 	        	|> put_flash(:info, "New evidence added.")
-	        	|> redirect(to: Routes.legal_path(conn, :case_update))
+	        	|> redirect(to: Routes.legal_path(conn, :case_update, id: case_id))
 
 	            conn
 
-	        {:error, _} ->
+					{:error, _} ->
+						list_case = Litigation.get_cases!(case_id)
+						evidences = Litigation.get_all_evidences(case_id)
 	        	conn
-
 	        	|> put_flash(:error, "Failed to add evidence.")
-	        	|> redirect(to: Routes.legal_path(conn, :case_update))
+	        	|> redirect(to: Routes.legal_path(conn, :case_update, id: case_id))
 	  	end
 	end
 
@@ -188,6 +272,12 @@ alias Prolegals.{Logs, Repo, Logs.UserLogs, Auth}
 
 	def notifications(conn, _params) do
 		render(conn, "notifications.html")
+	end
+
+	def view_case_history(conn, %{"id" => id}) do
+		cases = Litigation.get_cases!(id)
+		proof = Litigation.get_all_evidences(id)
+		render(conn, "view_case_history.html", cases: cases, proof: proof)
 	end
 
 # ---------------------------------- Task Mgt
@@ -286,6 +376,16 @@ alias Prolegals.{Logs, Repo, Logs.UserLogs, Auth}
 				|> put_flash(:error, "Failed to update business category.")
 				|> redirect(to: Routes.legal_path(conn, :bus_category))
 		end
+	end
+
+# ---------------------------------- Reports Mgt
+	def li_reports(conn, _params)do
+		render(conn, "reports.html")
+	end
+
+	def case_reports(conn, _params)do
+		cases = Litigation.list_li_tbl_case()
+		render(conn, "case_reports.html", cases: cases)
 	end
 
 # ---------------------------------- File upload

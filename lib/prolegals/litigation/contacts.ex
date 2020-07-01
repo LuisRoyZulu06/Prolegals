@@ -19,7 +19,7 @@ defmodule Prolegals.Litigation.Contacts do
     field :client_portal, :string
     field :status, :string
 
-    timestamps()
+    timestamps(type: :utc_datetime)
   end
 
   @doc false

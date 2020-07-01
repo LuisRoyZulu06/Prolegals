@@ -6,7 +6,7 @@ defmodule Prolegals.Litigation.CaseType do
     field :category, :string
     field :description, :string
 
-    timestamps()
+    timestamps(type: :utc_datetime)
   end
 
   @doc false

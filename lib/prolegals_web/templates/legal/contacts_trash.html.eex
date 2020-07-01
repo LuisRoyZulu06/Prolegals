@@ -38,7 +38,7 @@
     <div id="panel-1" class="panel">
         <div class="panel-hdr">
             <h2>
-                Deleted Contacts <i class='subheader-icon fal fa-trash'></i>
+                Disable Contacts <i class='subheader-icon fal fa-trash'></i>
             </h2>
         </div>
 
@@ -78,12 +78,12 @@
                                         <div class="dropdown-menu">
                                             <a class="dropdown-item" href="<%= Routes.legal_path(@conn, :delete_forever, id: contact.id)%>">
                                                 <i class='subheader-icon fal fa-times'></i>
-                                                Delete Forever
+                                                Delete Contact
                                             </a>
                                             
                                             <a class="dropdown-item restore" data-id="<%= contact.id %>" data-csfr="<%= Plug.CSRFProtection.get_csrf_token()%>">
                                                 <i class='subheader-icon fal fa-edit'></i>
-                                                Restore
+                                                Restore Contact
                                             </a>                                            
                                         </div>
                                     </div>
