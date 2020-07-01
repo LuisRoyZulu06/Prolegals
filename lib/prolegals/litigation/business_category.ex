@@ -6,7 +6,7 @@ defmodule Prolegals.Litigation.BusinessCategory do
     field :business_nature, :string
     field :business_type, :string
 
-    timestamps()
+    timestamps(type: :utc_datetime)
   end
 
   @doc false

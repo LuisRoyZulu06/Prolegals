@@ -1,0 +1,114 @@
+<div class="d-flex flex-column flex-grow-1 bg-white">
+    <!-- inbox header -->
+    <div class="flex-grow-0">
+        <!-- inbox title -->
+        <div class="d-flex align-items-center p-0 border-faded border-top-0 border-left-0 border-right-0 flex-shrink-0">
+            <div class="d-flex align-items-center w-100 pl-3 px-lg-4 py-2 position-relative">
+                <div class="d-flex flex-row align-items-center mt-1 mb-1">
+                    <div class="mr-2 d-inline-block">
+                        <img class="profile-image rounded-circle" alt="Proxy User" src="<%= Routes.static_path(@conn, "/images/avatar/1.png") %>">
+                    </div>
+                    <div class="info-card-text">
+                        <a href="javascript:void(0);" class="fs-lg text-truncate text-truncate-lg">
+                            <%= "#{(@conn.assigns.user.first_name)}"%> <%= "#{(@conn.assigns.user.last_name)}"%>
+                            <i class="fal fa-angle-down d-inline-block ml-1 fs-md"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end inbox title -->
+    </div>
+
+    <!-- inbox message -->
+    <div class="flex-wrap align-items-center flex-grow-1 position-relative bg-gray-50">
+        <div class="position-absolute pos-top pos-bottom w-100 overflow-hidden">
+            <div class="d-flex h-100 flex-column">
+                <!-- BEGIN msgr -->
+                <div class="msgr d-flex h-100 flex-column bg-white">
+                    <!-- BEGIN custom-scroll -->
+                    <div class="custom-scroll flex-1 h-100">
+                        <div id="chat_container" class="w-100 p-4">
+                            <%= for case <-[@cases] do %>
+                                <!-- start .chat-segment -->
+                                <div class="chat-segment">
+                                    <div class="time-stamp text-center mb-2 fw-400">
+                                        <%= "#{case.inserted_at |> Calendar.DateTime.shift_zone!("Africa/Cairo") |> Calendar.Strftime.strftime!("%d-%b-%Y %H:%M:%S")}" %>
+                                    </div>
+                                </div>
+
+                                <!-- Case Information -->
+                                <div class="chat-segment chat-segment-get">
+                                    <div class="chat-message">
+                                        <p>
+                                            <b>Case Name:</b> <%= case.case_name %>
+                                        </p>
+                                        <p>
+                                            <b>Case Number:</b> <%= case.case_no %>
+                                        </p>
+                                        <p>
+                                            <b>Case Description:</b> <%= case.case_description %>
+                                        </p>
+                                        <p>
+                                            <b>Case Status:</b> <%= case.case_status %>
+                                        </p>
+                                        <p>
+                                            <b>Staff:</b> <%= case.staff %>
+                                        </p>
+                                        <p>
+                                            <b>Nature of Case:</b> <%= case.practice_area %>
+                                        </p>
+                                        <p>
+                                            <b>Date Incident Happend:</b> <%= case.incident_date %>
+                                        </p>
+                                        <p>
+                                            <b>Date Case Opened:</b> <%= case.date_case_opened %>
+                                        </p>
+                                    </div>
+                                    <div class="text-left fw-300 text-muted mt-1 fs-xs">
+                                        Case Details
+                                    </div>
+                                </div>
+                            <% end %>    
+                            <!------------------------------------------------------>
+
+                            <%= for proof <-@proof do %>
+                                <!-- start .chat-segment -->
+                                <div class="chat-segment">
+                                    <div class="time-stamp text-center mb-2 fw-400">
+                                        <%= "#{proof.inserted_at |> Calendar.DateTime.shift_zone!("Africa/Cairo") |> Calendar.Strftime.strftime!("%d-%b-%Y %H:%M:%S")}" %>
+                                    </div>
+                                </div>
+
+                                <!-- Evidence Information -->
+                                <div class="chat-segment chat-segment-sent">
+                                    <div class="chat-message">
+                                        <p>
+                                            <%= proof.evidence_type %>  <br>
+                                            <img class="shadow-2 img-thumbnail"  src="<%= Prolegals.ImageUploader.url({proof.evidence_file, proof})%>">                                                  
+                                        </p>
+                                        <br>
+                                        <p>
+                                            <b>Source of evidence: </b><%= proof.source %>  
+                                        </p>  
+
+                                        <p>   
+                                            <b>Description of evidence: </b><%= proof.description %>  
+                                        </p>    
+                                        <p> 
+                                            <b>Date Evidence was Presented: </b><%= proof.date_evidence_presented %>   
+                                        </p>
+                                    </div>
+                                    <div class="text-right fw-300 text-muted mt-1 fs-xs">
+                                        Evidence Details
+                                    </div>
+                                </div>
+                            <% end %>
+                            <!------------------------------------------------------>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

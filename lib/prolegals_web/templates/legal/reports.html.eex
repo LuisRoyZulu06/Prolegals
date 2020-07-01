@@ -1,0 +1,185 @@
+<!-----------------------------------------------------------------------------------------Flash -->
+    <div class="row">
+        <div class="col-md-12 col-lg-offset-2">
+            <div class="form-group">
+                <%= if get_flash(@conn, :info) do %>
+                    <div class="alert alert-info alert-styled-left">
+                    <button type="button" class="close" data-dismiss="alert">&times; <span class="sr-only">Close</span></button>
+                    <%= get_flash(@conn, :info) %>
+                    </div>
+                <% end %>
+                <%= if get_flash(@conn, :error) do %>
+                    <div class="alert alert-danger alert-styled-left">
+                    <button type="button" class="close" data-dismiss="alert">&times; <span class="sr-only">Close</span></button>
+                    Opps! <%= get_flash(@conn, :error) %>
+                    </div>
+                <% end %>
+            </div>
+        </div>
+    </div>
+<!------------------------------------------------------------------------------------------------->
+
+<div class="subheader" style="margin-top: 5em;">
+    <h1 class="subheader-title">
+        <i class='subheader-icon fal fa-edit'></i> Reports
+        <small>
+            Reports on your activity appear here.
+        </small>
+    </h1>
+    <div class="subheader-block" id="loggedIn-user">
+        <i class='subheader-icon fal fa-user'></i> <%= "#{String.capitalize(@conn.assigns.user.first_name)}"%> <%= "#{String.capitalize(@conn.assigns.user.last_name)}"%>  | <%= "#{String.capitalize(@conn.assigns.user.user_role)}"%>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-4">
+            <a href="<%= Routes.legal_path(@conn, :case_reports) %>">
+                <div id="cp-2" class="card border">
+                    <div class="card-header bg-fusion-600">
+                        Total Cases
+                    </div>
+                    <div class="card-body p-0 bg-fusion-300" style="height: 250px">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <h1 class="opacity-15" id="driver-cards">REPORT ON ALL CASES</h1>  
+                            </div>
+
+                            <div class="col-sm-6">
+                                <i class="fal fa-folder-open position-absolute pos-middle pos-middle opacity-15 mb-n1 mr-n1" style="font-size:15rem"></i>
+                            </div>
+                        </div> 
+                    </div>
+                    <div class="card-footer bg-fusion-800 py-2">
+                        <br>
+                    </div>
+                </div> 
+            </a>  
+        </div>
+
+        <div class="col-md-4">
+            <a href="#">
+                <div id="cp-2" class="card border">
+                    <div class="card-header bg-info-600">
+                        Frequent Encountered Case
+                    </div>
+                    <div class="card-body p-0 bg-info-300" style="height: 250px">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <h1 class="opacity-15" id="driver-cards">FREQUENT CASES</h1>  
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <i class="fal fa-table position-absolute pos-middle pos-middle opacity-15 mb-n1 mr-n1" style="font-size:15rem;"></i>
+                                </div>
+                            </div> 
+                        </div>
+                    <div class="card-footer bg-info-800 py-2">
+                        <br>
+                    </div>
+                </div> 
+            </a>                                     
+        </div>
+
+        <div class="col-md-4">
+            <a href="#" data-toggle="modal" data-target="#profile-modal">
+                <div id="cp-2" class="card border">
+                    <div class="card-header bg-primary-600">
+                        Personal Profile
+                    </div>
+                    <div class="card-body p-0 bg-primary-300" style="height: 250px">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <h1 class="opacity-15" id="driver-cards">PROFILE</h1>  
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <i class="fal fa-user position-absolute pos-middle pos-middle opacity-15 mb-n1 mr-n1" style="font-size:15rem;"></i>
+                                    </div>
+                                </div> 
+                            </div>
+                        <div class="card-footer bg-primary-800 py-2">
+                        <br>
+                    </div>
+                </div> 
+            </a>
+        </div>
+    </div>
+
+
+    <%# <div class="row" style="margin-top: 5em;">
+        <div class="col-md-4">
+            <a href="#">
+                <div id="cp-2" class="card border">
+                    <div class="card-header bg-success-600">
+                        Requests Sent
+                    </div>
+                    <div class="card-body p-0 bg-success-300" style="height: 160px">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <h1 class="opacity-15" id="driver-cards">INBOX</h1>  
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <i class="fal fa-envelope position-absolute pos-middle pos-middle opacity-15 mb-n1 mr-n1" style="font-size:11rem;"></i>
+                                </div>
+                            </div> 
+                        </div>
+                    <div class="card-footer bg-success-800 py-2">
+                        <br>
+                    </div>
+                </div> 
+            </a>                                     
+        </div>
+
+        
+        <div class="col-md-4">
+            <a href="#" data-toggle="modal" data-target="#vehicle-modal">
+                <div id="cp-2" class="card border">
+                    <div class="card-header bg-warning-600">
+                        Vehicle Details
+                    </div>
+                    <div class="card-body p-0 bg-warning-300" style="height: 160px">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <h1 class="opacity-15" id="driver-cards">VEHICLE</h1>  
+                            </div>
+
+                            <div class="col-sm-6">
+                                <i class="fal fa-truck position-absolute pos-middle pos-middle opacity-15 mb-n1 mr-n1" style="font-size:9rem"></i>
+                            </div>
+                        </div> 
+                    </div>
+                    <div class="card-footer bg-warning-800 py-2">
+                        <br>
+                    </div>
+                </div> 
+            </a>                                      
+        </div>
+        
+
+        <div class="col-md-4">
+            <a href="#" data-dismiss="modal" data-toggle="modal" data-target="#open-issue">
+                <div id="cp-2" class="card border">
+                    <div class="card-header bg-danger-600">
+                        Total Cases Handled
+                    </div>
+                    <div class="card-body p-0 bg-danger-300" style="height: 160px">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <h1 class="opacity-15" id="driver-cards">CASES</h1>  
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <i class="fal fa-folder-open position-absolute pos-middle pos-middle opacity-15 mb-n1 mr-n1" style="font-size:11rem;"></i>
+                                </div>
+                            </div> 
+                        </div>
+                    <div class="card-footer bg-danger-800 py-2">
+                        <br>
+                    </div>
+                </div> 
+            </a>                                       
+        </div> 
+    </div> %>
+</div>

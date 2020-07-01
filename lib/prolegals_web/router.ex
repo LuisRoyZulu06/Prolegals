@@ -37,6 +37,7 @@ defmodule ProlegalsWeb.Router do
   scope "/", ProlegalsWeb do
     pipe_through([:browser, :no_layout])
     get("/logout/current/user", SessionController, :signout)
+    get "/Account/Disabled", SessionController, :error_405
   end
 
   scope "/", ProlegalsWeb do
@@ -57,6 +58,7 @@ defmodule ProlegalsWeb.Router do
     get "/Case/Updates", LegalController, :case_update
     post "/New/Evidence", LegalController, :evidence_update
     get "/Notifications", LegalController, :notifications
+    get "/View/Case/History", LegalController, :view_case_history
 
     # ------------------------------ Task_Mgt
     get "/Tasks", LegalController, :tasks
@@ -77,6 +79,12 @@ defmodule ProlegalsWeb.Router do
     post "/Create/Bulk/Contacts", LegalController, :create_bulk_contact
     get "/Delete/Contact/Forever", LegalController, :delete_forever
     get "/Deleted/Contacts", LegalController, :contacts_trash
+    post "/Enable/Client/Portal", LegalController, :enable_client_portal
+    post "/Disable/Client/Portal", LegalController, :disable_client_portal
+
+    # ---------------------------Report_Mgt
+    get "/Litigation/Reports", LegalController, :li_reports
+    get "/Case/Reports", LegalController, :case_reports
 
 
 

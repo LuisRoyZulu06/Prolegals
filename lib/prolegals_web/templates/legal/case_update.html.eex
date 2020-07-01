@@ -24,7 +24,7 @@
         <i class='subheader-icon fal fa-shopping-bag'></i> Update Cases
         <small>
             Add new evidence and information recieved partaining to this case here.<br>
-            <a href="javascript:void(0);" class="btn btn-light hover-effect" data-toggle="modal" data-target="#evidence-update">
+            <a href="javascript:void(0);" class="btn btn-dark hover-effect" data-toggle="modal" data-target="#evidence-update">
                 Add Evidence
             </a>
         </small>
@@ -41,57 +41,58 @@
                 <h5 class="modal-title">CASE DETAILS <i class='subheader-icon fal fa-building'></i> </h5>
             </div>
 
-            <div class="modal-body">  
-                <%= for case <-@cases do %>              
+            <div class="modal-body">             
                 <form action="#" method="POST">
                     <div class="row">
                         <div class="col-md-12">
                             <p>
                                 <b>Name of case:</b>
-                                <%= case.case_name %>
+                                <%= @list_case.case_name %>
                             </p>
 
                             <p>
                                 <b>Case Number:</b>
-                                <%= case.case_no %>
+                                <%= @list_case.case_no %>
                             </p>
 
                             <p>
                                 <b>Case Category:</b>
-                                <%= case.practice_area %>
+                                <%= @list_case.practice_area %>
                             </p>
 
                             <p>
                                 <b>Type of case:</b>
-                                <%= case.case_description %>
+                                <%= @list_case.case_description %>
                             </p>
 
                             <p>
                                 <b>Date of Incident:</b>
-                                <%= case.incident_date %>
+                                <%= @list_case.incident_date %>
                             </p>
 
                             <p>
                                 <b>Date case opened:</b>
-                                <%= case.date_case_opened %>
+                                <%= @list_case.date_case_opened %>
                             </p>
 
                             <p>
                                 <b>Client:</b>
-                                <%= case.client %>
+                                <%= @list_case.client %>
                             </p>
 
                             <p>
                                 <b>Staff:</b>
-                                <%= case.staff %>
+                                <%= @list_case.staff %>
                             </p>
                         </div>
                     </div>
                 </form>
-                <% end %>
             </div>
         </div>
     </div>
+
+
+
 
     <div class="col-md-8">
         <div id="panel-1" class="panel">
@@ -116,31 +117,34 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <%= for evidence <-@evidence do %>
-                            <tr>
-                                <td><%= evidence.evidence_type %></td>
-                                <td><%= evidence.source %></td>
-                                <td><%= evidence.date_evidence_presented %></td>
-                                <td>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <i class='subheader-icon fal fa-chevron-down'></i>
-                                            </span>
-                                            <div class="dropdown-menu">
-                                                <a class="dropdown-item" data-id="<%= evidence.id %>" data-evidence_type="<%= evidence.evidence_type %>" data-source="<%= evidence.source %>" data-date_evidence_presented="<%= evidence.date_evidence_presented %>" data-description="<%= evidence.description %>" data-toggle="modal" data-target="#view-evidence">
-                                                    <i class='subheader-icon fal fa-eye'></i> 
-                                                    View
-                                                </a>
-                                   
-                                                <a class="dropdown-item" data-toggle="modal" data-target="#deactivate_user"><i class='subheader-icon fal fa-times'></i>Close case</a>
-                                                
+
+                            <%= for evidence <-@evidences do %>
+                                <tr>
+                                    <td><%= evidence.evidence_type %></td>
+                                    <td><%= evidence.source %></td>
+                                    <td><%= evidence.date_evidence_presented %></td>
+                                    <td>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class='subheader-icon fal fa-chevron-down'></i>
+                                                </span>
+                                                <div class="dropdown-menu">
+                                                    <a class="dropdown-item" data-id="<%= evidence.id %>" data-evidence_type="<%= evidence.evidence_type %>" data-source="<%= evidence.source %>" data-date_evidence_presented="<%= evidence.date_evidence_presented %>" data-description="<%= evidence.description %>" data-toggle="modal" data-target="#view-evidence">
+                                                        <i class='subheader-icon fal fa-eye'></i> 
+                                                        View
+                                                    </a>
+                                       
+                                                    <a class="dropdown-item" data-toggle="modal" data-target="#deactivate_user"><i class='subheader-icon fal fa-times'></i>Close case</a>
+                                                    
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </td>
-                            </tr> 
-                            <% end %>            
+                                    </td>
+                                </tr> 
+                            <% end %> 
+
+
                     </table>
                     <!-- datatable end -->
                 </div>
@@ -180,6 +184,7 @@
                                         <option value="text">Text</option>
                                     </select>
                                     <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
+                                    <input type="hidden" name="case_id" value="<%= @list_case.id %>">
                                 </div>
                                 <span class="help-block">
                                     Enter evidence type e.g. Audio, Image, Document, or/and Video.
@@ -267,7 +272,7 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-md-6">
-                        <%= for evidence <-@evidence do %>
+                        <%= for evidence <-@evidences do %>
                             <img class="shadow-2 img-thumbnail"  src="<%= Prolegals.ImageUploader.url({evidence.evidence_file, evidence})%>">
                         <% end %>
                     </div>

@@ -12,6 +12,7 @@ defmodule Prolegals.Repo.Migrations.CreateLiTblCase do
       add :staff, :string
       add :incident_date, :string
       add :date_case_opened, :string
+      add :case_id, :string
 
       timestamps()
     end

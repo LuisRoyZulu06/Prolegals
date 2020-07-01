@@ -15,7 +15,7 @@ defmodule Prolegals.Litigation.Events do
     field :priority, :string
     field :status, :string, default: "Pending"
 
-    timestamps()
+    timestamps(type: :utc_datetime)
   end
 
   @doc false

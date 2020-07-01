@@ -9,14 +9,16 @@ defmodule Prolegals.Litigation.Evidence do
     field :evidence_file, Prolegals.ImageUploader.Type
     field :evidence_type, :string
     field :source, :string
+    # field :case_id, :string
 
-    timestamps()
+    belongs_to :cases, Prolegals.Litigation.Cases, foreign_key: :case_id, type: :id
+    timestamps(type: :utc_datetime)
   end
 
   @doc false
   def changeset(evidence, attrs) do
     evidence
-    |> cast(attrs, [:evidence_type, :source, :description, :date_evidence_presented, :evidence_file])
-    |> validate_required([:evidence_type, :source, :description, :date_evidence_presented, :evidence_file])
+    |> cast(attrs, [:evidence_type, :source, :description, :date_evidence_presented, :evidence_file, :case_id])
+    |> validate_required([:evidence_type, :source, :description, :date_evidence_presented, :evidence_file, :case_id])
   end
 end
