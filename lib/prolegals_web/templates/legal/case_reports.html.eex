@@ -1,0 +1,542 @@
+<!-----------------------------------------------------------------------------------------Flash -->
+<div class="row">
+    <div class="col-md-12 col-lg-offset-2">
+        <div class="form-group">
+            <%= if get_flash(@conn, :info) do %>
+                <div class="alert alert-info alert-styled-left">
+                <button type="button" class="close" data-dismiss="alert">&times; <span class="sr-only">Close</span></button>
+                <%= get_flash(@conn, :info) %>
+                </div>
+            <% end %>
+            <%= if get_flash(@conn, :error) do %>
+                <div class="alert alert-danger alert-styled-left">
+                <button type="button" class="close" data-dismiss="alert">&times; <span class="sr-only">Close</span></button>
+                Opps! <%= get_flash(@conn, :error) %>
+                </div>
+            <% end %>
+        </div>
+    </div>
+</div>
+<!------------------------------------------------------------------------------------------------->
+
+<div class="subheader">
+    <h1 class="subheader-title">
+        <i class='subheader-icon fal fa-edit'></i> Case Reports
+        <small>
+            Reports on your all cases you attended to.
+        </small>
+    </h1>
+    <div class="subheader-block" id="loggedIn-user">
+        <i class='subheader-icon fal fa-user'></i> <%= "#{String.capitalize(@conn.assigns.user.first_name)}"%> <%= "#{String.capitalize(@conn.assigns.user.last_name)}"%>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div id="panel-1" class="panel">
+            <div class="panel-hdr">
+                <h2>
+                    List of Cases <i class='subheader-icon fal fa-shopping-bag'></i>
+                </h2>
+            </div>
+
+            <div class="panel-container show">
+                <div class="panel-content">
+                    
+                    <!-- datatable start -->
+                    <table id="dt-basic-example" class="table table-bordered table-hover table-striped w-100">
+                        <thead class="p-3 bg-info-300 rounded overflow-hidden position-relative text-white mb-g">
+                            <tr>
+                                <th>Case Name</th>
+                                <th>Case Number</th>
+                                <th>Date Opened</th>
+                                <th>Client</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <%= for case <-@cases do %>
+                            <tr>
+                                <td><%= case.case_name %></td>
+                                <td><%= case.case_no %></td>
+                                <td><%= case.date_case_opened %></td>
+                                <td><%= case.client %></td>
+                                <td><%= case.case_status %></td>
+                                <td>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class='subheader-icon fal fa-chevron-down'></i>
+                                            </span>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item" data-id="<%= case.id %>" data-case_name="<%= case.case_name %>" data-case_no="<%= case.case_no %>" data-case_status="<%= case.case_status %>" data-practice_area="<%= case.practice_area %>" data-case_description="<%= case.case_description %>" data-client="<%= case.client %>" data-staff="<%= case.staff %>" data-incident_date="<%= case.incident_date %>" data-date_case_opened="<%= case.date_case_opened %>" data-toggle="modal" data-target="#view-case">
+                                                    <i class='subheader-icon fal fa-eye'></i> 
+                                                    View
+                                                </a>
+
+                                                <a class="dropdown-item" data-id="<%= case.id %>" data-case_name="<%= case.case_name %>" data-case_no="<%= case.case_no %>" data-case_status="<%= case.case_status %>" data-practice_area="<%= case.practice_area %>" data-case_description="<%= case.case_description %>" data-client="<%= case.client %>" data-staff="<%= case.staff %>" data-incident_date="<%= case.incident_date %>" data-date_case_opened="<%= case.date_case_opened %>" data-toggle="modal" data-target="#edit-case">
+                                                    <i class='subheader-icon fal fa-edit'></i> 
+                                                    Generate Report
+                                                </a>                                      
+
+                                                <a class="dropdown-item" data-toggle="modal" data-target="#deactivate_user">
+                                                    <i class='subheader-icon fal fa-times'></i>
+                                                    Close Case
+                                                </a>                                        
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>  
+                            <% end %>   
+                            </tbody>               
+                    </table>
+                    <!-- datatable end -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- ############################### VIEW-CASE MODAL #################################### -->
+<div class="modal fade" id="view-case" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">VIEW CASE <i class='subheader-icon fal fa-eye'></i> </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="fal fa-times"></i></span>
+                </button>
+            </div>
+
+            <div class="modal-body">                
+                <form action="#" method="POST">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Case Name</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-shopping-bag"></i></span>
+                                    </div>
+                                    <input type="text" id="case_name" class="form-control" disabled="disabled">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Nature of Case</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-shopping-bag"></i></span>
+                                    </div>
+                                    <input type="text" id="practice_area" class="form-control" disabled="disabled">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Client</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-user"></i></span>
+                                    </div>
+                                    <input type="text" id="client" class="form-control" disabled="disabled">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Date of Incident</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-clock"></i></span>
+                                    </div>
+                                    <input type="text" id="incident_date" class="form-control" disabled="disabled">
+                                </div>
+                            </div>
+                        </div>    
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label">Case Number</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-shopping-bag"></i></span>
+                                    </div>
+                                    <input type="text" id="case_no" class="form-control" disabled="disabled">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Case Description</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-shopping-bag"></i></span>
+                                    </div>
+                                    <input type="text" id="case_description" class="form-control" disabled="disabled">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Staff Handling Case</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-user"></i></span>
+                                    </div>
+                                    <input type="text" id="staff" class="form-control" disabled="disabled">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Case Date</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-clock"></i></span>
+                                    </div>
+                                    <input type="text" id="date_case_opened" class="form-control" disabled="disabled">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>                   
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- ############################### GENERATE REPORT MODAL #################################### -->
+<div class="modal fade" id="edit-case" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">GENERATE REPORT <i class='subheader-icon fal fa-edit'></i> </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="fal fa-times"></i></span>
+                </button>
+            </div>
+
+            <div class="modal-body"> 
+                <div class="row">
+                    <div class="col-xl-12">                            
+                        <div class="panel-container show">
+                            <div class="panel-content">
+                                <div id="smartwizard">
+                                    <ul>
+                                        <li><a href="#step-1">Case Details<br><small>Case description & people involved.</small></a></li>
+                                        <li><a href="#step-2">Case summary<br><small>Full case summary.</small></a></li>
+                                    </ul>
+                                    <div class="p-3">
+
+                                        <div id="step-1" class="">
+                                            <form action="#" method="POST">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Case Name</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text"><i class="fal fa-shopping-bag"></i></span>
+                                                                </div>
+                                                                <input type="text" name="case_name" id="case_name" class="form-control" required="required">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="form-label">Practice Area</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text"><i class="fal fa-shopping-bag"></i></span>
+                                                                </div>
+                                                                <input type="text" name="practice_area" id="practice_area" class="form-control" required="required">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="form-label">Client Name</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text"><i class="fal fa-user"></i></span>
+                                                                </div>
+                                                                <input type="text" name="client" id="client" class="form-control" required="required">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="form-label">Date of Incident</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text"><i class="fal fa-clock"></i></span>
+                                                                </div>
+                                                                <input type="text" name="incident_date" id="incident_date" class="form-control" required="required">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+
+
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Case No</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text"><i class="fal fa-shopping-bag"></i></span>
+                                                                </div>
+                                                                <input type="text" name="case_no" id="case_no" class="form-control" required="required">
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label class="form-label">Case Description</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text"><i class="fal fa-shopping-bag"></i></span>
+                                                                </div>
+                                                                <input type="text" name="case_description" id="case_description" class="form-control" required="required">
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="form-group">
+                                                            <label class="form-label">Staff on Case</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text"><i class="fal fa-user"></i></span>
+                                                                </div>
+                                                                <input type="text" name="staff" id="staff" class="form-control" required="required">
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="form-group">
+                                                            <label class="form-label">Date Case Reported</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text"><i class="fal fa-clock"></i></span>
+                                                                </div>
+                                                                <input type="text" name="date_case_opened" id="date_case_opened" class="form-control" required="required">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>            
+                                            </form>
+                                        </div>
+
+
+                                        
+                                        <div id="step-2" class="">
+                                            <div class="container">
+                                                <div data-size="A4">
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <div class="d-flex align-items-center mb-5">
+                                                                <h2 class="keep-print-font fw-500 mb-0 text-info flex-1 position-relative">
+                                                                    ProLegals
+                                                                    <small class="text-muted mb-0 fs-xs">
+                                                                        ZCCM-IH OFFICE PARK, Alick Nkhata Road, Lusaka, Zambia P.O. Box NM42, Stand 16806
+                                                                    </small>
+                                                                </h2>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                        <div class="row">
+                                                            <div class="col-sm-4 d-flex">
+                                                                <div class="table-responsive">
+                                                                    <table class="table table-clean table-sm align-self-end">
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td>
+                                                                                   <strong>Case Name:</strong>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <input type="text" id="case_name" class="form-control report-info">
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>
+                                                                                    <strong>Case Number:</strong>
+                                                                                </td>
+                                                                                <td>
+                                                                                    <input type="text" id="case_no" class="form-control report-info">
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-4 ml-sm-auto">
+                                                                <div class="table-responsive">
+                                                                    <table class="table table-sm table-clean text-right">
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td>
+                                                                                    <strong>Bill to:</strong>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>
+                                                                                    <strong><input type="text" id="client" class="form-control report-info"></strong>
+                                                                                </td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>
+                                                                                    Address
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row">
+                                                            <div class="col-sm-12">
+                                                                <div class="table-responsive">
+                                                                    <table class="table mt-5">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th class="text-center border-top-0 table-scale-border-bottom fw-700"></th>
+                                                                                <th class="border-top-0 table-scale-border-bottom fw-700">
+                                                                                    Type of Case
+                                                                                </th>
+                                                                                <th class="border-top-0 table-scale-border-bottom fw-700">
+                                                                                    Description of Case
+                                                                                </th>
+                                                                                <th class="text-right border-top-0 table-scale-border-bottom fw-700">
+                                                                                    Date of incident
+                                                                                </th>
+                                                                                <th class="text-center border-top-0 table-scale-border-bottom fw-700">
+                                                                                    Date Reported
+                                                                                </th>
+                                                                                <th class="text-right border-top-0 table-scale-border-bottom fw-700">
+                                                                                    Staff Handling Case
+                                                                                </th>
+                                                                            </tr>
+                                                                        </thead>
+
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <td class="text-center fw-700">
+                                                                                    1
+                                                                                </td>
+                                                                                <td class="text-left strong">
+                                                                                    <input type="text" id="practice_area" class="form-control report-info">
+                                                                                </td>
+                                                                                <td class="text-left">
+                                                                                    <input type="text" id="case_description" class="form-control report-info">
+                                                                                </td>
+                                                                                <td class="text-right">
+                                                                                    <input type="text" id="incident_date" class="form-control report-info">
+                                                                                </td>
+                                                                                <td class="text-center">
+                                                                                    <input type="text" id="date_case_opened" class="form-control report-info">
+                                                                                </td>
+                                                                                <td class="text-right">
+                                                                                    <input type="text" id="staff" class="form-control report-info">
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row">
+                                                            <div class="col-sm-12">
+                                                                <h4 class="py-5 text-primary">
+                                                                   Details of the jurisdication will come here: Report in details.
+                                                                </h4>
+                                                                <p class="mt-2 text-muted mb-0">
+                                                                    Some text will also fall here.
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-----------------------------------------------------------------------------------------Modal Rendering scripts -->
+<script src="<%= Routes.static_path(@conn, "/js/jquery-1.11.2.min.js") %>"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<!----------------------------------------------------------------View Case Details -->
+<script>
+$(document).ready(function(){
+//View Case Details
+$('#view-case').on('show.bs.modal', function (event){
+    var button = $(event.relatedTarget)
+    var id = button.data('id')
+    var case_name = button.data('case_name')
+    var case_no = button.data('case_no')
+    var practice_area = button.data('practice_area')
+    var case_description = button.data('case_description')
+    var client = button.data('client')
+    var staff = button.data('staff')
+    var incident_date = button.data('incident_date')
+    var date_case_opened = button.data('date_case_opened')
+    
+    var modal = $(this)
+    modal.find('.modal-body #id').val(id);
+    modal.find('.modal-body #case_name').val(case_name);
+    modal.find('.modal-body #case_no').val(case_no);
+    modal.find('.modal-body #practice_area').val(practice_area);
+    modal.find('.modal-body #case_description').val(case_description);
+    modal.find('.modal-body #client').val(client);
+    modal.find('.modal-body #staff').val(staff);
+    modal.find('.modal-body #incident_date').val(incident_date);
+    modal.find('.modal-body #date_case_opened').val(date_case_opened);
+});
+});
+</script>
+
+
+<!----------------------------------------------------------------Edit Case Details -->
+<script>
+$(document).ready(function(){
+//Editr Case Details
+$('#edit-case').on('show.bs.modal', function (event){
+    var button = $(event.relatedTarget)
+    var id = button.data('id')
+    var case_name = button.data('case_name')
+    var case_no = button.data('case_no')
+    var practice_area = button.data('practice_area')
+    var case_description = button.data('case_description')
+    var client = button.data('client')
+    var staff = button.data('staff')
+    var incident_date = button.data('incident_date')
+    var date_case_opened = button.data('date_case_opened')
+    
+    var modal = $(this)
+    modal.find('.modal-body #id').val(id);
+    modal.find('.modal-body #case_name').val(case_name);
+    modal.find('.modal-body #case_no').val(case_no);
+    modal.find('.modal-body #practice_area').val(practice_area);
+    modal.find('.modal-body #case_description').val(case_description);
+    modal.find('.modal-body #client').val(client);
+    modal.find('.modal-body #staff').val(staff);
+    modal.find('.modal-body #incident_date').val(incident_date);
+    modal.find('.modal-body #date_case_opened').val(date_case_opened);
+});
+});
+</script>

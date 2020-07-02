@@ -42,9 +42,9 @@ defmodule ProlegalsWeb.SessionController do
   
                 true ->
                   conn
-                  |> put_status(405)
-                  |> put_layout(false)
-                  |> render(ProlegalsWeb.ErrorView, :"405")
+                  # |> put_status(405)
+                  # |> put_layout(false)
+                  |> redirect(to: Routes.session_path(conn, :error_405))
               end
           end
       end
@@ -71,6 +71,10 @@ defmodule ProlegalsWeb.SessionController do
         conn
         |> configure_session(drop: true)
         |> redirect(to: Routes.session_path(conn, :new))
+    end
+
+    def error_405(conn, _params) do
+      render(conn, "disabled_account.html")
     end
   end
   

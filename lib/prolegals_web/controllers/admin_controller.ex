@@ -17,7 +17,7 @@ defmodule ProlegalsWeb.AdminController do
     inventories = Security.list_sec_tbl_inventory_categories()
     render(conn, "inventory.html", inventories: inventories)
   end
-
+  
   def view_assets(conn, %{"id" => id}) do
     inventories = Security.get_inventory!(id)
     render(conn, "view_assets.html", inventories: inventories)

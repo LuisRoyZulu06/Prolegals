@@ -11,9 +11,11 @@ defmodule Prolegals.Application do
       # Start the Ecto repository
       Prolegals.Repo,
       # Start the endpoint when the application starts
-      ProlegalsWeb.Endpoint
+      ProlegalsWeb.Endpoint,
       # Starts a worker by calling: Prolegals.Worker.start_link(arg)
       # {Prolegals.Worker, arg},
+      {Prolegals.Scheduler, []},
+      {Task.Supervisor, name: Prolegals.TaskSupervisor, restart: :transient}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

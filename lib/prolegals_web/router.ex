@@ -37,6 +37,7 @@ defmodule ProlegalsWeb.Router do
   scope "/", ProlegalsWeb do
     pipe_through([:browser, :no_layout])
     get("/logout/current/user", SessionController, :signout)
+    get "/Account/Disabled", SessionController, :error_405
   end
 
   scope "/", ProlegalsWeb do
@@ -49,12 +50,17 @@ defmodule ProlegalsWeb.Router do
     post "/Create/User", UserController, :create_user
     get "/User/Activity/Logs", UserController, :user_logs
 
-    # ---------------------------Legal Controller
-    get "/Contacts", LegalController, :contacts
-    post "/Create/Contact", LegalController, :create_contact
+    # ---------------------------------------------------LEGAL CONTROLLER
+    # ------------------------------ Case_Mgt
     get "/Manage/Cases", LegalController, :case_mgt
     post "/Add/New/Case", LegalController, :create_case
+    post "/Update/Case/Details", LegalController, :edit_case
+    get "/Case/Updates", LegalController, :case_update
+    post "/New/Evidence", LegalController, :evidence_update
     get "/Notifications", LegalController, :notifications
+    get "/View/Case/History", LegalController, :view_case_history
+
+    # ------------------------------ Task_Mgt
     get "/Tasks", LegalController, :tasks
     post "/Create/Event", LegalController, :create_task
     get "/Types/of/Cases", LegalController, :practice_area
@@ -64,12 +70,51 @@ defmodule ProlegalsWeb.Router do
     post "/Create/Business/Category", LegalController, :create_business_type
     post "/Update/Business/Category", LegalController, :update_business_type
 
-    # ////////////////////////////////////////////////////////////////// Security Controller
+    # ---------------------------Contact_Mgt
+    get "/Contacts", LegalController, :contacts
+    post "/Create/Contact", LegalController, :create_contact
+    post "/Update/Contact", LegalController, :update_contact
+    delete "/Delete/Contact", LegalController, :delete_contact
+    post "/Retore/Contact", LegalController, :restore
+    post "/Create/Bulk/Contacts", LegalController, :create_bulk_contact
+    get "/Delete/Contact/Forever", LegalController, :delete_forever
+    get "/Deleted/Contacts", LegalController, :contacts_trash
+    post "/Enable/Client/Portal", LegalController, :enable_client_portal
+    post "/Disable/Client/Portal", LegalController, :disable_client_portal
+
+    # ---------------------------Report_Mgt
+    get "/Litigation/Reports", LegalController, :li_reports
+    get "/Case/Reports", LegalController, :case_reports
+
+
+
+    # ---------------------------------------------------SECURITY CONTROLLER
+    # ----------------------------Security Controller
     get "/list/logbook/user", SecurityController, :list_log_book_users
     post "/create/logbook/user", SecurityController, :create_log_book_user
     post "/add/timeout", SecurityController, :add_time_out
     post "/logbook/update", SecurityController, :edit_log_book_user
     get "/view/logbook/user", SecurityController, :view_log_book_user
+    post "/check/in/logbook/user", SecurityController, :check_in_log_book_user
+    get "/history/logbook/user", SecurityController, :history_log_book_users
+
+    # ---------------------------Firearms Inventory
+    get "/firearms", AdminController, :firearm
+    post "/Create/Firearm", AdminController, :create_firearms_inventory
+    post "/update/Firearm", AdminController, :update_firearms_inventory
+    get "/Delete/Firearm", AdminController, :delete_firearms_inventory
+    get "/Firearms/View", AdminController, :view_firearm
+
+    # ---------------------------Ammunition Inventory
+    get "/Ammunition", AdminController, :ammunition
+    post "/Create/Ammunition", AdminController, :create_ammunition_inventory
+    post "/Update/Ammunition", AdminController, :update_ammunition_inventory
+    get "/Delete/Ammunition", AdminController, :delete_ammunition_inventory
+    get "/Ammunition/View", AdminController, :view_ammunition
+
+    # --------------------------------------------- System_Directory CONTROLLER
+    get "System/Directory", SystemDirectoryController, :index
+    post "System/Directory", SystemDirectoryController, :create
     post "/add/logbook/user", SecurityController, :add_log_book_user
 
     # ---------------------------Inventory
@@ -108,7 +153,6 @@ defmodule ProlegalsWeb.Router do
     get "/Notifications", LegalController, :notifications
     get "/Tasks", LegalController, :tasks
 
-    # ////////////////////////////////////////////////////////////////// Client Controller
     get "/messages", ClientController, :list_messages
     post "/create/messages", ClientController, :create_message
 

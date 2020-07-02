@@ -20,5 +20,6 @@ defmodule Prolegals.Repo.Migrations.CreateSecTblLogBook do
       timestamps()
     end
 
+    # create unique_index(:sec_tbl_log_book, [:id_no])
   end
 end

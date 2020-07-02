@@ -494,4 +494,108 @@ defmodule Prolegals.Litigation do
   def change_business_category(%BusinessCategory{} = business_category) do
     BusinessCategory.changeset(business_category, %{})
   end
+
+# ----------------------------------------------------------------------------------Evidence
+  alias Prolegals.Litigation.Evidence
+
+  @doc """
+  Returns the list of li_tbl_evidence.
+
+  ## Examples
+
+      iex> list_li_tbl_evidence()
+      [%Evidence{}, ...]
+
+  """
+  def list_li_tbl_evidence do
+    Repo.all(Evidence)
+  end
+
+  @doc """
+  Gets a single evidence.
+
+  Raises `Ecto.NoResultsError` if the Evidence does not exist.
+
+  ## Examples
+
+      iex> get_evidence!(123)
+      %Evidence{}
+
+      iex> get_evidence!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_evidence!(id), do: Repo.get!(Evidence, id)
+
+
+  def get_all_evidences(id) do
+    Evidence
+    |> where([e], e.case_id == ^id)
+    |> Repo.all()
+  end
+
+  @doc """
+  Creates a evidence.
+
+  ## Examples
+
+      iex> create_evidence(%{field: value})
+      {:ok, %Evidence{}}
+
+      iex> create_evidence(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_evidence(attrs \\ %{}) do
+    %Evidence{}
+    |> Evidence.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a evidence.
+
+  ## Examples
+
+      iex> update_evidence(evidence, %{field: new_value})
+      {:ok, %Evidence{}}
+
+      iex> update_evidence(evidence, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_evidence(%Evidence{} = evidence, attrs) do
+    evidence
+    |> Evidence.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a evidence.
+
+  ## Examples
+
+      iex> delete_evidence(evidence)
+      {:ok, %Evidence{}}
+
+      iex> delete_evidence(evidence)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_evidence(%Evidence{} = evidence) do
+    Repo.delete(evidence)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking evidence changes.
+
+  ## Examples
+
+      iex> change_evidence(evidence)
+      %Ecto.Changeset{source: %Evidence{}}
+
+  """
+  def change_evidence(%Evidence{} = evidence) do
+    Evidence.changeset(evidence, %{})
+  end
 end

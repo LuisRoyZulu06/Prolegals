@@ -442,4 +442,71 @@ defmodule Prolegals.LitigationTest do
       assert %Ecto.Changeset{} = Litigation.change_business_category(business_category)
     end
   end
+
+  describe "li_tbl_evidence" do
+    alias Prolegals.Litigation.Evidence
+
+    @valid_attrs %{date_evidence_presented: "some date_evidence_presented", description: "some description", evidence_file: "some evidence_file", evidence_type: "some evidence_type", source: "some source"}
+    @update_attrs %{date_evidence_presented: "some updated date_evidence_presented", description: "some updated description", evidence_file: "some updated evidence_file", evidence_type: "some updated evidence_type", source: "some updated source"}
+    @invalid_attrs %{date_evidence_presented: nil, description: nil, evidence_file: nil, evidence_type: nil, source: nil}
+
+    def evidence_fixture(attrs \\ %{}) do
+      {:ok, evidence} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Litigation.create_evidence()
+
+      evidence
+    end
+
+    test "list_li_tbl_evidence/0 returns all li_tbl_evidence" do
+      evidence = evidence_fixture()
+      assert Litigation.list_li_tbl_evidence() == [evidence]
+    end
+
+    test "get_evidence!/1 returns the evidence with given id" do
+      evidence = evidence_fixture()
+      assert Litigation.get_evidence!(evidence.id) == evidence
+    end
+
+    test "create_evidence/1 with valid data creates a evidence" do
+      assert {:ok, %Evidence{} = evidence} = Litigation.create_evidence(@valid_attrs)
+      assert evidence.date_evidence_presented == "some date_evidence_presented"
+      assert evidence.description == "some description"
+      assert evidence.evidence_file == "some evidence_file"
+      assert evidence.evidence_type == "some evidence_type"
+      assert evidence.source == "some source"
+    end
+
+    test "create_evidence/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Litigation.create_evidence(@invalid_attrs)
+    end
+
+    test "update_evidence/2 with valid data updates the evidence" do
+      evidence = evidence_fixture()
+      assert {:ok, %Evidence{} = evidence} = Litigation.update_evidence(evidence, @update_attrs)
+      assert evidence.date_evidence_presented == "some updated date_evidence_presented"
+      assert evidence.description == "some updated description"
+      assert evidence.evidence_file == "some updated evidence_file"
+      assert evidence.evidence_type == "some updated evidence_type"
+      assert evidence.source == "some updated source"
+    end
+
+    test "update_evidence/2 with invalid data returns error changeset" do
+      evidence = evidence_fixture()
+      assert {:error, %Ecto.Changeset{}} = Litigation.update_evidence(evidence, @invalid_attrs)
+      assert evidence == Litigation.get_evidence!(evidence.id)
+    end
+
+    test "delete_evidence/1 deletes the evidence" do
+      evidence = evidence_fixture()
+      assert {:ok, %Evidence{}} = Litigation.delete_evidence(evidence)
+      assert_raise Ecto.NoResultsError, fn -> Litigation.get_evidence!(evidence.id) end
+    end
+
+    test "change_evidence/1 returns a evidence changeset" do
+      evidence = evidence_fixture()
+      assert %Ecto.Changeset{} = Litigation.change_evidence(evidence)
+    end
+  end
 end

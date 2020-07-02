@@ -27,7 +27,7 @@
             </small>
         </h1>
         <div class="subheader-block">
-            <i class='subheader-icon fal fa-user'></i> <%= "#{String.capitalize(@conn.assigns.user.first_name)}"%> <%= "#{String.capitalize(@conn.assigns.user.last_name)}"%>  | <%= "#{String.capitalize(@conn.assigns.user.user_role)}"%>
+            <i class='subheader-icon fal fa-user'></i> <%= "#{(@conn.assigns.user.first_name)}"%> | <%= "#{String.capitalize(@conn.assigns.user.user_role)}"%>
         </div>
     </div>
 
@@ -213,21 +213,61 @@
 
     <!------------------------------------------------------------------------------------------------------Security -->
     <%= if @user.user_role == "security" do %>
-        <div class="container-fluid" style="margin-top: 2em;">
-             <div class="row">
-                    <div class="col-xl-12">
-                        <div class="border-faded bg-faded p-3 mb-g d-flex">
-                            <form action="<%= Routes.security_path(@conn, :list_log_book_users)%>" class="pull-right" method="GET">
-                                <input type="text" id="js-filter-contacts" name="query" class="form-control shadow-inset-2 form-control-lg" placeholder="Search user by NRC" required="required">
-                                <button type="submit" class="btn btn-primary form-control shadow-inset-2 form-control-lg ">Search</button>
-                            </form>
-                        </div>
-                    </div>
-             </div>
+        <div class="container-fluid" style="margin-top: 2em;"> 
+            
+            <!-- Search -->
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-xl-12">
+                    <div class="border-faded bg-faded p-3 mb-g d-flex">
+                        <form action="<%= Routes.security_path(@conn, :history_log_book_users)%>" class="pull-right" method="GET">
+                            <input type="text" id="js-filter-contacts" name="query" class="form-control shadow-inset-2 form-control-lg" placeholder="Search user by NRC" required="required">
+                            <button type="submit" class="btn btn-primary form-control shadow-inset-2 form-control-lg ">Search</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- Statistics -->
+            <div class="row">
+                <div class="col-sm-6 col-xl-4">
+                    <div class="p-3 bg-secondary rounded overflow-hidden position-relative text-white mb-g  ">
+                        <div class="">
+                            <h3 class="display-4 d-block l-h-n m-0 fw-500">
+                                    <%= @total_visitors %>
+                                <small class="m-0 l-h-n">Total Visitors</small>
+                            </h3>
+                        </div>
+                        <i class="fal fa-users position-absolute pos-right pos-bottom opacity-15 mb-n5 mr-n6" style="font-size: 8rem;"></i>
+                    </div>
+                </div>
+
+                <div class="col-sm-6 col-xl-4">
+                    <div class="p-3 bg-success-600 rounded overflow-hidden position-relative text-white mb-g">
+                        <div class="">
+                            <h3 class="display-4 d-block l-h-n m-0 fw-500">
+                                4
+                                <small class="m-0 l-h-n">Last Week Visitors</small>
+                            </h3>
+                        </div>
+                        <i class="fal fa-users position-absolute pos-right pos-bottom opacity-15  mb-n1 mr-n4" style="font-size: 6rem;"></i>
+                    </div>
+                </div>
+
+                <div class="col-sm-6 col-xl-4">
+                    <div class="p-3 bg-primary-600 rounded overflow-hidden position-relative text-white mb-g">
+                        <div class="">
+                            <h3 class="display-4 d-block l-h-n m-0 fw-500">
+                                3
+                                <small class="m-0 l-h-n">Frequent Visitors</small>
+                            </h3>
+                        </div>
+                        <i class="fal fa-users position-absolute pos-right pos-bottom opacity-15 mb-n1 mr-n1" style="font-size:6rem"></i>
+                    </div>
+                </div>
+            </div>      
+            <div class="row">
+                <div class="col-md-6">
                     <a href="#" data-toggle="modal" data-target="#log-book">
-                        <div id="cp-2" class="card border">
+                        <div id="cp-2" class="card border ">
                             <div class="card-header bg-info-600">
                               Log Book
                             </div>
@@ -248,8 +288,7 @@
                         </div> 
                     </a>                                     
                 </div>
-
-                <div class="col-md-4">
+                <!-- <div class="col-md-4">
                     <a href="#" data-id="<%= @user.id%>" data-first_name="<%= @user.first_name %>" data-last_name="<%= @user.last_name%>" data-email="<%= @user.email%>" data-user_role="<%= @user.user_role%>" data-sex="<%= @user.sex%>" data-age="<%= @user.age %>" data-id_type="<%= @user.id_type %>" data-id_no="<%= @user.id_no %>" data-phone="<%= @user.phone %>" data-home_add="<%= @user.home_add %>" data-toggle="modal" data-target="#profile-modal">
                         <div id="cp-2" class="card border">
                             <div class="card-header bg-primary-600">
@@ -271,9 +310,8 @@
                             </div>
                         </div> 
                     </a>
-                </div>
-
-                <div class="col-md-4">
+                </div> -->
+                <div class="col-md-6">
                     <a href="<%= Routes.security_path(@conn, :list_log_book_users)%>">
                         <div id="cp-2" class="card border">
                             <div class="card-header bg-success-600">
@@ -324,7 +362,7 @@
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">LOG BOOK <i class='subheader-icon fal fa-user-circle'></i></h5>
+                <h5 class="modal-title">LOG BOOK <i class='subheader-icon fal fa-book'></i></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true"><i class="fal fa-times"></i></span>
                 </button>
@@ -339,6 +377,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fal fa-user"></i></span>
                             </div>
+                        
                             <input type="text" name="name" class="form-control" placeholder="Full Names" required="required">
 
                             <select class="custom-select form-control" name="sex" required="required">
@@ -399,31 +438,31 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label"> Date of visit</label>
+                        <!-- <label class="form-label"> Date of visit</label> -->
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fal fa-clock"></i></span>
+                                <!-- <span class="input-group-text"><i class="fal fa-clock"></i></span> -->
                             </div>
-                            <input type="date" name="date" placeholder="Date of Visit" class="form-control" required="required">
-                            <input type="text" name="time_in" placeholder="Time In" class="form-control" required="required">
+                            <%# <input type="hidden" name="date" placeholder="Date of Visit" class="form-control" required="required"> %>
+                            <%# <input type="hidden" name="time_in" placeholder="Time In" class="form-control" required="required">  %>
                             
                         </div>
                     </div>
 
-                     <div class="form-group">
-                        <label class="form-label">Facial image </label>
+                      <div class="form-group">
+                        <!-- <label class="form-label">Facial image </label> -->
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fal fa-user"></i></span>
+                                <!-- <span class="input-group-text"><i class="fal fa-user"></i></span> -->
                             </div>
-                            <input type="file" name="image" placeholder="Facial image of the person" class="form-control" required="required">
+                            <%# <input type="hidden" name="image" placeholder="Facial image of the person" class="form-control" required="required"> %>
                             
                         </div>
                      </div>
      
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Add user</button>
+                        <button type="submit" class="btn btn-primary">Add Visitor</button>
                     </div>
                 </form>
             </div>   
@@ -563,6 +602,7 @@
         </div>
     </div>
 </div>
+
 
 <script src="<%= Routes.static_path(@conn, "/js/jquery-1.11.2.min.js") %>"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>

@@ -20,7 +20,7 @@ defmodule Prolegals.MixProject do
   def application do
     [
       mod: {Prolegals.Application, []},
-      extra_applications: [:logger, :runtime_tools, :arc_ecto]
+      extra_applications: [:logger, :runtime_tools, :arc_ecto, :bamboo, :timex_ecto]
     ]
   end
 
@@ -49,11 +49,15 @@ defmodule Prolegals.MixProject do
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
       {:timex, "~> 3.6"},
+      {:timex_ecto, "~> 3.0"},
       {:calendar, "~> 0.17.0"},
       {:arc, "~> 0.11.0"},
       {:arc_ecto, "~> 0.11.3"},
+      {:xlsxir, "~> 1.6.2"},
+      {:csv, "~>2.3"},
       {:bamboo, "~> 1.3"},
-      {:bamboo_smtp, "~> 2.1.0"}
+      {:bamboo_smtp, "~> 2.1.0"},
+      {:quantum, "~> 2.2.7"}
     ]
   end
 
