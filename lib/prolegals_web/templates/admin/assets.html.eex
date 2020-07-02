@@ -25,10 +25,7 @@
         <h1 class="subheader-title">
             Manage  Assets
                 <br>
-            <small>Add new Assets and Inventory Category </small>
-            <a href="javascript:void(0);" class="btn btn-light hover-effect" data-toggle="modal" data-target="#addInvCat">
-                Add Categories
-            </a>
+            <small>Add new Assets </small>
             <a href="javascript:void(0);" class="btn btn-light hover-effect" data-toggle="modal" data-target="#addAssets">
                 Add Assets
             </a>
@@ -40,10 +37,10 @@
     </div>
 
     <div class="row">
-        <div class="col-xl-4">
+        <div class="col-sm-3">
             <div id="panel-1" class="panel">
                 <div class="panel-hdr">
-                    <h2> Inventory Categories </h2>
+                    <h2> Asset Categories </h2>
                 </div>
 
                 <div class="panel-container show">
@@ -62,8 +59,8 @@
                 </div>
             </div>
         </div>
-        <div class="col-xl-8">
-            <div id="panel-1" class="panel">
+        <div class="col-md-8">
+            <div id="panel-1" class="">
                 <div class="panel-hdr">
                     <h2> Assets </h2>
                        <small> Availabe Assets </small>
@@ -120,122 +117,114 @@
                 <form class="form-horizontal" action="<%= Routes.admin_path(@conn, :create_asset)%>" method="POST">
                     <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
                     <input type="hidden" name="id" id="id" value="">
-                    <div class="form-group">
-                        <label class="form-label">Firearm Details</label>
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fal fa-user"></i></span>
+                   
+                    <div class="row">
+                            <div class="col-xl-12">
+                            <h4 class="text-center"> Asset Details </h4><hr>
+                                <div id="panel-1" class="">
+                                    <div class="panel-container show">
+                                        <div class="panel-content">
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="p-20">
+                                                            <div class="form-group">
+                                                                <label class="form-label">Category</label>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                       
+                                                                    </div>
+                                                                     <select class="custom-select form-control" id="category_id" name="category_id" required="required">
+                                                                        <option selected="">Category</option>
+                                                                        <%= for inventory <- @inventories do %>
+                                                                        <option value="<%= inventory.id %>"><%= inventory.name %></option>
+                                                                        <% end %>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="form-label">Name</label>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                    </div>
+                                                                     <input type="text" value="" name="name" id="name" placeholder="Name" class="form-control" required="required">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="form-label">Type</label>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                    </div>
+                                                                    <input type="text" value="" name="type" id="type" placeholder="Type" class="form-control" required="required"> 
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="form-label">Serial Number</label>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                    </div>
+                                                                     <input type="text" value="" name="serial_number" id="serial_number" placeholder="Serial  Number" class="form-control" required="required">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="form-label">Purchase Price</label>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                    </div>
+                                                                    <input type="text" name="purchase_price" value="" id="purchase_price" placeholder="Purchased From" class="form-control" required="required">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="form-label">Purchased Date</label>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                    </div>
+                                                                    <input type="date" name="date_purchased" value="" id="date_purchased" placeholder="date_purchased" class="form-control" required="required">
+                                                                </div>
+                                                            </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="p-20">
+                                                            <div class="form-group">
+                                                                <label class="form-label">Status</label>
+                                                                <select class="custom-select form-control" id="status" name="status" required="required">
+                                                                    <option selected="">Status</option>
+                                                                    <option value="New">New</option>
+                                                                    <option value="Old">Old</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="form-label">Brand</label>
+                                                                <input type="text" name="brand" value="" id="brand" placeholder="Asset Brand" class="form-control" required="required">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="form-label">Asset Number</label>
+                                                                 <input type="text" value="" name="asset_number" id="asset_number" placeholder="Serial  Number" class="form-control" required="required">
+                                                                
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="form-label">Supplier</label>
+                                                                <select class="custom-select form-control" id="purchased_from" name="purchased_from" required="required">
+                                                                    <option selected="">Select Vendor</option>
+                                                                    <%= for vendor <- @vendors do %>
+                                                                    <option value="<%= vendor.vendor_name %>"><%= vendor.vendor_name %></option>
+                                                                    <% end %>
+                                                                </select>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="form-label">Model Year</label>
+                                                                <input type="date" name="make_year" value="" id="make_year" placeholder="Make Year" class="form-control" required="required">
+                                                               
+                                                            </div>
+                                                    </div>
+                                                </div>
+                                                <!-- end col -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <input type="text" value="" name="name" id="name" placeholder="Name" class="form-control" required="required">
-
-                             <input type="text" value="" name="brand" id="brand" placeholder="Brand" class="form-control" required="required">
-                            
                         </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label"></label>
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fal fa-window"></i></span>
-                            </div>
-                             <input type="text" value="" name="type" id="type" placeholder="Type" class="form-control" required="required"> 
-                            
-                            
-
-                            <input type="text" value="" name="quantity" id="quantity" placeholder="Quantity" class="form-control" required="required">
-                            
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label"></label>
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fal fa-user"></i></span>
-                            </div>
-                            <select class="custom-select form-control" id="category_id" name="category_id" required="required">
-                                <option selected="">Category</option>
-                                <%= for inventory <- @inventories do %>
-                                <option value="<%= inventory.id %>"><%= inventory.name %></option>
-                                <% end %>
-                            </select>
-                             <select class="custom-select form-control" id="status" name="status" required="required">
-                                <option selected="">Status</option>
-                                <option value="New">New</option>
-                                <option value="Old">Old</option>
-                            </select>
-                            
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label"></label>
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fal fa-user"></i></span>
-                            </div>
-                             <input type="text" value="" name="serial_number" id="serial_number" placeholder="Serial  Number" class="form-control" required="required">
-                            
-                            <input type="text" name="purchased_from" value="" id="purchased_from" placeholder="Purchased From" class="form-control" required="required">
-                           
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label"></label>
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fal fa-calendar-alt"></i></span>
-                            </div>
-                            <input type="date" name="date_purchased" value="" id="date_purchased" placeholder="date_purchased" class="form-control" required="required">
-
-                            
-                            <input type="date" name="make_year" value="" id="make_year" placeholder="Make Year" class="form-control" required="required">
-                             
-                        </div>
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-info">Submit</button>
-                    </div>
-                </form>
-            </div>   
-        </div>
-    </div>
-</div>
-
-<!-- ADD INVENTORY CATEGORY MODEL -->
-<div class="modal fade" id="addInvCat" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header" style="text-align: center">
-                <h5 class="modal-title">Add Inventory Category <i class='subheader-icon '></i></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true"><i class="fal fa-times"></i></span>
-                </button>
-            </div>
-
-            <div class="modal-body">
-                <form class="form-horizontal" action="<%= Routes.admin_path(@conn, :create_inventory)%>" enctype="multipart/form-data" method="POST">
-                    <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
-                    <div class="form-group">
-                        <label class="form-label"></label>
-                        <div class="input-group">
-                            
-                            <input type="text" name="name" placeholder="Category name" class="form-control" required="required">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label"></label>
-                        <div class="input-group">
-                            
-                            <input type="text" name="category_code" placeholder="Category Code" class="form-control" required="required">
-                        </div>
-                    </div>
-
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-info">Submit</button>

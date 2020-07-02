@@ -202,7 +202,6 @@ defmodule ProlegalsWeb.UserController do
       |> redirect(to: Routes.user_path(conn, :list_users))
   end
 
-
   def create(conn, %{"user" => user_params}) do
     pwd = random_string(6)
     user_params = Map.put(user_params, "password", pwd)

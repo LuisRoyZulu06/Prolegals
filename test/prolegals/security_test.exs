@@ -665,4 +665,280 @@ defmodule Prolegals.SecurityTest do
       assert %Ecto.Changeset{} = Security.change_asset(asset)
     end
   end
+
+  describe "sec_tbl_location" do
+    alias Prolegals.Security.Location
+
+    @valid_attrs %{address: "some address", contact: "some contact", contact_person: "some contact_person", email: "some email", office_name: "some office_name", province: "some province"}
+    @update_attrs %{address: "some updated address", contact: "some updated contact", contact_person: "some updated contact_person", email: "some updated email", office_name: "some updated office_name", province: "some updated province"}
+    @invalid_attrs %{address: nil, contact: nil, contact_person: nil, email: nil, office_name: nil, province: nil}
+
+    def location_fixture(attrs \\ %{}) do
+      {:ok, location} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Security.create_location()
+
+      location
+    end
+
+    test "list_sec_tbl_location/0 returns all sec_tbl_location" do
+      location = location_fixture()
+      assert Security.list_sec_tbl_location() == [location]
+    end
+
+    test "get_location!/1 returns the location with given id" do
+      location = location_fixture()
+      assert Security.get_location!(location.id) == location
+    end
+
+    test "create_location/1 with valid data creates a location" do
+      assert {:ok, %Location{} = location} = Security.create_location(@valid_attrs)
+      assert location.address == "some address"
+      assert location.contact == "some contact"
+      assert location.contact_person == "some contact_person"
+      assert location.email == "some email"
+      assert location.office_name == "some office_name"
+      assert location.province == "some province"
+    end
+
+    test "create_location/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Security.create_location(@invalid_attrs)
+    end
+
+    test "update_location/2 with valid data updates the location" do
+      location = location_fixture()
+      assert {:ok, %Location{} = location} = Security.update_location(location, @update_attrs)
+      assert location.address == "some updated address"
+      assert location.contact == "some updated contact"
+      assert location.contact_person == "some updated contact_person"
+      assert location.email == "some updated email"
+      assert location.office_name == "some updated office_name"
+      assert location.province == "some updated province"
+    end
+
+    test "update_location/2 with invalid data returns error changeset" do
+      location = location_fixture()
+      assert {:error, %Ecto.Changeset{}} = Security.update_location(location, @invalid_attrs)
+      assert location == Security.get_location!(location.id)
+    end
+
+    test "delete_location/1 deletes the location" do
+      location = location_fixture()
+      assert {:ok, %Location{}} = Security.delete_location(location)
+      assert_raise Ecto.NoResultsError, fn -> Security.get_location!(location.id) end
+    end
+
+    test "change_location/1 returns a location changeset" do
+      location = location_fixture()
+      assert %Ecto.Changeset{} = Security.change_location(location)
+    end
+  end
+
+  describe "sec_tbl_vendor" do
+    alias Prolegals.Security.Vendor
+
+    @valid_attrs %{address: "some address", contact: "some contact", contact_person: "some contact_person", country: "some country", email: "some email", vendor_name: "some vendor_name"}
+    @update_attrs %{address: "some updated address", contact: "some updated contact", contact_person: "some updated contact_person", country: "some updated country", email: "some updated email", vendor_name: "some updated vendor_name"}
+    @invalid_attrs %{address: nil, contact: nil, contact_person: nil, country: nil, email: nil, vendor_name: nil}
+
+    def vendor_fixture(attrs \\ %{}) do
+      {:ok, vendor} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Security.create_vendor()
+
+      vendor
+    end
+
+    test "list_sec_tbl_vendor/0 returns all sec_tbl_vendor" do
+      vendor = vendor_fixture()
+      assert Security.list_sec_tbl_vendor() == [vendor]
+    end
+
+    test "get_vendor!/1 returns the vendor with given id" do
+      vendor = vendor_fixture()
+      assert Security.get_vendor!(vendor.id) == vendor
+    end
+
+    test "create_vendor/1 with valid data creates a vendor" do
+      assert {:ok, %Vendor{} = vendor} = Security.create_vendor(@valid_attrs)
+      assert vendor.address == "some address"
+      assert vendor.contact == "some contact"
+      assert vendor.contact_person == "some contact_person"
+      assert vendor.country == "some country"
+      assert vendor.email == "some email"
+      assert vendor.vendor_name == "some vendor_name"
+    end
+
+    test "create_vendor/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Security.create_vendor(@invalid_attrs)
+    end
+
+    test "update_vendor/2 with valid data updates the vendor" do
+      vendor = vendor_fixture()
+      assert {:ok, %Vendor{} = vendor} = Security.update_vendor(vendor, @update_attrs)
+      assert vendor.address == "some updated address"
+      assert vendor.contact == "some updated contact"
+      assert vendor.contact_person == "some updated contact_person"
+      assert vendor.country == "some updated country"
+      assert vendor.email == "some updated email"
+      assert vendor.vendor_name == "some updated vendor_name"
+    end
+
+    test "update_vendor/2 with invalid data returns error changeset" do
+      vendor = vendor_fixture()
+      assert {:error, %Ecto.Changeset{}} = Security.update_vendor(vendor, @invalid_attrs)
+      assert vendor == Security.get_vendor!(vendor.id)
+    end
+
+    test "delete_vendor/1 deletes the vendor" do
+      vendor = vendor_fixture()
+      assert {:ok, %Vendor{}} = Security.delete_vendor(vendor)
+      assert_raise Ecto.NoResultsError, fn -> Security.get_vendor!(vendor.id) end
+    end
+
+    test "change_vendor/1 returns a vendor changeset" do
+      vendor = vendor_fixture()
+      assert %Ecto.Changeset{} = Security.change_vendor(vendor)
+    end
+  end
+
+  describe "sec_tbl_vendor" do
+    alias Prolegals.Security.Employee
+
+    @valid_attrs %{contact: "some contact", department: "some department", email: "some email", employee_name: "some employee_name", employee_no: "some employee_no", nrc: "some nrc"}
+    @update_attrs %{contact: "some updated contact", department: "some updated department", email: "some updated email", employee_name: "some updated employee_name", employee_no: "some updated employee_no", nrc: "some updated nrc"}
+    @invalid_attrs %{contact: nil, department: nil, email: nil, employee_name: nil, employee_no: nil, nrc: nil}
+
+    def employee_fixture(attrs \\ %{}) do
+      {:ok, employee} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Security.create_employee()
+
+      employee
+    end
+
+    test "list_sec_tbl_vendor/0 returns all sec_tbl_vendor" do
+      employee = employee_fixture()
+      assert Security.list_sec_tbl_vendor() == [employee]
+    end
+
+    test "get_employee!/1 returns the employee with given id" do
+      employee = employee_fixture()
+      assert Security.get_employee!(employee.id) == employee
+    end
+
+    test "create_employee/1 with valid data creates a employee" do
+      assert {:ok, %Employee{} = employee} = Security.create_employee(@valid_attrs)
+      assert employee.contact == "some contact"
+      assert employee.department == "some department"
+      assert employee.email == "some email"
+      assert employee.employee_name == "some employee_name"
+      assert employee.employee_no == "some employee_no"
+      assert employee.nrc == "some nrc"
+    end
+
+    test "create_employee/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Security.create_employee(@invalid_attrs)
+    end
+
+    test "update_employee/2 with valid data updates the employee" do
+      employee = employee_fixture()
+      assert {:ok, %Employee{} = employee} = Security.update_employee(employee, @update_attrs)
+      assert employee.contact == "some updated contact"
+      assert employee.department == "some updated department"
+      assert employee.email == "some updated email"
+      assert employee.employee_name == "some updated employee_name"
+      assert employee.employee_no == "some updated employee_no"
+      assert employee.nrc == "some updated nrc"
+    end
+
+    test "update_employee/2 with invalid data returns error changeset" do
+      employee = employee_fixture()
+      assert {:error, %Ecto.Changeset{}} = Security.update_employee(employee, @invalid_attrs)
+      assert employee == Security.get_employee!(employee.id)
+    end
+
+    test "delete_employee/1 deletes the employee" do
+      employee = employee_fixture()
+      assert {:ok, %Employee{}} = Security.delete_employee(employee)
+      assert_raise Ecto.NoResultsError, fn -> Security.get_employee!(employee.id) end
+    end
+
+    test "change_employee/1 returns a employee changeset" do
+      employee = employee_fixture()
+      assert %Ecto.Changeset{} = Security.change_employee(employee)
+    end
+  end
+
+  describe "sec_tbl_employee" do
+    alias Prolegals.Security.Employee
+
+    @valid_attrs %{contact: "some contact", department: "some department", email: "some email", employee_name: "some employee_name", employee_no: "some employee_no", nrc: "some nrc"}
+    @update_attrs %{contact: "some updated contact", department: "some updated department", email: "some updated email", employee_name: "some updated employee_name", employee_no: "some updated employee_no", nrc: "some updated nrc"}
+    @invalid_attrs %{contact: nil, department: nil, email: nil, employee_name: nil, employee_no: nil, nrc: nil}
+
+    def employee_fixture(attrs \\ %{}) do
+      {:ok, employee} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Security.create_employee()
+
+      employee
+    end
+
+    test "list_sec_tbl_employee/0 returns all sec_tbl_employee" do
+      employee = employee_fixture()
+      assert Security.list_sec_tbl_employee() == [employee]
+    end
+
+    test "get_employee!/1 returns the employee with given id" do
+      employee = employee_fixture()
+      assert Security.get_employee!(employee.id) == employee
+    end
+
+    test "create_employee/1 with valid data creates a employee" do
+      assert {:ok, %Employee{} = employee} = Security.create_employee(@valid_attrs)
+      assert employee.contact == "some contact"
+      assert employee.department == "some department"
+      assert employee.email == "some email"
+      assert employee.employee_name == "some employee_name"
+      assert employee.employee_no == "some employee_no"
+      assert employee.nrc == "some nrc"
+    end
+
+    test "create_employee/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Security.create_employee(@invalid_attrs)
+    end
+
+    test "update_employee/2 with valid data updates the employee" do
+      employee = employee_fixture()
+      assert {:ok, %Employee{} = employee} = Security.update_employee(employee, @update_attrs)
+      assert employee.contact == "some updated contact"
+      assert employee.department == "some updated department"
+      assert employee.email == "some updated email"
+      assert employee.employee_name == "some updated employee_name"
+      assert employee.employee_no == "some updated employee_no"
+      assert employee.nrc == "some updated nrc"
+    end
+
+    test "update_employee/2 with invalid data returns error changeset" do
+      employee = employee_fixture()
+      assert {:error, %Ecto.Changeset{}} = Security.update_employee(employee, @invalid_attrs)
+      assert employee == Security.get_employee!(employee.id)
+    end
+
+    test "delete_employee/1 deletes the employee" do
+      employee = employee_fixture()
+      assert {:ok, %Employee{}} = Security.delete_employee(employee)
+      assert_raise Ecto.NoResultsError, fn -> Security.get_employee!(employee.id) end
+    end
+
+    test "change_employee/1 returns a employee changeset" do
+      employee = employee_fixture()
+      assert %Ecto.Changeset{} = Security.change_employee(employee)
+    end
+  end
 end

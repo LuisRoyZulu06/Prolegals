@@ -98,17 +98,42 @@
 
                                 <!-----------------------------------------------------------------------------------------------------Admin -->
                                 <%= if @user.user_role == "admin" do %>
+
+                                    <li>
+                                        <a href="<%= Routes.admin_path(@conn, :asset)%>" title="Inventory Management" data-filter-tags="theme settings">
+                                            <i class="fal fa-th"></i>
+                                            <span class="nav-link-text" data-i18n="nav.theme_settings">Assets</span>
+                                        </a>
+                                        
+                                    </li>
                                     <li>
                                         <a href="<%= Routes.admin_path(@conn, :inventory)%>" title="Inventory Management" data-filter-tags="theme settings">
                                             <i class="fal fa-database"></i>
-                                            <span class="nav-link-text" data-i18n="nav.theme_settings">Inventory</span>
+                                            <span class="nav-link-text" data-i18n="nav.theme_settings">Categories</span>
+                                        </a>
+                                    </li>
+
+                                    
+
+                                    <li>
+                                        <a href="<%= Routes.admin_path(@conn, :location)%>" title="Inventory Management" data-filter-tags="theme settings">
+                                            <i class="fal fa-map-marker"></i>
+                                            <span class="nav-link-text" data-i18n="nav.theme_settings">Location</span>
                                         </a>
                                     </li>
 
                                     <li>
-                                        <a href="<%= Routes.admin_path(@conn, :asset)%>" title="Inventory Management" data-filter-tags="theme settings">
-                                            <i class="fal fa-database"></i>
-                                            <span class="nav-link-text" data-i18n="nav.theme_settings">Assets</span>
+                                        <a href="<%= Routes.admin_path(@conn, :vendor)%>" title="Inventory Management" data-filter-tags="theme settings">
+                                            <i class="fal fa-users"></i>
+                                            <span class="nav-link-text" data-i18n="nav.theme_settings">Vendors</span>
+                                        </a>
+                                        
+                                    </li>
+
+                                    <li>
+                                        <a href="<%= Routes.admin_path(@conn, :employee)%>" title="Inventory Management" data-filter-tags="theme settings">
+                                            <i class="fal fa-user"></i>
+                                            <span class="nav-link-text" data-i18n="nav.theme_settings">Employees</span>
                                         </a>
                                         
                                     </li>

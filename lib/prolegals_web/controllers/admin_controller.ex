@@ -112,23 +112,25 @@ defmodule ProlegalsWeb.AdminController do
   def asset(conn, _params) do
     assets = Security.list_sec_tbl_assets()
     inventories = Security.list_sec_tbl_inventory_categories()
-    render(conn, "assets.html", assets: assets, inventories: inventories)
+    vendors = Security.list_sec_tbl_vendor()
+    render(conn, "assets.html", assets: assets, inventories: inventories, vendors: vendors)
   end
 
+
+
   def view_asset(conn, %{"id" => id}) do
-    IO.inspect "=========================================================="
-    IO.inspect id
-    assets = Security.list_sec_tbl_assets()
-    inventories = Security.list_sec_tbl_inventory_categories()
-    bluh = Security.get_asset_by_category(id)
-    render(conn, "view_assets.html", assets: assets, inventories: inventories, bluh: bluh)
+    assets = Security.get_asset!(id)
+    all_assets = Security.get_all_assets!(id)
+    locations = Security.list_sec_tbl_location()
+    employees = Security.list_sec_tbl_employee()
+    inventories = Security.get_inventory!(id)
+    vendors = Security.list_sec_tbl_vendor()
+    render(conn, "view_assets.html", assets: assets, all_assets: all_assets, inventories: inventories, locations: locations, employees: employees, vendors: vendors)
   end
 
 
   def create_asset(conn, params) do
-    IO.inspect "=========================================================="
-    IO.inspect conn
-  	case Security.create_asset(Map.put(params, "asset_id", params["category_id"])) do
+  	case Security.create_asset(params) do
           {:ok, _} ->
             conn
             |> put_flash(:info, "A New Asset Has Been Added successfully.")
@@ -208,6 +210,76 @@ defmodule ProlegalsWeb.AdminController do
       #  conn
       #  |> put_flash(:error, reason)
       #  |> redirect(to: Routes.admin_path(conn, :inventory))
+    end
+  end
+
+  # ------------------------------------ location Controller
+
+  def location(conn, _params) do
+    locations = Security.list_sec_tbl_location()
+    render(conn, "location.html", locations: locations)
+  end
+
+  @spec create_location(Plug.Conn.t(), :invalid | %{optional(:__struct__) => none, optional(atom | binary) => any}) :: Plug.Conn.t()
+  def create_location(conn, params) do
+  	case Security.create_location(params) do
+          {:ok, _} ->
+            conn
+            |> put_flash(:info, "A New Office Location Has Been Added Successfully.")
+            |> redirect(to: Routes.admin_path(conn, :location))
+
+            conn
+
+          {:error, _} ->
+            conn
+            |> put_flash(:error, "Failed To Add A New Office Location!")
+            |> redirect(to: Routes.admin_path(conn, :location))
+    end
+  end
+
+  # ------------------------------------ Employees Controller
+
+  def employee(conn, _params) do
+    employees = Security.list_sec_tbl_employee()
+    render(conn, "employee.html", employees: employees)
+  end
+
+  def create_employee(conn, params) do
+  	case Security.create_employee(params) do
+          {:ok, _} ->
+            conn
+            |> put_flash(:info, "A New Employee Has Been Added Successfully.")
+            |> redirect(to: Routes.admin_path(conn, :employee))
+
+            conn
+
+          {:error, _} ->
+            conn
+            |> put_flash(:error, "Failed To Add A New Employee!")
+            |> redirect(to: Routes.admin_path(conn, :employee))
+    end
+  end
+
+   # ------------------------------------ Vendor Controller
+
+   def vendor(conn, _params) do
+    vendors = Security.list_sec_tbl_vendor()
+    render(conn, "vendor.html", vendors: vendors)
+  end
+
+  def create_vendor(conn, params) do
+  	case Security.create_vendor(params) do
+          {:ok, _} ->
+            conn
+            |> put_flash(:info, "A New Vendor Has Been Added Successfully.")
+            |> redirect(to: Routes.admin_path(conn, :vendor))
+
+            conn
+
+          {:error, _} ->
+            conn
+            |> put_flash(:error, "Failed To Add A New Vendor!")
+            |> redirect(to: Routes.admin_path(conn, :vendor))
     end
   end
 

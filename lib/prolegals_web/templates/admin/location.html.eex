@@ -1,0 +1,308 @@
+<main id="js-page-content" role="main" class="page-content">
+
+<!-- ####################################################### FLASH ################## -->
+    <div class="row">
+        <div class="col-md-12 col-lg-offset-2">
+            <div class="form-group">
+                <%= if get_flash(@conn, :info) do %>
+                    <div class="alert alert-info alert-styled-left">
+                    <button type="button" class="close" data-dismiss="alert">&times; <span class="sr-only">Close</span></button>
+                    <%= get_flash(@conn, :info) %>
+                    </div>
+                <% end %>
+                <%= if get_flash(@conn, :error) do %>
+                    <div class="alert alert-danger alert-styled-left">
+                    <button type="button" class="close" data-dismiss="alert">&times; <span class="sr-only">Close</span></button>
+                    Opps! <%= get_flash(@conn, :error) %>
+                    </div>
+                <% end %>
+            </div>
+        </div>
+    </div>
+    <!-- ################################################################################ -->
+
+<div class="subheader">
+        <h1 class="subheader-title">
+            Manage Office Location
+                <br>
+            <small> Add or Edit Office Location</small>
+            <a href="javascript:void(0);" class="btn btn-light hover-effect" data-toggle="modal" data-target="#addLocation">
+                Add Location
+            </a>
+        </h1>
+
+        <div class="subheader-block" id="loggedIn-user">
+            <i class='subheader-icon fal fa-user'></i> <%= "#{String.capitalize(@conn.assigns.user.first_name)}"%> <%= "#{String.capitalize(@conn.assigns.user.last_name)}"%>  | INVENTORY
+        </div>    
+    </div>
+
+ <div class="row">
+        <div class="col-xl-12">
+            <div id="panel-1" class="panel">
+                <div class="panel-hdr">
+                    <h2> Office Locations </h2>
+                    <small> Locations </small>
+                </div>
+
+                <div class="panel-container show">
+                    <div class="panel-content">
+                        
+                        <!-- datatable start -->
+                        <table id="dt-basic-example" class="table table-bordered table-hover table-striped w-100">
+                            <thead class="p-3 bg-info-300 rounded overflow-hidden position-relative text-white mb-g">
+                                <tr>
+                                    <th>Office Name</th>
+                                    <th>Province</th>
+                                    <th>Contact Email</th>
+                                    <th>Contact Phone</th>
+                                    <th>Address Line</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <%= for location <- @locations do %>
+                                <tbody>
+                                    <tr>
+                                        <td><%= location.office_name %></td>
+                                        <td><%= location.province %></td>
+                                        <td><%= location.email %></td>
+                                        <td><%= location.contact %></td>
+                                        <td><%= location.address %></td>
+                                        <td class="pull-right">
+                                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#editLocation"  >
+                                                Edit
+                                            </button>
+                                        </td>
+                                    </tr>   
+                                </tbody>   
+                                <% end %>          
+                        </table>
+                        <!-- datatable end -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+
+
+<!-- ADD LOCATION MODEL -->
+<div class="modal fade" id="addLocation" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="text-align: center">
+                <h5 class="modal-title">Add Office Location <i class='subheader-icon '></i></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="fal fa-times"></i></span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form class="form-horizontal" action="<%= Routes.admin_path(@conn, :create_location)%>" enctype="multipart/form-data" method="POST">
+                    <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <h4 class="text-center"> Location Details </h4>
+                                <div id="panel-1" class="panel">
+                                    <div class="panel-container show">
+                                        <div class="panel-content">
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="p-20">
+                                                            <div class="form-group">
+                                                                <label class="form-label">Office Name</label>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                    </div>
+                                                                    <input type="text" value="" name="office_name" id="office_name" placeholder="Office Name" class="form-control" required="required">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="form-label">Physical Address</label>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                    </div>
+                                                                     <input type="text" value="" name="address" id="address" placeholder="Address" class="form-control" required="required">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="form-label">Phone Line 1</label>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">   
+                                                                    </div>
+                                                                    <input type="text" value="" name="contact" id="contact" placeholder="Contact" class="form-control" required="required"> 
+                                                                </div>
+                                                            </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="p-20">
+                                                            <div class="form-group">
+                                                                <label class="form-label">Province</label>
+                                                                 <select class="custom-select form-control" id="province" name="province" required="required">
+                                                                        <option selected="">Provice</option>
+                                                                        <option value="Lusaka">Lusaka</option>
+                                                                        <option value="Chipata">Chipata</option>
+                                                                        <option value="Lusaka">Muchinga</option>
+                                                                        <option value="Chipata">Northern</option>
+                                                                        <option value="Lusaka">Southern</option>
+                                                                        <option value="Chipata">Copperbelt</option>
+                                                                        <option value="Lusaka">North-Western</option>
+                                                                        <option value="Chipata">Western</option>
+                                                                        <option value="Lusaka">Central</option>
+                                                                        <option value="Chipata">Luapula</option>
+
+                                                                    </select>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="form-label">Email</label>
+                                                                <input type="text" value="" name="email" id="email" placeholder="email" class="form-control" required="required">
+                                                                
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="form-label">Phone Line 2</label>
+                                                                <input type="text" value="" name="contact_person" id="contact_person" placeholder="Contact Person" class="form-control" required="required">
+                                                                
+                                                            </div>
+                                                    </div>
+                                                </div>
+                                                <!-- end col -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-info">Submit</button>
+                    </div>
+                </form>
+            </div>   
+        </div>
+    </div>
+</div>
+
+
+<!-- EDIT LOCATION MODEL -->
+<div class="modal fade" id="editLocation" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="text-align: center">
+                <h5 class="modal-title">Edit Location <i class='subheader-icon '></i></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="fal fa-times"></i></span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form class="form-horizontal" action="<%= Routes.admin_path(@conn, :update_inventory)%>" enctype="multipart/form-data" method="POST">
+                    <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <h4 class="text-center"> Location Details </h4>
+                                <div id="panel-1" class="panel">
+                                    <div class="panel-container show">
+                                        <div class="panel-content">
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="p-20">
+                                                            <div class="form-group">
+                                                                <label class="form-label">Office Name</label>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                    </div>
+                                                                    <input type="text" value="" name="office_name" id="office_name" placeholder="Office Name" class="form-control" required="required">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="form-label">Physical Address</label>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                    </div>
+                                                                     <input type="text" value="" name="address" id="address" placeholder="Address" class="form-control" required="required">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="form-label">Phone Line 1</label>
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">   
+                                                                    </div>
+                                                                    <input type="text" value="" name="contact" id="contact" placeholder="Contact" class="form-control" required="required"> 
+                                                                </div>
+                                                            </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="p-20">
+                                                            <div class="form-group">
+                                                                <label class="form-label">Province</label>
+                                                                 <select class="custom-select form-control" id="province" name="province" required="required">
+                                                                        <option selected="">Provice</option>
+                                                                        <option value="Lusaka">Lusaka</option>
+                                                                        <option value="Chipata">Chipata</option>
+                                                                        <option value="Lusaka">Muchinga</option>
+                                                                        <option value="Chipata">Northern</option>
+                                                                        <option value="Lusaka">Southern</option>
+                                                                        <option value="Chipata">Copperbelt</option>
+                                                                        <option value="Lusaka">North-Western</option>
+                                                                        <option value="Chipata">Western</option>
+                                                                        <option value="Lusaka">Central</option>
+                                                                        <option value="Chipata">Luapula</option>
+
+                                                                    </select>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="form-label">Email</label>
+                                                                <input type="text" value="" name="email" id="email" placeholder="email" class="form-control" required="required">
+                                                                
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="form-label">Phone Line 2</label>
+                                                                <input type="text" value="" name="contact_person" id="contact_person" placeholder="Contact Person" class="form-control" required="required">
+                                                                
+                                                            </div>
+                                                    </div>
+                                                </div>
+                                                <!-- end col -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-info">Submit</button>
+                    </div>
+                </form>
+            </div>   
+        </div>
+    </div>
+</div>
+
+<script src="<%= Routes.static_path(@conn, "/js/jquery-1.11.2.min.js") %>"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<script>
+$(document).ready(function(){
+
+    $('#editCategory').on('show.bs.modal', function (event){
+        console.log("edit");
+
+        var button = $(event.relatedTarget)
+        var id = button.data('id')
+        var name = button.data('name')
+        var category_code = button.data('category_code')
+      
+        var modal = $(this)
+        
+        modal.find('.modal-body #id').val(id);
+        modal.find('.modal-body #name').val(name);
+        modal.find('.modal-body #category_code').val(category_code);
+       
+    });
+});
+</script>

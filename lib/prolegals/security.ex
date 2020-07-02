@@ -235,10 +235,11 @@ defmodule Prolegals.Security do
   """
   def get_asset!(id), do: Repo.get!(Asset, id)
 
-  def get_asset_by_category(id) do
-    Repo.get_by(Inventory, category_id: id)
+  def get_all_assets!(id) do
+    Asset
+    |> where([e], e.category_id == ^id)
+    |>Repo.all()
   end
-
   @doc """
   Creates a asset.
 
@@ -304,5 +305,293 @@ defmodule Prolegals.Security do
   """
   def change_asset(%Asset{} = asset) do
     Asset.changeset(asset, %{})
+  end
+
+  alias Prolegals.Security.Location
+
+  @doc """
+  Returns the list of sec_tbl_location.
+
+  ## Examples
+
+      iex> list_sec_tbl_location()
+      [%Location{}, ...]
+
+  """
+  def list_sec_tbl_location do
+    Repo.all(Location)
+  end
+
+  @doc """
+  Gets a single location.
+
+  Raises `Ecto.NoResultsError` if the Location does not exist.
+
+  ## Examples
+
+      iex> get_location!(123)
+      %Location{}
+
+      iex> get_location!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_location!(id), do: Repo.get!(Location, id)
+
+  @doc """
+  Creates a location.
+
+  ## Examples
+
+      iex> create_location(%{field: value})
+      {:ok, %Location{}}
+
+      iex> create_location(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_location(attrs \\ %{}) do
+    %Location{}
+    |> Location.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a location.
+
+  ## Examples
+
+      iex> update_location(location, %{field: new_value})
+      {:ok, %Location{}}
+
+      iex> update_location(location, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_location(%Location{} = location, attrs) do
+    location
+    |> Location.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a location.
+
+  ## Examples
+
+      iex> delete_location(location)
+      {:ok, %Location{}}
+
+      iex> delete_location(location)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_location(%Location{} = location) do
+    Repo.delete(location)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking location changes.
+
+  ## Examples
+
+      iex> change_location(location)
+      %Ecto.Changeset{source: %Location{}}
+
+  """
+  def change_location(%Location{} = location) do
+    Location.changeset(location, %{})
+  end
+
+  alias Prolegals.Security.Vendor
+
+  @doc """
+  Returns the list of sec_tbl_vendor.
+
+  ## Examples
+
+      iex> list_sec_tbl_vendor()
+      [%Vendor{}, ...]
+
+  """
+  def list_sec_tbl_vendor do
+    Repo.all(Vendor)
+  end
+
+  @doc """
+  Gets a single vendor.
+
+  Raises `Ecto.NoResultsError` if the Vendor does not exist.
+
+  ## Examples
+
+      iex> get_vendor!(123)
+      %Vendor{}
+
+      iex> get_vendor!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_vendor!(id), do: Repo.get!(Vendor, id)
+
+  @doc """
+  Creates a vendor.
+
+  ## Examples
+
+      iex> create_vendor(%{field: value})
+      {:ok, %Vendor{}}
+
+      iex> create_vendor(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_vendor(attrs \\ %{}) do
+    %Vendor{}
+    |> Vendor.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a vendor.
+
+  ## Examples
+
+      iex> update_vendor(vendor, %{field: new_value})
+      {:ok, %Vendor{}}
+
+      iex> update_vendor(vendor, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_vendor(%Vendor{} = vendor, attrs) do
+    vendor
+    |> Vendor.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a vendor.
+
+  ## Examples
+
+      iex> delete_vendor(vendor)
+      {:ok, %Vendor{}}
+
+      iex> delete_vendor(vendor)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_vendor(%Vendor{} = vendor) do
+    Repo.delete(vendor)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking vendor changes.
+
+  ## Examples
+
+      iex> change_vendor(vendor)
+      %Ecto.Changeset{source: %Vendor{}}
+
+  """
+  def change_vendor(%Vendor{} = vendor) do
+    Vendor.changeset(vendor, %{})
+  end
+
+  alias Prolegals.Security.Employee
+
+  @doc """
+  Returns the list of sec_tbl_employee.
+
+  ## Examples
+
+      iex> list_sec_tbl_employee()
+      [%Employee{}, ...]
+
+  """
+  def list_sec_tbl_employee do
+    Repo.all(Employee)
+  end
+
+  @doc """
+  Gets a single employee.
+
+  Raises `Ecto.NoResultsError` if the Employee does not exist.
+
+  ## Examples
+
+      iex> get_employee!(123)
+      %Employee{}
+
+      iex> get_employee!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_employee!(id), do: Repo.get!(Employee, id)
+
+  @doc """
+  Creates a employee.
+
+  ## Examples
+
+      iex> create_employee(%{field: value})
+      {:ok, %Employee{}}
+
+      iex> create_employee(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_employee(attrs \\ %{}) do
+    %Employee{}
+    |> Employee.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a employee.
+
+  ## Examples
+
+      iex> update_employee(employee, %{field: new_value})
+      {:ok, %Employee{}}
+
+      iex> update_employee(employee, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_employee(%Employee{} = employee, attrs) do
+    employee
+    |> Employee.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a employee.
+
+  ## Examples
+
+      iex> delete_employee(employee)
+      {:ok, %Employee{}}
+
+      iex> delete_employee(employee)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_employee(%Employee{} = employee) do
+    Repo.delete(employee)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking employee changes.
+
+  ## Examples
+
+      iex> change_employee(employee)
+      %Ecto.Changeset{source: %Employee{}}
+
+  """
+  def change_employee(%Employee{} = employee) do
+    Employee.changeset(employee, %{})
   end
 end

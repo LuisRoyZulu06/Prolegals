@@ -36,37 +36,26 @@
         <div class="col-xl-12">
 
 
-                <div class="row">
-            <div class="col-sm-6 col-xl-3"> 
-                <div class="p-3 bg-primary-300 rounded overflow-hidden position-relative text-white mb-g">
+        <div class="row">
+            <div class="col-sm-6 col-xl-3">
+                <div class="p-3 bg-info-200 rounded overflow-hidden position-relative text-white mb-g">
                     <div class="">
                         <h3 class="display-4 d-block l-h-n m-0 fw-500">
-                            Users
-                            <small class="m-0 l-h-n text-right"><a class="btn btn-primary btn-xs" href="<%= Routes.user_path(@conn, :user_management)%>">View Users</a></small>
+                           Assets  <small><span class="badge badge-primary badge-pill">1</span> </small>
+                          <small class="m-0 l-h-n text-right"><a class="btn btn-secondary btn-xs" href="<%= Routes.admin_path(@conn, :asset)%>">View</a></small>
+                         
                         </h3>
                     </div>
-                    <i class="fal fa-book position-absolute pos-right pos-bottom opacity-15 mb-n1 mr-n1" style="font-size:6rem"></i>
+                    <i class="fal fa-globe position-absolute pos-right pos-bottom opacity-15 mb-n1 mr-n4" style="font-size: 6rem;"></i>
                 </div>
             </div>
-            
+
             <div class="col-sm-6 col-xl-3">
-                <div class="p-3 bg-warning-400 rounded overflow-hidden position-relative text-white mb-g">
+                <div class="p-3 bg-info-200 rounded overflow-hidden position-relative text-white mb-g">
                     <div class="">
                         <h3 class="display-4 d-block l-h-n m-0 fw-500">
-                            User Logs
-                            <small class="m-0 l-h-n text-right"><a class="btn btn-warning btn-xs" href="<%= Routes.user_path(@conn, :user_logs)%>">View Logs</a></small>
-                        </h3>
-                    </div>
-                    <i class="fal fa-edit position-absolute pos-right pos-bottom opacity-15  mb-n1 mr-n4" style="font-size: 6rem;"></i>
-                </div>
-            </div>
-            
-            <div class="col-sm-6 col-xl-3">
-                <div class="p-3 bg-success-200 rounded overflow-hidden position-relative text-white mb-g">
-                    <div class="">
-                        <h3 class="display-4 d-block l-h-n m-0 fw-500">
-                            Inventory
-                            <small class="m-0 l-h-n text-right"><a class="btn btn-success btn-xs" href="<%= Routes.admin_path(@conn, :inventory)%>">View Categories</a></small>
+                            Categories <small ><span class="badge badge-primary badge-pill">1</span> </small>
+                            <small class="m-0 l-h-n text-right"><a class="btn btn-secondary btn-xs" href="<%= Routes.admin_path(@conn, :inventory)%>">View</a></small>
                         </h3>
                     </div>
                     <i class="fal fa-lightbulb position-absolute pos-right pos-bottom opacity-15 mb-n5 mr-n6" style="font-size: 8rem;"></i>
@@ -77,66 +66,76 @@
                 <div class="p-3 bg-info-200 rounded overflow-hidden position-relative text-white mb-g">
                     <div class="">
                         <h3 class="display-4 d-block l-h-n m-0 fw-500">
-                            Assets
-                          <small class="m-0 l-h-n text-right"><a class="btn btn-primary btn-xs" href="<%= Routes.admin_path(@conn, :asset)%>">View Assets</a></small>
+                            Assigned <small ><span class="badge badge-primary badge-pill">1</span> </small>
+                            <small class="m-0 l-h-n text-right"><a class="btn btn-secondary btn-xs" href="<%= Routes.admin_path(@conn, :inventory)%>">View</a></small>
+                        </h3>
+                    </div>
+                    <i class="fal fa-lightbulb position-absolute pos-right pos-bottom opacity-15 mb-n5 mr-n6" style="font-size: 8rem;"></i>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-xl-3">
+                <div class="p-3 bg-info-200 rounded overflow-hidden position-relative text-white mb-g">
+                    <div class="">
+                        <h3 class="display-4 d-block l-h-n m-0 fw-500">
+                            Unassigned<small ><span class="badge badge-primary badge-pill">1</span> </small>
+                          <small class="m-0 l-h-n text-right"><a class="btn btn-secondary btn-xs" href="<%= Routes.admin_path(@conn, :asset)%>">View</a></small>
                           
                         </h3>
                     </div>
                     <i class="fal fa-globe position-absolute pos-right pos-bottom opacity-15 mb-n1 mr-n4" style="font-size: 6rem;"></i>
                 </div>
             </div>
-        </div>
 
-            <div class="row">
-                <div class="col-xl-6">
-                    <div id="panel-5" class="panel">
-                        <div class="panel-hdr">
-                            <h2>
-                                Polar <span class="fw-300"><i>Area</i></span>
-                            </h2>
-                            <div class="panel-toolbar">
-                                <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
-                                <button class="btn btn-panel" data-action="panel-fullscreen" data-toggle="tooltip" data-offset="0,10" data-original-title="Fullscreen"></button>
-                                <button class="btn btn-panel" data-action="panel-close" data-toggle="tooltip" data-offset="0,10" data-original-title="Close"></button>
-                            </div>
-                        </div>
-                        <div class="panel-container show">
-                            <div class="panel-content">
-                                <div class="panel-tag">
-                                    Polar charts are similar to pie charts, but each segment has the same angle - the radius of the segment differs depending on the value. Polar charts is often useful when we want to show a comparison data similar to a pie chart, but also show a scale of values for context
-                                </div>
-                                <div id="polarArea">
-                                    <canvas style="width:100%; height:300px;"></canvas>
-                                </div>
-                            </div>
-                        </div>
+            <div class="col-sm-6 col-xl-3">
+                <div class="p-3 bg-info-200 rounded overflow-hidden position-relative text-white mb-g">
+                    <div class="">
+                        <h3 class="display-4 d-block l-h-n m-0 fw-500">
+                            Vendors <small ><span class="badge badge-primary badge-pill">1</span> </small>
+                            <small class="m-0 l-h-n text-right"><a class="btn btn-secondary btn-xs" href="<%= Routes.admin_path(@conn, :vendor)%>">View</a></small>
+                        </h3>
                     </div>
-                </div>
-                <div class="col-xl-6">
-                    <div id="panel-11" class="panel">
-                        <div class="panel-hdr">
-                            <h2>
-                                Radar <span class="fw-300"><i>Chart</i></span>
-                            </h2>
-                            <div class="panel-toolbar">
-                                <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
-                                <button class="btn btn-panel" data-action="panel-fullscreen" data-toggle="tooltip" data-offset="0,10" data-original-title="Fullscreen"></button>
-                                <button class="btn btn-panel" data-action="panel-close" data-toggle="tooltip" data-offset="0,10" data-original-title="Close"></button>
-                            </div>
-                        </div>
-                        <div class="panel-container show">
-                            <div class="panel-content">
-                                <div class="panel-tag">
-                                    For a radar chart, to provide context of what each point means, we include an array of strings that show around each point in the chart. For the radar chart data, we have an array of datasets as objects, with a fill, stroke, and line color for each point. We also have an array of data values
-                                </div>
-                                <div id="radarChart">
-                                    <canvas style="width:100%; height:300px;"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <i class="fal fa-lightbulb position-absolute pos-right pos-bottom opacity-15 mb-n5 mr-n6" style="font-size: 8rem;"></i>
                 </div>
             </div>
+
+            <div class="col-sm-6 col-xl-3">
+                <div class="p-3 bg-info-200 rounded overflow-hidden position-relative text-white mb-g">
+                    <div class="">
+                        <h3 class="display-4 d-block l-h-n m-0 fw-500">
+                            Locations <small ><span class="badge badge-primary badge-pill">1</span> </small>
+                          <small class="m-0 l-h-n text-right"><a class="btn btn-secondary btn-xs" href="<%= Routes.admin_path(@conn, :location)%>">View</a></small>
+                          
+                        </h3>
+                    </div>
+                    <i class="fal fa-globe position-absolute pos-right pos-bottom opacity-15 mb-n1 mr-n4" style="font-size: 6rem;"></i>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-xl-3"> 
+                <div class="p-3 bg-info-300 rounded overflow-hidden position-relative text-white mb-g">
+                    <div class="">
+                        <h3 class="display-4 d-block l-h-n m-0 fw-500">
+                            Users <small ><span class="badge badge-primary badge-pill">1</span> </small>
+                            <small class="m-0 l-h-n text-right"><a class="btn btn-secondary btn-xs" href="<%= Routes.user_path(@conn, :user_management)%>">View Users</a></small>
+                        </h3>
+                    </div>
+                    <i class="fal fa-book position-absolute pos-right pos-bottom opacity-15 mb-n1 mr-n1" style="font-size:6rem"></i>
+                </div>
+            </div>
+            
+            <div class="col-sm-6 col-xl-3">
+                <div class="p-3 bg-info-400 rounded overflow-hidden position-relative text-white mb-g">
+                    <div class="">
+                        <h3 class="display-4 d-block l-h-n m-0 fw-500">
+                            User Logs
+                            <small class="m-0 l-h-n text-right"><a class="btn btn-secondary btn-xs" href="<%= Routes.user_path(@conn, :user_logs)%>">View Logs</a></small>
+                        </h3>
+                    </div>
+                    <i class="fal fa-edit position-absolute pos-right pos-bottom opacity-15  mb-n1 mr-n4" style="font-size: 6rem;"></i>
+                </div>
+            </div>
+        </div>
         </div>
     <% end %>
     <!----------------------------------------------------------------------------------------------------------------->
