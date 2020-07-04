@@ -4,9 +4,13 @@ defmodule ProlegalsWeb.SecurityController do
     alias Prolegals.Security
     alias Prolegals.Security.LogBook
     alias Prolegals.{Logs, Repo, Logs.UserLogs, Auth}
+    # alias Prolegals.Emails.Email
+    alias Prolegals.Emails.Email, as: Alert
+
 
 
     def list_log_book_users(conn, params) do
+
       list_log_book_users = Security.list_sec_tbl_log_book(params)
       render(conn, "list_log_book_users.html", list_log_book_users: list_log_book_users)
     end
@@ -130,6 +134,25 @@ defmodule ProlegalsWeb.SecurityController do
           |> redirect(to: Routes.security_path(conn, :history_log_book_users))
     end
    end
+
+  def sec_reports(conn, params) do
+    sec_reports = Security.list_sec_tbl_log_book(params)
+    render(conn, "security_report.html", sec_reports: sec_reports)
+  end
+
+
+  def alert_not_checked_out() do
+    recipient = "coolsniper180@gmail.com"
+    items = Security.not_check_out()
+
+    if items != [] do
+      Alert.send_check_out_alert(items, recipient)
+    else
+      IO.puts("Every one has Checked Out")
+    end
+
+
+  end
 
    def traverse_errors(errors) do
     for {key, {msg, _opts}} <- errors, do: "#{key} #{msg}"

@@ -12,7 +12,7 @@ defmodule Prolegals.Security do
 
 
   @doc """
-  Returns the list of sec_tbl_log_book.
+  Returns the list of sec_tbl_log_book.Prolegals.Security.not_check_out
 
   ## Examples
 
@@ -26,6 +26,13 @@ defmodule Prolegals.Security do
     |> LogBook.search(search_term)
     |> Repo.all()
   end
+
+
+  def not_check_out() do
+    Repo.all(from(n in LogBook, where: [time_out: "NotCheckOut"] ))
+  end
+
+
 
   @doc """
   Gets a single log_book.

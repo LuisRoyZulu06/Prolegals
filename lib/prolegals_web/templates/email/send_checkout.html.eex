@@ -1,0 +1,61 @@
+<div class="row">
+    <div class="col-lg-10 col-lg-offset-1">
+        <div class="panel registration-form">
+            <div class="panel-body">
+            	<br>
+                <div class="row" style="padding: 25px 30px 25px 20px">
+                        <p>Dear User,</p>
+                       <p>The following are Visitors who did not Check Out.</p>
+                        <p>Notify them to check out next time !</p>
+                     <div class="panel-container show">
+                        <div class="panel-content">
+                            <!-- datatable start -->
+                            <table id="dt-basic-example" class="table table-bordered table-hover table-striped w-100">
+                                <thead class="p-3 bg-primary-300 rounded overflow-hidden position-relative text-white mb-g">
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Mobile No.</th>
+                                        <th>ID Type</th>
+                                        <th>ID No.</th>
+                                        <th>Company</th>
+                                        <th>Person To See</th>
+                                        <th>Purpose</th>
+                                        <th>Date</th>
+                                        <th>Time In</th>
+           
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <%= for item <- @items do %>
+                                      <%= if Date.to_string(Timex.today)  ==  Date.to_string(item.inserted_at) do %>
+                                            <tr>
+                                                <td class="text-center"><%= item.name%></td>
+                                                <td class="text-center"><%= item.mobile_no%></td>
+                                                <td class="text-center"><%= item.id_type%></td>
+                                                <td class="text-center"><%= item.id_no%></td>
+                                                <td class="text-center"><%= item.company%></td>
+                                                <td class="text-center"><%= item.person_to_see%></td>
+                                                <td class="text-center"><%= item.purpose%></td>  
+                                                <td class="text-center"><%= item.date%></td>
+                                                <td class="text-center"><%= String.slice(to_string( Time.to_string(item.inserted_at)), 0..4) %></td> 
+                                                                                                                        
+                                            </tr>   
+                                      <% end %>                               
+                                    <% end %>   
+                                </tbody>        
+                            </table>
+                            <!-- datatable end -->
+                        </div>
+                     </div>
+                   
+                   
+                </div>
+                <div class="row" style="padding: 30px 30px 10px 20px;">
+                    <p>Regards, </p>
+                    <p>Prolegals - Online Help</p>
+                    <p>+260 976360360 || <a href="mailto:info@probasegroup.com" target="_blank">business@probasegroup.com</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

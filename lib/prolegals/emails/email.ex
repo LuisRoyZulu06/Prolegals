@@ -4,6 +4,8 @@ defmodule Prolegals.Emails.Email do
   # alias Bamboo.Attachment
   use Bamboo.Phoenix, view: ProlegalsWeb.EmailView
   alias Prolegals.Emails.Mailer
+  alias Prolegals.Security
+  alias Prolegals.Security.LogBook
 
 
   # def send_email_notification(attr) do
@@ -56,6 +58,23 @@ defmodule Prolegals.Emails.Email do
     )
     |> Mailer.deliver_later()
   end
+
+  def send_check_out_alert(items, recipient) do
+    new_email()
+    |> from("johnmfula360@gmail.com")
+    |> to(recipient)
+    |> subject("Visitors Not Check Out ")
+    # |> assign()
+    |> render("send_checkout.html", items: items )
+    # |> text_body(
+    #   """
+
+    #   """
+    # )
+    |> Mailer.deliver_later()
+  end
+
+
 
 
 end

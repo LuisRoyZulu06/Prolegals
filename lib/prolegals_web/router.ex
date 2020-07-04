@@ -97,6 +97,7 @@ defmodule ProlegalsWeb.Router do
     get "/view/logbook/user", SecurityController, :view_log_book_user
     post "/check/in/logbook/user", SecurityController, :check_in_log_book_user
     get "/history/logbook/user", SecurityController, :history_log_book_users
+    get "/security/report", SecurityController, :sec_reports
 
     # ---------------------------Firearms Inventory
     get "/firearms", AdminController, :firearm

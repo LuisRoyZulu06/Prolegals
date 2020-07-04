@@ -211,6 +211,18 @@
                                     </li>
                                 <% end %>
                                 <!---------------------------------------------------------------------------------------------------------------->
+
+                                <!------------------------------------------------------------------------------------------------------ Client -->
+                                <%= if @user.user_role == "security" do %>
+                                   <li>
+                                        <a href="<%= Routes.security_path(@conn, :sec_reports)%>" title="Reports" data-filter-tags="ui components">
+                                            <i class="fal fa-edit"></i>
+                                            <span class="nav-link-text" data-i18n="nav.ui_components">Reports</span>
+                                        </a>
+                                    </li>
+                                   
+                                <% end %>
+                                <!---------------------------------------------------------------------------------------------------------------->
                             </ul>
 
                         <div class="filter-message js-filter-message bg-success-600"></div>

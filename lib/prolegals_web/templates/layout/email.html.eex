@@ -89,7 +89,7 @@
 				<%= render @view_module, @view_template, assigns %>
 			</div>
 			<!-- /main content -->
-
+            
 		</div>
 		<!-- /page content -->
 

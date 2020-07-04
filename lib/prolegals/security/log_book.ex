@@ -21,7 +21,7 @@ defmodule Prolegals.Security.LogBook do
     field :purpose, :string
     field :sex, :string
     field :time_in, :string
-    field :time_out, :string
+    field :time_out, :string , default: "NotCheckOut"
 
     timestamps()
   end

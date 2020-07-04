@@ -47,11 +47,23 @@ config :Prolegals, Prolegals.Scheduler,
     #   schedule: "@weekly",
     #   task: {BankLinkWeb.EftTransController, :cust_penalty, []}
     # ],
-    internet_file: [
+    # internet_file: [
+    #   # schedule: {:extended, "*/10"},
+    #   # schedule: {:extended, "*/30"},
+    #   task: {ProlegalsWeb.ClientController, :send_emails, []}
+    # ],
+
+    checkout_alert: [
       # schedule: {:extended, "*/10"},
       # schedule: {:extended, "*/30"},
-      task: {ProlegalsWeb.ClientController, :send_emails, []}
+      #Alert at 18:00 Hrs
+      # schedule: {:extended, "0 18 * * *"},
+      # schedule: {:extended, "1 12 * * *"},
+      task: {ProlegalsWeb.SecurityController, :alert_not_checked_out, []}
     ]
+
+
+
     # channel_entries: [
     #   # schedule: {:extended, "*/30"},
     #   # schedule: "*/10 * * * * *",
