@@ -1,0 +1,279 @@
+<main id="js-page-content" role="main" class="page-content">
+
+<!-- ####################################################### FLASH ################## -->
+    <div class="row">
+        <div class="col-md-12 col-lg-offset-2">
+            <div class="form-group">
+                <%= if get_flash(@conn, :info) do %>
+                    <div class="alert alert-info alert-styled-left">
+                    <button type="button" class="close" data-dismiss="alert">&times; <span class="sr-only">Close</span></button>
+                    <%= get_flash(@conn, :info) %>
+                    </div>
+                <% end %>
+                <%= if get_flash(@conn, :error) do %>
+                    <div class="alert alert-danger alert-styled-left">
+                    <button type="button" class="close" data-dismiss="alert">&times; <span class="sr-only">Close</span></button>
+                    Opps! <%= get_flash(@conn, :error) %>
+                    </div>
+                <% end %>
+            </div>
+        </div>
+    </div>
+    <!-- ################################################################################ -->
+
+    <div class="subheader">
+        <h1 class="subheader-title">
+            <i class='subheader-icon fal fa-users'></i> Manage Vendors <br>
+            <small> Add or Edit Vendor</small>
+            <a href="javascript:void(0);" class="btn btn-light hover-effect" data-toggle="modal" data-target="#addInvCat">
+                Add Vendor
+            </a>
+        </h1>
+        <div class="subheader-block" id="loggedIn-user">
+            <i class='subheader-icon fal fa-user'></i> <%= "#{String.capitalize(@conn.assigns.user.first_name)}"%> <%= "#{String.capitalize(@conn.assigns.user.last_name)}"%>  | INVENTORY
+        </div>    
+    </div>
+
+    <div class="row">
+        <div class="col-xl-12">
+            <div id="panel-1" class="panel">
+                <div class="panel-hdr">
+                    <h2> Vendors </h2>
+                    <small> Vendors </small>
+                </div>
+
+                <div class="panel-container show">
+                    <div class="panel-content">
+                        <!-- datatable start -->
+                        <table id="dt-basic-example" class="table table-bordered table-hover table-striped w-100">
+                            <thead class="p-3 bg-info-300 rounded overflow-hidden position-relative text-white mb-g">
+                                <tr>
+                                    <th>Vendor Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Contact Person</th>
+                                    <th>Country</th>
+                                    <th>Address</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <%= for vendor <- @vendors do %>
+                                <tbody>
+                                    <tr>
+                                        <td><%= vendor.vendor_name %></td>
+                                        <td><%= vendor.email %></td>
+                                        <td><%= vendor.contact %></td>
+                                        <td><%= vendor.contact_person %></td>
+                                        <td><%= vendor.country %></td>
+                                        <td><%= vendor.address %></td>
+                                        <td class="pull-right">
+                                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#editCategory"  >
+                                                Edit
+                                            </button>
+                                        </td>
+                                    </tr>   
+                                </tbody>    
+                            <% end %>         
+                        </table>
+                        <!-- datatable end -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+
+
+<!-- ADD LOCATION MODEL -->
+<div class="modal fade" id="addInvCat" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="text-align: center">
+                <h5 class="modal-title">Add Vendor <i class='subheader-icon '></i></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="fal fa-times"></i></span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form class="form-horizontal" action="<%= Routes.admin_path(@conn, :create_vendor)%>" enctype="multipart/form-data" method="POST">
+                    <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
+                    <div class="row">
+                            <div class="col-xl-12">
+                                <h4 class="text-center"> Vendor Details </h4>
+                                <div id="panel-1" class="panel">
+                                    <div class="panel-container show">
+                                        <div class="panel-content">
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="p-20">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Vendor Name</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                </div>
+                                                                <input type="text" value="" name="vendor_name" id="vendor_name" placeholder="Vendor Name" class="form-control" required="required">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="form-label"> Email</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                </div>
+                                                                    <input type="text" value="" name="email" id="email" placeholder="Email" class="form-control" required="required">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="form-label">Company Phone</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">   
+                                                                </div>
+                                                                <input type="text" value="" name="contact" id="contact" placeholder="Phone Number" class="form-control" required="required"> 
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="p-20">
+                                                            <div class="form-group">
+                                                                <label class="form-label">Country</label>
+                                                                 <input type="text" value="" name="country" id="country" placeholder="Country" class="form-control" required="required">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="form-label">Contact Person</label>
+                                                                <input type="text" value="" name="contact_person" id="contact_person" placeholder="Contact Person" class="form-control" required="required">
+                                                                
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="form-label">Physical Address</label>
+                                                                <input type="text" value="" name="address" id="address" placeholder="Address" class="form-control" required="required">
+                                                                
+                                                            </div>
+                                                    </div>
+                                                </div>
+                                                <!-- end col -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-info">Submit</button>
+                    </div>
+                </form>
+            </div>   
+        </div>
+    </div>
+</div>
+
+
+<!-- EDIT LOCATION -->
+<div class="modal fade" id="editCategory" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="text-align: center">
+                <h5 class="modal-title">Edit Vendor <i class='subheader-icon '></i></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="fal fa-times"></i></span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form class="form-horizontal" action="<%= Routes.admin_path(@conn, :update_inventory)%>" enctype="multipart/form-data" method="POST">
+                    <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
+                    <div class="row">
+                            <div class="col-xl-12">
+                                <h4 class="text-center"> Vendor Details </h4>
+                                <div id="panel-1" class="panel">
+                                    <div class="panel-container show">
+                                        <div class="panel-content">
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="p-20">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Vendor Name</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                </div>
+                                                                <input type="text" value="" name="vendor_name" id="vendor_name" placeholder="Vendor Name" class="form-control" required="required">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="form-label"> Email</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                </div>
+                                                                    <input type="text" value="" name="email" id="email" placeholder="Email" class="form-control" required="required">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="form-label">Company Phone</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">   
+                                                                </div>
+                                                                <input type="text" value="" name="contact" id="contact" placeholder="Phone Number" class="form-control" required="required"> 
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="p-20">
+                                                            <div class="form-group">
+                                                                <label class="form-label">Country</label>
+                                                                 <input type="text" value="" name="country" id="country" placeholder="Country" class="form-control" required="required">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="form-label">Contact Person</label>
+                                                                <input type="text" value="" name="contact_person" id="contact_person" placeholder="Contact Person" class="form-control" required="required">
+                                                                
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="form-label">Physical Address</label>
+                                                                <input type="text" value="" name="address" id="address" placeholder="Address" class="form-control" required="required">
+                                                                
+                                                            </div>
+                                                    </div>
+                                                </div>
+                                                <!-- end col -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-info">Submit</button>
+                    </div>
+                </form>
+            </div>   
+        </div>
+    </div>
+</div>
+
+<script src="<%= Routes.static_path(@conn, "/js/jquery-1.11.2.min.js") %>"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<script>
+$(document).ready(function(){
+
+    $('#editCategory').on('show.bs.modal', function (event){
+        console.log("edit");
+
+        var button = $(event.relatedTarget)
+        var id = button.data('id')
+        var name = button.data('name')
+        var category_code = button.data('category_code')
+      
+        var modal = $(this)
+        
+        modal.find('.modal-body #id').val(id);
+        modal.find('.modal-body #name').val(name);
+        modal.find('.modal-body #category_code').val(category_code);
+       
+    });
+});
+</script>

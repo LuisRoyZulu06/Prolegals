@@ -1,0 +1,320 @@
+<main id="js-page-content" role="main" class="page-content">
+
+<!-- ####################################################### FLASH ################## -->
+    <div class="row">
+        <div class="col-md-12 col-lg-offset-2">
+            <div class="form-group">
+                <%= if get_flash(@conn, :info) do %>
+                    <div class="alert alert-info alert-styled-left">
+                    <button type="button" class="close" data-dismiss="alert">&times; <span class="sr-only">Close</span></button>
+                    <%= get_flash(@conn, :info) %>
+                    </div>
+                <% end %>
+                <%= if get_flash(@conn, :error) do %>
+                    <div class="alert alert-danger alert-styled-left">
+                    <button type="button" class="close" data-dismiss="alert">&times; <span class="sr-only">Close</span></button>
+                    Opps! <%= get_flash(@conn, :error) %>
+                    </div>
+                <% end %>
+            </div>
+        </div>
+    </div>
+    <!-- ################################################################################ -->
+
+    <div class="subheader">
+        <h1 class="subheader-title">
+            <i class='subheader-icon fal fa-user'></i> Manage Employees
+                <br>
+            <small> Add or Edit Employee Details</small>
+            <a href="javascript:void(0);" class="btn btn-light hover-effect" data-toggle="modal" data-target="#addEmployee">
+                Add Employee
+            </a>
+            <a href="javascript:void(0);" class="btn btn-light hover-effect" data-toggle="modal" data-target="#addEmpFile">
+                Upload an Employee List
+            </a>
+        </h1>
+        <div class="subheader-block" id="loggedIn-user">
+            <i class='subheader-icon fal fa-user'></i> <%= "#{String.capitalize(@conn.assigns.user.first_name)}"%> <%= "#{String.capitalize(@conn.assigns.user.last_name)}"%>  | INVENTORY
+        </div>    
+    </div>
+
+ <div class="row">
+        <div class="col-xl-12">
+            <div id="panel-1" class="panel">
+                <div class="panel-hdr">
+                    <h2> Employees List </h2>
+                    <small> Employees </small>
+                </div>
+
+                <div class="panel-container show">
+                    <div class="panel-content">
+                        
+                        <!-- datatable start -->
+                        <table id="dt-basic-example" class="table table-bordered table-hover table-striped w-100">
+                            <thead class="p-3 bg-info-300 rounded overflow-hidden position-relative text-white mb-g">
+                                <tr>
+                                    <th>Employee Name</th>
+                                    <th>Employee Number</th>
+                                    <th>Phone</th>
+                                    <th>Email</th>
+                                    <th>Department</th>
+                                    <th>NRC</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <%= for employee <- @employees do %>
+                                <tbody>
+                                    <tr>
+                                        <td><%= employee.employee_name %></td>
+                                        <td><%= employee.employee_no %></td>
+                                        <td><%= employee.contact %></td>
+                                        <td><%= employee.email %></td>
+                                        <td><%= employee.department %></td>
+                                        <td><%= employee.nrc %></td>
+                                        <td class="pull-right">
+                                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#editEmployee"  >
+                                                Edit
+                                            </button>
+                                        </td>
+                                    </tr>   
+                                </tbody> 
+                            <%= end %>            
+                        </table>
+                        <!-- datatable end -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+
+
+<!-- ADD EMPLOYEES MODEL -->
+<div class="modal fade" id="addEmployee" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="text-align: center">
+                <h5 class="modal-title">Add Employee <i class='subheader-icon '></i></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="fal fa-times"></i></span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form class="form-horizontal" action="<%= Routes.admin_path(@conn, :create_employee)%>" enctype="multipart/form-data" method="POST">
+                    <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
+                   <div class="row">
+                            <div class="col-xl-12">
+                            <h4 class="text-center"> Employee Details </h4>
+                                <div id="panel-1" class="panel">
+                                    <div class="panel-container show">
+                                        <div class="panel-content">
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="p-20">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Employee Name</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                </div>
+                                                                <input type="text" value="" name="employee_name" id="employee_name" placeholder="Employee Name" class="form-control" required="required">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="form-label"> Email</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                </div>
+                                                                    <input type="text" value="" name="email" id="email" placeholder="Employee Email" class="form-control" required="required">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="form-label">Phone</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">   
+                                                                </div>
+                                                                <input type="text" value="" name="contact" id="contact" placeholder="Phone Number" class="form-control" required="required"> 
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="p-20">
+                                                            <div class="form-group">
+                                                                <label class="form-label">Employee Number</label>
+                                                                 <input type="text" value="" name="employee_no" id="employee_no" placeholder="Employee Number" class="form-control" required="required">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="form-label">NRC</label>
+                                                                <input type="text" value="" name="nrc" id="nrc" placeholder="NRC" class="form-control" required="required">
+                                                                
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="form-label">Department</label>
+                                                                <input type="text" value="" name="department" id="department" placeholder="Department" class="form-control" required="required">
+                                                                
+                                                            </div>
+                                                    </div>
+                                                </div>
+                                                <!-- end col -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-info">Submit</button>
+                    </div>
+                </form>
+            </div>   
+        </div>
+    </div>
+</div>
+
+
+<!-- ADD EMPLOYEE FILE UPLOAD MODEL -->
+<div class="modal fade" id="addEmpFile" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="text-align: center">
+                <h5 class="modal-title">Upload Employee File <i class='subheader-icon '></i></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="fal fa-times"></i></span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form class="form-horizontal" action="<%= Routes.admin_path(@conn, :create_bulk_employee)%>" enctype="multipart/form-data" method="POST">
+                    <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
+                         <div class="form-group">
+                                <label class="form-label">Upload File</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-file"></i></span>
+                                    </div>
+                                    <input type="file" name="employee_bulk_filename" class="form-control" required="required">
+                                    <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
+                                </div>
+                            </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-info">Submit</button>
+                    </div>
+                </form>
+            </div>   
+        </div>
+    </div>
+</div>
+
+
+<!-- EDIT EMPLOYEE MODEL -->
+<div class="modal fade" id="editEmployee" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="text-align: center">
+                <h5 class="modal-title">Edit Employee <i class='subheader-icon '></i></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="fal fa-times"></i></span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form class="form-horizontal" action="<%= Routes.admin_path(@conn, :update_inventory)%>" enctype="multipart/form-data" method="POST">
+                     <div class="row">
+                            <div class="col-xl-12">
+                            <h4 class="text-center"> Employee Details </h4>
+                                <div id="panel-1" class="panel">
+                                    <div class="panel-container show">
+                                        <div class="panel-content">
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="p-20">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Employee Name</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                </div>
+                                                                <input type="text" value="" name="employee_name" id="employee_name" placeholder="Employee Name" class="form-control" required="required">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="form-label"> Email</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                </div>
+                                                                    <input type="text" value="" name="email" id="email" placeholder="Employee Email" class="form-control" required="required">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="form-label">Phone</label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">   
+                                                                </div>
+                                                                <input type="text" value="" name="contact" id="contact" placeholder="Phone Number" class="form-control" required="required"> 
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <div class="p-20">
+                                                            <div class="form-group">
+                                                                <label class="form-label">Employee Number</label>
+                                                                 <input type="text" value="" name="employee_no" id="employee_no" placeholder="Employee Number" class="form-control" required="required">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="form-label">NRC</label>
+                                                                <input type="text" value="" name="nrc" id="nrc" placeholder="NRC" class="form-control" required="required">
+                                                                
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="form-label">Department</label>
+                                                                <input type="text" value="" name="department" id="department" placeholder="Department" class="form-control" required="required">
+                                                                
+                                                            </div>
+                                                    </div>
+                                                </div>
+                                                <!-- end col -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-info">Submit</button>
+                    </div>
+                </form>
+            </div>   
+        </div>
+    </div>
+</div>
+
+<script src="<%= Routes.static_path(@conn, "/js/jquery-1.11.2.min.js") %>"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<script>
+$(document).ready(function(){
+
+    $('#editCategory').on('show.bs.modal', function (event){
+        console.log("edit");
+
+        var button = $(event.relatedTarget)
+        var id = button.data('id')
+        var name = button.data('name')
+        var category_code = button.data('category_code')
+      
+        var modal = $(this)
+        
+        modal.find('.modal-body #id').val(id);
+        modal.find('.modal-body #name').val(name);
+        modal.find('.modal-body #category_code').val(category_code);
+       
+    });
+});
+</script>

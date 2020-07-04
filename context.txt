@@ -20,21 +20,23 @@ mix phx.gen.context Security AmmunitionInventory sec_tbl_ammunition caliber seri
 
 mix phx.gen.context Security LogBook sec_tbl_log_book name sex id_type id_no:unique image mobile_no address company person_to_see purpose date time_in time_out
 
-<<<<<<< HEAD
 mix phx.gen.context SystemDirectories Directory tbl_system_directories failed processed
-=======
-<<<<<<< HEAD
+
 mix phx.gen.context Security Inventory sec_tbl_inventory_categories name category_code 
 
 mix phx.gen.context Security Assets sec_tbl_assets name brand category_id type quantity serial_number status date_purchased purchased_from make_year 
-=======
+
 mix phx.gen.context Client Messages cl_tbl_messages sender recipient messages status case_link subject
 
 mix phx.gen.context Security LogBook sec_tbl_log_book name sex id_type id_no image mobile_no address company person_to_see purpose date time_in time_out
 
-<<<<<<< HEAD
+mix phx.gen.context Security Location sec_tbl_location office_name address contact contact_person province email
+
+mix phx.gen.context Security Vendor sec_tbl_vendor vendor_name address contact contact_person country email
+
+mix phx.gen.context Security Employee sec_tbl_employee employee_name employee_no contact email department nrc
+
 mix phx.gen.context Notifications Email Messages tbl_email_alerts email type
-=======
->>>>>>> 733e161d38d59a7a241e69cf1fbfa199798d8391
->>>>>>> 3dba6f4c1632310109cb594638fd71b06c861972
->>>>>>> dbea4ef621e67e185d6b2dd5b50141dad400e4c0
+
+mix phx.gen.context SystemDirectories EmployeeDirectory tbl_system_employee_directories failed processed
+

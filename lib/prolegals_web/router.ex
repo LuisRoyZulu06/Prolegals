@@ -132,6 +132,28 @@ defmodule ProlegalsWeb.Router do
      post "/Update/Asset", AdminController, :update_asset
      get "/Delete/Asset", AdminController, :delete_asset
 
+    # ---------------------------Location
+    get "/Location", AdminController, :location
+    post "/Create/Location", AdminController, :create_location
+
+    # ---------------------------Location
+    get "/Employees", AdminController, :employee
+    post "/Create/Employee", AdminController, :create_employee
+    post "/Create/Bulk/Employee", AdminController, :create_bulk_employee
+
+     # ---------------------------Assets
+     get "/Vendor", AdminController, :vendor
+     post "/Create/Vendor", AdminController, :create_vendor
+
+    # ---------------------------Legal Controller
+    get "/Contacts", LegalController, :contacts
+    post "/Create/Contact", LegalController, :create_contact
+    post "/update/Contact", LegalController, :update_contact
+    post "/delete/Contact", LegalController, :delete_contact
+    get "/Manage/Cases", LegalController, :case_mgt
+    post "/Add/New/Case", LegalController, :create_case
+    get "/Notifications", LegalController, :notifications
+    get "/Tasks", LegalController, :tasks
 
     get "/messages", ClientController, :list_messages
     post "/create/messages", ClientController, :create_message
