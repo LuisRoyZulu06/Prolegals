@@ -125,16 +125,6 @@ defmodule Prolegals.Security do
     Repo.one(from p in "sec_tbl_log_book", select:  count(p.id))
   end
 
-
-
-
-
-
-
-  # --------------------------------------------------------------------------------- Firearms Inventory
-
-  alias Prolegals.Security.FirearmsInventory
-
   alias Prolegals.Security.Inventory
 
 
@@ -246,6 +236,7 @@ defmodule Prolegals.Security do
   def list_sec_tbl_assets do
     Repo.all(Asset)
   end
+
 
   @doc """
   Gets a single asset.

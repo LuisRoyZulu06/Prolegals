@@ -20,7 +20,7 @@ defmodule Prolegals.SystemDirectories do
   def list_tbl_system_directories do
     Repo.all(Directory)
   end
-  
+
 
   def directories do
     Repo.one(Directory)
@@ -106,4 +106,5 @@ defmodule Prolegals.SystemDirectories do
   def change_directory(%Directory{} = directory) do
     Directory.changeset(directory, %{})
   end
+
 end

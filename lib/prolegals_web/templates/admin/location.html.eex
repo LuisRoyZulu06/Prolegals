@@ -23,7 +23,7 @@
 
 <div class="subheader">
         <h1 class="subheader-title">
-            Manage Office Location
+            <i class='subheader-icon fal fa-map-marker'></i> Manage Office Location
                 <br>
             <small> Add or Edit Office Location</small>
             <a href="javascript:void(0);" class="btn btn-light hover-effect" data-toggle="modal" data-target="#addLocation">

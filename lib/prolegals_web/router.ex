@@ -135,9 +135,10 @@ defmodule ProlegalsWeb.Router do
     get "/Location", AdminController, :location
     post "/Create/Location", AdminController, :create_location
 
-    # ---------------------------Assets
+    # ---------------------------Location
     get "/Employees", AdminController, :employee
     post "/Create/Employee", AdminController, :create_employee
+    post "/Create/Bulk/Employee", AdminController, :create_bulk_employee
 
      # ---------------------------Assets
      get "/Vendor", AdminController, :vendor

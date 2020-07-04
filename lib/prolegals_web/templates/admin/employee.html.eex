@@ -1,4 +1,4 @@
-Employee<main id="js-page-content" role="main" class="page-content">
+<main id="js-page-content" role="main" class="page-content">
 
 <!-- ####################################################### FLASH ################## -->
     <div class="row">
@@ -23,7 +23,7 @@ Employee<main id="js-page-content" role="main" class="page-content">
 
     <div class="subheader">
         <h1 class="subheader-title">
-            Manage Employees
+            <i class='subheader-icon fal fa-user'></i> Manage Employees
                 <br>
             <small> Add or Edit Employee Details</small>
             <a href="javascript:void(0);" class="btn btn-light hover-effect" data-toggle="modal" data-target="#addEmployee">
@@ -188,15 +188,18 @@ Employee<main id="js-page-content" role="main" class="page-content">
             </div>
 
             <div class="modal-body">
-                <form class="form-horizontal" action="<%= Routes.admin_path(@conn, :create_inventory)%>" enctype="multipart/form-data" method="POST">
+                <form class="form-horizontal" action="<%= Routes.admin_path(@conn, :create_bulk_employee)%>" enctype="multipart/form-data" method="POST">
                     <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
                          <div class="form-group">
-                        <label class="form-label"></label>
-                        <div class="input-group">
-                            
-                            <input type="file" name="name" placeholder="Category name" class="form-control" required="required">
-                        </div>
-                    </div>
+                                <label class="form-label">Upload File</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-file"></i></span>
+                                    </div>
+                                    <input type="file" name="employee_bulk_filename" class="form-control" required="required">
+                                    <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
+                                </div>
+                            </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-info">Submit</button>

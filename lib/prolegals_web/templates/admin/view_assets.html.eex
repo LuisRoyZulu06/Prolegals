@@ -23,7 +23,7 @@
 
 <div class="subheader">
         <h1 class="subheader-title">
-            Manage  Assets
+           <i class='subheader-icon fal fa-th'></i> Manage  Assets
                 <br>
             <small> Add or Edit Assets</small>
             <a href="javascript:void(0);" class="btn btn-light hover-effect" data-toggle="modal" data-target="#addAssets">
