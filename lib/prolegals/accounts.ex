@@ -103,6 +103,12 @@ defmodule Prolegals.Accounts do
     User.changeset(user, %{})
   end
 
+  # ------------------- Admin Dashboard Statistic--------
+
+  def total_users do
+    Repo.one(from p in "tbl_users", select:  count(p.id))
+  end
+
   # -------------------TEST------------------------------
   def get_user_by(nt_username) do
     Repo.all(

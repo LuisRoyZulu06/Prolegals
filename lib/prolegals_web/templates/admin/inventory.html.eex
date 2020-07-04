@@ -65,11 +65,20 @@
                                     <tr>
                                         <td><%= inventory.name %></td>
                                         <td><%= inventory.category_code %></td>
-                                        <td class="pull-right">
-                                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#editCategory" data-id="<%= inventory.id%>" data-name="<%= inventory.name%>" data-category_code="<%= inventory.category_code%>"  >
-                                                Edit
-                                            </button>
-                                            <a class="btn btn-danger" href="<%= Routes.admin_path(@conn, :delete_inventory, id: inventory.id)%>">Delete</a>
+                                        <td>
+                                           <div class="input-group">
+                                               <div class="input-group-prepend">
+                                                    <span data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <i class='subheader-icon fal fa-chevron-down'></i>
+                                                    </span>
+                                                     <div class="dropdown-menu"> 
+                                                        <button type="button" class="dropdown-item"  data-toggle="modal" data-target="#editCategory" data-id="<%= inventory.id%>" data-name="<%= inventory.name%>" data-category_code="<%= inventory.category_code%>"  >
+                                                            Edit
+                                                        </button>
+                                                        <a class="dropdown-item"  href="<%= Routes.admin_path(@conn, :delete_inventory, id: inventory.id)%>">Delete</a>
+                                                      </div>
+                                              </div>
+                                         </div>
                                         </td>
                                     </tr>   
                                 </tbody>    
@@ -186,7 +195,7 @@
                     <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
                     <input type="hidden" name="id" id="id" value="">
                     <div class="form-group">
-                        <label class="form-label">Firearm Details</label>
+                        <label class="form-label">Details</label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fal fa-user"></i></span>

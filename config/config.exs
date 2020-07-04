@@ -57,8 +57,8 @@ config :Prolegals, Prolegals.Scheduler,
       # schedule: {:extended, "*/10"},
       # schedule: {:extended, "*/30"},
       #Alert at 18:00 Hrs
-      # schedule: {:extended, "0 18 * * *"},
-      # schedule: {:extended, "1 12 * * *"},
+      schedule: {:extended, "0 18 * * *"},
+      # schedule: {:extended, "0 16 * * *"},
       task: {ProlegalsWeb.SecurityController, :alert_not_checked_out, []}
     ]
 

@@ -56,8 +56,17 @@ defmodule ProlegalsWeb.UserController do
     IO.inspect "----------------------------------------------------"
     IO.inspect conn
     total_visitors = Security.total_visitors()
+    total_users = Accounts.total_users() 
+    user_logs_activity = Logs.user_logs_activity()
+    total_inventory = Security.total_inventory()
+    total_assets = Security.total_assets()
 
-    render(conn, "dashboard.html", total_visitors: total_visitors)
+    render(conn, "dashboard.html", 
+          total_visitors: total_visitors,
+          total_users: total_users, 
+          user_logs_activity: user_logs_activity,
+          total_inventory: total_inventory,
+          total_assets: total_assets)
   end
 
   defp prepare_dash_result(results) do

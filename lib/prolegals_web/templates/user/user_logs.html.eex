@@ -62,7 +62,7 @@
                                     <td><%= Prolegals.Accounts.get_user!(log.user_id).first_name %> <%= Prolegals.Accounts.get_user!(log.user_id).last_name %></td>
                                     <td><%= Prolegals.Accounts.get_user!(log.user_id).user_role %></td>
                                     <td><%= log.activity%></td>
-                                    <td><%= "#{log.inserted_at |> Calendar.DateTime.shift_zone!("Africa/Cairo") |> Calendar.Strftime.strftime!("%d-%b-%Y %H:%M:%S")}" %></td>
+                                    <td><%= log.inserted_at%></td>
                                     <td><%= @conn.host%></td>
                                 </tr>  
                             <% end %>                          

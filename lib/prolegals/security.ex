@@ -239,6 +239,14 @@ defmodule Prolegals.Security do
     Inventory.changeset(inventory, %{})
   end
 
+  # -----------------Admin Dashboard Statistic------------------------------------
+
+  def total_inventory do
+    Repo.one(from p in "sec_tbl_inventory_categories", select:  count(p.id))
+  end
+
+  # --------------------------------------------------------------------------------
+
   alias Prolegals.Security.Asset
 
   @doc """
@@ -340,4 +348,14 @@ defmodule Prolegals.Security do
   def change_asset(%Asset{} = asset) do
     Asset.changeset(asset, %{})
   end
+
+  
+   # -----------------Admin Dashboard Statistic------------------------------------
+
+   def total_assets do
+    Repo.one(from p in "sec_tbl_assets", select:  count(p.id))
+   end
+
+  # --------------------------------------------------------------------------------
+
 end

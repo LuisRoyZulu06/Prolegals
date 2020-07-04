@@ -101,7 +101,11 @@ defmodule Prolegals.Logs do
   def change_user_logs(%UserLogs{} = user_logs) do
     UserLogs.changeset(user_logs, %{})
   end
+# ------------------ Admin Dashboard Statisti----------------------
 
+def user_logs_activity do
+  Repo.one(from p in "tbl_user_logs", select:  count(p.id))
+end
 
 
 # ========================== User Logs ============================
