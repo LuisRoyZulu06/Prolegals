@@ -1,0 +1,130 @@
+<main id="js-page-content" role="main" class="page-content">
+
+<!-- ####################################################### FLASH ################## -->
+    <div class="row">
+        <div class="col-md-12 col-lg-offset-2">
+            <div class="form-group">
+                <%= if get_flash(@conn, :info) do %>
+                    <div class="alert alert-info alert-styled-left">
+                    <button type="button" class="close" data-dismiss="alert">&times; <span class="sr-only">Close</span></button>
+                    <%= get_flash(@conn, :info) %>
+                    </div>
+                <% end %>
+                <%= if get_flash(@conn, :error) do %>
+                    <div class="alert alert-danger alert-styled-left">
+                    <button type="button" class="close" data-dismiss="alert">&times; <span class="sr-only">Close</span></button>
+                    Opps! <%= get_flash(@conn, :error) %>
+                    </div>
+                <% end %>
+            </div>
+        </div>
+    </div>
+    <!-- ################################################################################ -->
+
+<div class="subheader">
+        <h1 class="subheader-title">
+            <i class='subheader-icon fal fa-book'></i> Manage Documents
+                <br>
+            <small></small>
+            <a href="javascript:void(0);" class="btn btn-light hover-effect" data-toggle="modal" data-target="#addDocument">
+                Add Document
+            </a>
+        </h1>
+
+        <div class="subheader-block" id="loggedIn-user">
+            <i class='subheader-icon fal fa-user'></i> <%= "#{String.capitalize(@conn.assigns.user.first_name)}"%> <%= "#{String.capitalize(@conn.assigns.user.last_name)}"%>  | <%= "#{String.capitalize(@conn.assigns.user.user_role)}"%>
+        </div>    
+    </div>
+
+ <div class="row">
+        <div class="col-xl-12">
+            <div id="panel-1" class="panel">
+                <div class="panel-hdr">
+                    <h2> Document</h2>
+                    <small>  </small>
+                </div>
+
+                <div class="panel-container show">
+                    <div class="panel-content">
+                        
+                        <!-- datatable start -->
+                        <table id="dt-basic-example" class="table table-bordered table-hover table-striped w-100">
+                            <thead class="p-3 bg-info-300 rounded overflow-hidden position-relative text-white mb-g">
+                                <tr>
+                                    <th>Sender</th>
+                                    <th>Contact</th>
+                                    <th>Description</th>
+                                    <th>Document</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            
+                                <tbody>
+                                <%= for document <- @documents do %>
+                                    <tr>
+                                        <td><%= document.sender%></td>
+                                         <td><%= document.mobile%></td>
+                                        <td><%= document.description%></td>
+                                        <td><%= document.document%></td>
+                                        
+                                        <td>
+                                            <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            <i class='subheader-icon fal fa-chevron-down'></i>
+                                                        </span>
+                                                        <div class="dropdown-menu">
+                                                            <a  class="dropdown-item" data-toggle="modal" data-target="#download"  >Download</a>
+                                                                
+                                                        </div> 
+                                                    </div>  
+                                            </div>                
+                                      </td>
+                                    </tr>  
+                                  <% end %>   
+                                </tbody>   
+                                        
+                        </table>
+                        <!-- datatable end -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- ADD DOCUMENT MODAL ------------------------------------------------------------------->
+<div class="modal fade" id="addDocument" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="text-align: center">
+                <h5 class="modal-title">Upload Document <i class='subheader-icon '></i></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="fal fa-times"></i></span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form class="form-horizontal" action="<%= Routes.client_path(@conn, :document_upload)%>" enctype="multipart/form-data" method="POST">
+                    <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
+                         <div class="form-group">
+                                <label class="form-label">Upload File</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fal fa-file"></i></span>
+                                    </div>
+                                    <input type="file" name="document_filename" class="form-control" required="required">
+                                    <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
+                                </div>
+                            </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-info">Submit</button>
+                    </div>
+                </form>
+            </div>   
+        </div>
+    </div>
+</div>
+<%# ---------------------------------------------------------------------------------------------- %>
+

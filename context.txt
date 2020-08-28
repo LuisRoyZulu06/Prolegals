@@ -40,3 +40,5 @@ mix phx.gen.context Notifications Email Messages tbl_email_alerts email type
 
 mix phx.gen.context SystemDirectories EmployeeDirectory tbl_system_employee_directories failed processed
 
+mix phx.gen.context Client Documents cl_tbl_documents sender description document mobile document_filename
+

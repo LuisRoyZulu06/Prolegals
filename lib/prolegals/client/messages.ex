@@ -7,8 +7,9 @@ defmodule Prolegals.Client.Messages do
     field :messages, :string
     field :recipient, :string
     field :sender, :string
-    field :status, :string, default: "SENT"
+    field :status, :string, default: "sent"
     field :subject, :string
+    field :user_role, :string
 
     timestamps()
   end
@@ -16,7 +17,8 @@ defmodule Prolegals.Client.Messages do
   @doc false
   def changeset(messages, attrs) do
     messages
-    |> cast(attrs, [:sender, :recipient, :messages, :status, :case_link, :subject])
-    # |> validate_required([:sender, :recipient, :messages, :status, :case_link, :subject])
+    |> cast(attrs, [:sender, :user_role, :recipient, :messages, :status, :case_link, :subject])
+    |> validate_required([:sender, :recipient, :messages, :subject])
+    |> validate_length(:messages, min: 3, max: 255, message: "Can not insert too many texts")
   end
 end

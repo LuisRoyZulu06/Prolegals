@@ -8,11 +8,12 @@ defmodule Prolegals.Security do
 
   alias Prolegals.Security.LogBook
   alias Prolegals.Security.Inventory
+ 
 
 
 
   @doc """
-  Returns the list of sec_tbl_log_book.Prolegals.Security.not_check_out
+  Returns the list of sec_tbl_log_book.Prolegals.Security.not_checked_out
 
   ## Examples
 
@@ -26,13 +27,23 @@ defmodule Prolegals.Security do
     |> LogBook.search(search_term)
     |> Repo.all()
   end
-
-
-  def not_check_out() do
-    Repo.all(from(n in LogBook, where: [time_out: "NotCheckOut"] ))
+  def not_checked_out_alert() do
+    current_date = to_string(Timex.today)
+    Repo.all(from(n in LogBook, where: [time_out: "NotCheckedOut", date: ^current_date ]))
   end
 
+  # def system_checkout_query do
+  #  Repo.all(
+  #    from(
+  #      n in LogBook,
+  #       where: [time_out: "NotCheckedOut"]))
+  # end
+  
 
+  def get_user_details(id) do
+    Repo.get!(User, id)
+  end
+  
 
   @doc """
   Gets a single log_book.
@@ -115,25 +126,134 @@ defmodule Prolegals.Security do
     LogBook.changeset(log_book, %{})
   end
 
-  # --------------------------------- Security Statistic-----------------------
-  # def frequent_visitors do
-  #   query =
-  #   """
-  #   SELECT id_no, COUNT(*)
-  #   FROM sec_tbl_log_book
-  #   GROUP BY id_no
-  #   HAVING COUNT(*) > 1
-  #   """
-  #   {:ok, %{columns: columns, rows: rows}} = Repo.query(query, [])
-  #   rows |> Enum.map(&Enum.zip(columns, &1)) |> Enum.map(&Enum.into(&1, %{}))
-  # end
+  # --------------------------------- Security Dashboard Statistic-----------------------
+  
+  def frequent_visitors do
+    query =
+
+    """
+    SELECT id_no, COUNT(DISTINCT id_no)
+    FROM sec_tbl_log_book
+    GROUP BY id_no
+    HAVING COUNT(id_no) > 2
+
+    """
+    
+    {:ok, %{columns: columns, rows: rows}} = Repo.query(query, [])
+    rows |> Enum.map(&Enum.zip(columns, &1)) |> Enum.map(&Enum.into(&1, %{})) |> Enum.count()
+  end
 
   def total_visitors do
+    
     Repo.one(from p in "sec_tbl_log_book", select:  count(p.id))
   end
 
-  alias Prolegals.Security.Inventory
+  def visitors_not_checked_out do
+    current_date = to_string(Timex.today)
+    Repo.all(from u in LogBook, where: u.time_out == "NotCheckedOut" and u.date == ^current_date )|> Enum.count
+  end
 
+  # ---------------------------  SECURITY REPORT ----------------------------
+
+  def get_all_complete_trans(search_params, page, size) do
+    LogBook
+    |> handle_report_filter(search_params)
+    |> order_by(desc: :inserted_at)
+    |> compose_report_select()
+    |> Repo.paginate(page: page, page_size: size)
+  end
+
+  #CSV Report
+  def get_all_complete_trans(_source, search_params) do
+    LogBook
+    |> handle_report_filter(search_params)
+    |> order_by(desc: :inserted_at)
+    |> compose_report_select()
+  end
+
+  defp handle_report_filter(query, %{"isearch" => search_term} = search_params)
+  when search_term == "" or is_nil(search_term) do
+  query
+  |> handle_date_filter(search_params)
+  |> handle_mobile_filter(search_params)
+  |> handle_id_num_filter(search_params)
+  end
+
+  defp handle_report_filter(query, %{"isearch" => search_term}) do
+  search_term = "%#{search_term}%"
+  compose_isearch_filter(query, search_term)
+  end
+
+  defp handle_date_filter(query, %{"from" => from, "to" => to})
+        when from == "" or is_nil(from) or to == "" or is_nil(to),
+        do: query
+
+  defp handle_date_filter(query, %{"from" => from, "to" => to}) do
+    query
+    |> where(
+      [a],
+      fragment("CAST(? AS DATE) >= ?", a.inserted_at, ^from) and
+        fragment("CAST(? AS DATE) <= ?", a.inserted_at, ^to)
+    )
+  end
+
+  defp handle_id_num_filter(query, %{"id_no" => id_no})
+  when id_no == "" or is_nil(id_no),
+  do: query
+
+  defp handle_id_num_filter(query, %{"id_no" => id_no}) do
+  where(query, [a], fragment("lower(?) LIKE lower(?)", a.id_no, ^"%#{id_no}%"))
+  end
+
+  defp handle_mobile_filter(query, %{"mobile_no" => mobile_no})
+       when mobile_no == "" or is_nil(mobile_no),
+       do: query
+
+  defp handle_mobile_filter(query, %{"mobile_no" => mobile_no}) do
+    where(query, [a], fragment("lower(?) LIKE lower(?)", a.mobile_no, ^"%#{mobile_no}%"))
+  end
+
+  defp compose_isearch_filter(query, search_term) do
+    query
+    |> where(
+      [a],
+        fragment("lower(?) LIKE lower(?)", a.company, ^search_term) or 
+        fragment("lower(?) LIKE lower(?)", a.name, ^search_term) or 
+        fragment("lower(?) LIKE lower(?)", a.address, ^search_term) or 
+        fragment("lower(?) LIKE lower(?)", a.mobile_no, ^search_term) or 
+        fragment("lower(?) LIKE lower(?)", a.person_to_see, ^search_term) or 
+        fragment("lower(?) LIKE lower(?)", a.purpose, ^search_term) or 
+        fragment("lower(?) LIKE lower(?)", a.id_type, ^search_term) or 
+        fragment("lower(?) LIKE lower(?)", a.id_no, ^search_term)
+            
+    )
+  end
+
+  defp compose_report_select(query) do
+    query
+    |> select(
+      [a],
+      map(a, [
+        :company,
+        :name,
+        :sex,
+        :address,
+        :mobile_no,
+        :person_to_see,
+        :purpose,  
+        :id_type,
+        :id_no,
+        :time_in,
+        :time_out,
+        :id
+      ])
+    )
+  end
+
+
+  # -------------------------------------------------------------------------
+
+  alias Prolegals.Security.Inventory
 
   @doc """
   Returns the list of sec_tbl_inventory_categories.
@@ -269,7 +389,7 @@ defmodule Prolegals.Security do
   """
   def get_asset!(id), do: Repo.get!(Asset, id)
 
-  def get_all_assets!(id) do
+  def get_assets_by_category!(id) do
     Asset
     |> where([e], e.category_id == ^id)
     |>Repo.all()
@@ -346,6 +466,14 @@ defmodule Prolegals.Security do
 
    def total_assets do
     Repo.one(from p in "sec_tbl_assets", select:  count(p.id))
+   end
+
+   def assigned_assest do
+    Repo.all(from u in Asset, where: u.assaigned == "Assigned"  )|> Enum.count
+   end
+
+   def unassigned_assest do
+    Repo.all(from u in Asset, where: u.assaigned == "Unassigned"  )|> Enum.count
    end
 
   # --------------------------------------------------------------------------------
@@ -446,6 +574,14 @@ defmodule Prolegals.Security do
     Location.changeset(location, %{})
   end
 
+   # -----------------Admin Dashboard Statistic------------------------------------
+
+   def total_location do
+    Repo.one(from p in "sec_tbl_location", select:  count(p.id))
+   end
+
+  # --------------------------------------------------------------------------------
+
   alias Prolegals.Security.Vendor
 
   @doc """
@@ -541,6 +677,18 @@ defmodule Prolegals.Security do
   def change_vendor(%Vendor{} = vendor) do
     Vendor.changeset(vendor, %{})
   end
+
+  # -----------------Admin Dashboard Statistic------------------------------------
+
+  def total_vendors do
+    Repo.one(from p in "sec_tbl_vendor", select:  count(p.id))
+  end
+
+
+
+  # --------------------------------------------------------------------------------
+
+
 
   alias Prolegals.Security.Employee
 

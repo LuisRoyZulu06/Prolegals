@@ -1,0 +1,330 @@
+<main id="js-page-content" role="main" class="page-content">
+ 
+    <!-- ####################################################### FLASH ################## -->
+    <div class="row">
+        <div class="col-md-12 col-lg-offset-2">
+            <div class="form-group">
+                <%= if get_flash(@conn, :info) do %>
+                    <div class="alert alert-info alert-styled-left">
+                    <button type="button" class="close" data-dismiss="alert">&times; <span class="sr-only">Close</span></button>
+                    <%= get_flash(@conn, :info) %>
+                    </div>
+                <% end %>
+                <%= if get_flash(@conn, :error) do %>
+                    <div class="alert alert-danger alert-styled-left">
+                    <button type="button" class="close" data-dismiss="alert">&times; <span class="sr-only">Close</span></button>
+                    Opps! <%= get_flash(@conn, :error) %>
+                    </div>
+                <% end %>
+            </div>
+        </div>
+    </div>
+    <!-- ################################################################################ -->
+
+    <div class="subheader">
+        <h1 class="subheader-title">
+            <i class='subheader-icon fal fa-user'></i> Check In
+           
+        </h1>
+    </div>
+
+    <%= for check_in <- [@check_ins] do %> 
+             
+    <div class="row">
+        <div class="col-lg-6 col-xl-3 order-lg-1 order-xl-1">
+            <!-- image preview -->
+        
+        </div>
+        
+        <div class="col-lg-12 col-xl-9 order-lg-3 order-xl-2">
+            <!-- Details -->
+            <div class="col-xl-12">
+                <div id="panel-1" class="panel">
+                    <div class="panel-hdr">
+                        <h2>
+                            Person Details
+                        </h2>
+                    </div>
+
+                    <div class="panel-container show">
+                        <div class="panel-content">
+                            <form action="<%= Routes.security_path(@conn, :recheck_in)%>" enctype="multipart/form-data"  method="POST">
+                            <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
+                             <input type="hidden" name="id" value="<%= check_in.id %>">
+                                
+                                  <div class="row">
+                                    <div id="camBox" style="width:30%; height:50%; text-align:center;margin:10px auto; ">
+                                                    <!--POPUP DIALOG BOX TO SHOW LIVE WEBCAM.-->
+                                        <div id="camera"  style="height:auto;text-align:center;margin:0 auto;  "></div>
+                                            <div id="capture" >
+                                                <label for="btAddPicture" >
+                                                     <img src="https://img.icons8.com/color/48/000000/camera.png"/>
+                                                </label>
+                                                <input id="btAddPicture" onclick="addCamPicture()"  />
+                                                <input type="hidden" id="rowid" /><input type="hidden"  />
+                                                <input type="hidden" id="image_input" name="image" value=""/>
+                                            
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div style="width:300px;">
+                                        <table id="myTable">
+                                            <tbody>
+                                                <tr><th>Image</th></tr>
+                                                <tr>
+                                                    <td>
+                                                        <div id="div_alpha">
+                                                        
+                                                        </div>
+                                                        <div id="capt">
+                                                            <label for="alpha" >
+                                                                   <img src="https://img.icons8.com/color/48/000000/camera.png"/>
+                                                            </label>
+                                                                <input type="button"  id="alpha" onclick="takeSnapshot(this)" />
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                          
+                                <div class="row">
+                                    <div class="col-md-12">
+                                       
+                                        <div class="form-group">
+                                            <label class="form-label">Personal Details</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="fal fa-user"></i></span>
+                                                </div>
+                                            
+                                                <input type="text" name="name" value="<%= check_in.name%>"class="form-control" placeholder="Full Names" required="required">
+
+                                                <input type="text" name="sex" value="<%= check_in.sex%>"class="form-control" placeholder="Gender" required="required">
+
+                                                <!-- <select class="custom-select form-control" name="sex" value="<%= check_in.sex%>" required="required">
+                                                    <option selected="">Select Gender</option>
+                                                    <option value="M">Male</option>
+                                                    <option value="F">Female</option>
+                                                </select> -->
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                                <label class="form-label">Contact Details</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text"><i class="fal fa-phone"></i></span>
+                                                    </div>
+                                                    <input type="text" name="mobile_no" placeholder="Phone Number" value="<%= check_in.mobile_no%>" class="form-control" required="required">
+                                                    <input type="text" name="address" placeholder="Physical Address" class="form-control" value="<%= check_in.address %>" required="required">
+                                                </div>
+                                        </div>
+                                         <div class="form-group">
+                                            
+                                             <label class="form-label">Select ID Type Of a Visitor</label>
+                                             <input type="text"   name="id_type" value="<%= check_in.id_type %>" class="form-control" disabled="disabled">
+                                             <label class="form-label">Identity Details</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="fal fa-id-card"></i></span>
+                                                </div>
+                                               
+                                                <select class="custom-select form-control" name="id_type" value="<%= check_in.id_type %>" required="required">
+                                                    <option selected="">Select ID Type</option>
+                                                    <option value="NRC">NRC</option>
+                                                    <option value="PASSPORT">Passport</option>
+                                                    <option value="DRIVERS LICENSE">Drivers License</option>
+                                                </select>
+                                                <input type="text" name="id_no" value="<%= check_in.id_no %>" placeholder="Enter ID Number" class="form-control" required="required">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="form-label">Company Details</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="fal fa-home"></i></span>
+                                                </div>
+                                                <input type="text" name="company" value="<%= check_in.company %>" placeholder="Company Name" class="form-control" required="required">
+                                            
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="form-label">Details for visit</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="fal fa-home"></i></span>
+                                                </div>
+                                                <input type="text" name="person_to_see" placeholder="Person To See"  class="form-control" required="required">
+                                                <input type="text" name="purpose" placeholder="Purpose for Visit" class="form-control" required="required">
+                                            </div>
+                                        </div>
+                                       
+                                    </div>                               
+                                </div>
+
+                                <div class="modal-footer">
+
+                                    <button type="submit" class="btn btn-primary">Add Visitor</button>
+                                              
+                                </div> 
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    <% end %>    
+</main>
+
+
+<script src="<%= Routes.static_path(@conn, "/js/jquery-1.11.2.min.js") %>"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script type="text/javascript" src=" https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.25/webcam.js "></script>
+
+<script>
+$(document).ready(function(){
+//Image
+$('#capture-image').on('show.bs.modal', function (event){
+
+    console.log("image");
+   
+
+    var button = $(event.relatedTarget)
+    var id = button.data('id')
+
+    console.log(button.data('id'))
+   
+    
+    var modal = $(this)
+    modal.find('.modal-body #id').val(id);
+    
+});
+});
+</script>
+
+<script>
+
+        $(document).ready(function(){
+           
+                // CAMERA SETTINGS.
+                Webcam.set({
+                    width: 450,
+                    height: 330,
+                    image_format: 'jpeg',
+                    jpeg_quality: 100
+                });
+                Webcam.attach('#camera');
+
+                takeSnapshot = function (oButton) {
+                    document.getElementById('camBox').style.display = 'block';
+                    document.getElementById('rowid').value = oButton.id
+                    
+                }
+
+                addCamPicture = function () {
+                    var rowid = document.getElementById('rowid').value;
+
+                    Webcam.snap(function (data_uri) {
+                        
+                        document.getElementById('div_' + rowid).innerHTML =
+                        
+                            '<input type="image" src= "' + data_uri + '"  id="" width="70px" height="50px"/>';
+                        
+                    
+                    document.getElementById('image_input').value = data_uri;
+                            
+                    });
+
+                    document.getElementById('rowid').value = '';
+                    document.getElementById('camBox').style.display = 'none';       // HIDE THE POPUP DIALOG BOX.
+                }
+            });
+        </script>
+
+<style>
+    	table, input {
+            width: auto;
+            font: 15px Calibri;
+             width:60%;
+            height:60%;
+        }
+        table, th, td, th {
+            border: solid 1px #DDD;
+            border-collapse: collapse;
+            padding: 2px 3px;
+            text-align: center;
+            font-weight: normal;
+        }
+        #camBox{
+            display:none;
+            position:fixed;
+            border:0;
+            top:0;
+            right:0;
+            left:0;
+            overflow-x:auto;
+            overflow-y:hidden;
+            z-index:9999;
+            background-color:rgba(239,239,239,.9);
+            width:100%;
+            height:100%;
+            padding-top:10px;
+            text-align:center;
+            cursor:pointer;
+            -webkit-box-align:center;-webkit-box-orient:vertical;
+            -webkit-box-pack:center;-webkit-transition:.2s opacity;
+            -webkit-perspective:1000
+        }
+        
+
+        .revdivshowimg{
+            width:300px;
+            top:0;
+            padding:0;
+            position:relative;
+            margin:0 auto;
+            display:block;
+            background-color:#fff;
+            webkit-box-shadow:6px 0 10px rgba(0,0,0,.2),-6px 0 10px rgba(0,0,0,.2);
+            -moz-box-shadow:6px 0 10px rgba(0,0,0,.2),-6px 0 10px rgba(0,0,0,.2);
+            box-shadow:6px 0 10px rgba(0,0,0,.2),-6px 0 10px rgba(0,0,0,.2);
+            overflow:hidden;
+            border-radius:3px;
+            color:#17293c
+        }
+        #capture input
+        {
+            display: none;
+        }
+
+        #capture img
+        {
+            width: 40px;
+            cursor: pointer;
+        }
+        #capt input
+        {
+            display: none;
+        }
+
+        #capt img
+        {
+            width: 40px;
+            cursor: pointer;
+        }
+    </style>
+
+    
+
+ 
+
+
+
+

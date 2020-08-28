@@ -28,7 +28,7 @@
             <i class='subheader-icon fal fa-user'></i> <%= "#{String.capitalize(@conn.assigns.user.first_name)}"%> <%= "#{String.capitalize(@conn.assigns.user.last_name)}"%>  | <%= "#{String.capitalize(@conn.assigns.user.user_role)}"%>
         </div>
     </div>
-     
+       
 
     <div class="row">
         <div class="col-xl-12">
@@ -47,7 +47,8 @@
                         
                         <!-- datatable start -->
                         <table id="dt-basic-example" class="table table-bordered table-hover table-striped w-100">
-                            <thead class="p-3 bg-primary-300 rounded overflow-hidden position-relative text-white mb-g">
+                        <input type="hidden" name="csrf" id="csrf" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
+                            <thead class="p-3 bg-info-300 rounded overflow-hidden position-relative text-white mb-g">
                                 <tr>
                                     <th>Full Name</th>
                                     <th>Sex</th>
@@ -83,7 +84,9 @@
                                         <%= if Time.to_string(list_log_book_user.updated_at) == Time.to_string(list_log_book_user.inserted_at) do %>
                                                <!--Empty Check out--->    
                                             <% else %> 
-                                             <%= String.slice(to_string( Time.to_string(list_log_book_user.updated_at)), 0..4) %>
+                                             <%= String.slice(to_string(list_log_book_user.time_out), 0..5) %>
+                                             <!---- check Out ------->
+                   
                                          <% end %>  
                                         </td>
                                        
@@ -95,7 +98,6 @@
                                                     </span>
                                                     <div class="dropdown-menu"> 
 
-                                                        <!-- <a class="dropdown-item" data-id="<%= list_log_book_user.id %>" data-name="<%= list_log_book_user.name %>" data-sex="<%= list_log_book_user.sex %>" data-mobile_no="<%= list_log_book_user.mobile_no %>" data-address="<%= list_log_book_user.address %>" data-id_type="<%= list_log_book_user.id_type %>" data-id_no="<%= list_log_book_user.id_no %>" data-company="<%= list_log_book_user.company %>" data-person_to_see="<%= list_log_book_user.person_to_see %>" data-purpose="<%= list_log_book_user.purpose %>" data-date="<%= list_log_book_user.date %>" data-time_in="<%= list_log_book_user.time_in %>" data-time_out="<%= list_log_book_user.time_out %>" data-toggle="modal" data-target="#edit-modal">Edit</a> %>-->
                                                         <!-- <a class="dropdown-item" data-id="<%= list_log_book_user.id %>"
                                                                                 data-name="<%= list_log_book_user.name %>" 
                                                                                 data-sex="<%= list_log_book_user.sex %>" 
@@ -112,13 +114,10 @@
                                                                                 data-toggle="modal" data-target="#check-in-modal">Chech In</a> -->
 
                                                          <!--- Check Out Action --->
-                                                        <form action="<%= Routes.security_path(@conn, :add_time_out)%>" method="POST">
-                                                            <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
-                                                            <input type="hidden" name="id" id="id" value="<%= list_log_book_user.id %>">
-                                                            <button class="dropdown-item" type="submit" >Check Out</button> 
-                                                        </form>
-                                                                                
-                                                        <a class="dropdown-item"  href="<%= Routes.security_path(@conn, :view_log_book_user, id: list_log_book_user.id)%>">View</a>
+                                                          
+                                                             <a href="#" data-check-out-user-id="<%= list_log_book_user.id %>" class="js-check-out-visitor dropdown-item "> Check Out</a> 
+                                                             <a class="dropdown-item" data-id="<%= list_log_book_user.id %>" data-name="<%= list_log_book_user.name %>" data-sex="<%= list_log_book_user.sex %>" data-mobile_no="<%= list_log_book_user.mobile_no %>" data-address="<%= list_log_book_user.address %>" data-id_type="<%= list_log_book_user.id_type %>" data-id_no="<%= list_log_book_user.id_no %>" data-company="<%= list_log_book_user.company %>" data-person_to_see="<%= list_log_book_user.person_to_see %>" data-purpose="<%= list_log_book_user.purpose %>"  data-toggle="modal" data-target="#edit-modal">Edit</a>                                                
+                                                             <a class="dropdown-item"  href="<%= Routes.security_path(@conn, :view_log_book_user, id: list_log_book_user.id)%>">View</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -263,29 +262,6 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label class="form-label"> Date of visit</label>
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fal fa-clock"></i></span>
-                            </div>
-                            <input type="date" name="date" id="date" placeholder="Date of Visit" class="form-control" required="required">
-                            
-                        </div>
-                    </div>
-
-                     <div class="form-group">
-                        <label class="form-label"> Time Details</label>
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fal fa-clock"></i></span>
-                            </div>
-                            <input type="text" name="time_in" id="time_in" placeholder="Time In" class="form-control" required="required">
-                            <input type="text" name="time_out" id="time_out" placeholder="Time Out" class="form-control" required="required">
-                            
-                        </div>
-                    </div>
-     
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Update user</button>
@@ -406,7 +382,7 @@
 <!-- #########################################################################-->
 
 <!-- ################################ RE ADD MODAL ############################ -->
-<div class="modal fade" id="check-in-modal" tabindex="-1" role="dialog" aria-hidden="true">
+<!-- <div class="modal fade" id="check-in-modal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -417,7 +393,7 @@
             </div>
 
             <div class="modal-body">
-                <form class="form-horizontal" action="<%= Routes.security_path(@conn, :check_in_log_book_user)%>" enctype="multipart/form-data"  method="post">
+                <form class="form-horizontal" action="" enctype="multipart/form-data"  method="post">
                     <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
                     <input type="hidden" name="id" id="id" value="">
                      
@@ -525,7 +501,7 @@
             </div>   
         </div>
     </div>
-</div>
+</div> -->
 <!-- ########################################################################## -->
 <script src="<%= Routes.static_path(@conn, "/js/jquery-1.11.2.min.js") %>"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
@@ -565,9 +541,7 @@ $('#edit-modal').on('show.bs.modal', function (event){
     var company  = button.data('company')
     var person_to_see = button.data('person_to_see')
     var purpose = button.data('purpose')
-    var date = button.data('date')
-    var time_in = button.data('time_in')
-    var time_out = button.data('time_out')
+  
     
     var modal = $(this)
     modal.find('.modal-body #id').val(id);
@@ -580,9 +554,9 @@ $('#edit-modal').on('show.bs.modal', function (event){
     modal.find('.modal-body #company').val(company);
     modal.find('.modal-body #person_to_see').val(person_to_see);
     modal.find('.modal-body #purpose').val(purpose);
-    modal.find('.modal-body #date').val(date);
-    modal.find('.modal-body #time_in').val(time_in);
-    modal.find('.modal-body #time_out').val(time_out);
+ 
+
+   
 });
 });
 </script>

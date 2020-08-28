@@ -1,4 +1,4 @@
-defmodule ProlegalsWeb.LegalController do
+defmodule ProlegalsWeb.LegalController do 
   use ProlegalsWeb, :controller
 
 alias Prolegals.Repo
@@ -12,6 +12,10 @@ alias Prolegals.Litigation.Evidence
 alias Prolegals.Litigation.BusinessCategory
 alias Prolegals.SystemDirectories.Directory
 alias Prolegals.{Logs, Repo, Logs.UserLogs, Auth}
+alias Prolegals.Client
+alias Prolegals.Client.Messages
+alias Prolegals.Emails.Email
+
 
 plug(
     ProlegalsWeb.Plugs.RequireAuth
@@ -270,8 +274,34 @@ plug(
 		end
 	end
 
+	# ---------------------------------------------------------------------Notification
+
+	def create_email(conn, params) do
+
+		case Client.create_messages(params) do
+  
+			{:ok, params} ->
+			  Email.send_alert(params.recipient, params.messages, params.subject )
+			  conn
+  
+			  |> put_flash(:info, "Email sent successfully.")
+			  |> redirect(to: Routes.legal_path(conn, :notifications))
+			  # |> send_message_params()
+			  # |> Task.async_stream(&Alert.send_alert(&1.email, params), max_concurrency: 30, timeout: 30_000)
+			  # |> Stream.run
+			  # {:ok, :sent}
+  
+			{:error, _params} ->
+			  conn
+			  |> put_flash(:error, "Failed to send Email.")
+			  |> redirect(to: Routes.legal_path(conn, :notifications))
+		  end
+	  end
+
 	def notifications(conn, _params) do
-		render(conn, "notifications.html")
+		email =  Accounts.get_user!(conn.assigns.user.id).email
+		notifications = Client.get_client_notification(email)
+		render(conn, "notifications.html", notifications: notifications)
 	end
 
 	def view_case_history(conn, %{"id" => id}) do

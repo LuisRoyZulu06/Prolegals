@@ -1,485 +1,125 @@
-<!-----------------------------------------------------------------------------------------Flash -->
-<div class="row">
-    <div class="col-md-12 col-lg-offset-2">
-        <div class="form-group">
-            <%= if get_flash(@conn, :info) do %>
-                <div class="alert alert-info alert-styled-left">
-                <button type="button" class="close" data-dismiss="alert">&times; <span class="sr-only">Close</span></button>
-                <%= get_flash(@conn, :info) %>
-                </div>
-            <% end %>
-            <%= if get_flash(@conn, :error) do %>
-                <div class="alert alert-danger alert-styled-left">
-                <button type="button" class="close" data-dismiss="alert">&times; <span class="sr-only">Close</span></button>
-                Opps! <%= get_flash(@conn, :error) %>
-                </div>
-            <% end %>
-        </div>
-    </div>
-</div>
-<!------------------------------------------------------------------------------------------------->
-
+<main id="js-page-content" role="main" class="page-content">
+  <ol class="breadcrumb page-breadcrumb">
+    <li class="breadcrumb-item"><a href="javascript:void(0);">Reports</a></li>
+    <li class="breadcrumb-item"> Security</li>
+</ol>
 <div class="subheader">
     <h1 class="subheader-title">
-        <i class='subheader-icon fal fa-edit'></i>  Reports
-        <small>
-            Reports on your all Visitors Log Book.
-        </small>
+        <i class='subheader-icon fal fa-table'></i> Security: <span class='fw-300'>Reports</span>
     </h1>
-    <div class="subheader-block" id="loggedIn-user">
-        <i class='subheader-icon fal fa-user'></i> <%= "#{String.capitalize(@conn.assigns.user.first_name)}"%> <%= "#{String.capitalize(@conn.assigns.user.last_name)}"%>
-    </div>
 </div>
-
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-xl-12 text-center" id="loader" style="display: none;">
+        <button class="btn btn-info" type="button" disabled>
+            <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+            Loading...
+        </button>
+    </div>
+</div><br>
+<div class="row">
+    <div class="col-xl-12">
         <div id="panel-1" class="panel">
             <div class="panel-hdr">
                 <h2>
-                    List of Visitors <i class='subheader-icon fal fa-shopping-bag'></i>
+                    Security<span class="fw-300"><i>details</i></span>
                 </h2>
+                <div class="panel-toolbar">
+                    <button class="btn btn-info btn-sm" data-toggle="dropdown">Options</button>
+                    <div class="dropdown-menu dropdown-menu-animated dropdown-menu-right position-absolute pos-top">
+                        <button class="dropdown-item" data-toggle="modal" data-target="#filter"> Filter Entries</button>
+                        <button class="dropdown-item" id="js-download-csv"> Export to CSV</button>                        
+                        <button class="dropdown-item" id="reload-report">Reload Entries</button>
+                    </div>
+                </div>
             </div>
-
             <div class="panel-container show">
                 <div class="panel-content">
-                    
-                    <!-- datatable start -->
-                    <table id="dt-basic-example" class="table table-bordered table-hover table-striped w-100">
-                        <thead class="p-3 bg-info-300 rounded overflow-hidden position-relative text-white mb-g">
-                            <tr>
-                                <th>Visitor</th>
-                                <th>Staff</th>
-                                <th>ID Type</th>
+                    <input type="hidden" name="csrf" id="csrf" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
+                    <table id="dt-report-entries" class="table table-bordered table-hover table-striped w-100">
+                        <thead class="bg-info-300">
+                            <tr>                               
+                                <th>Company</th>
+                                <th>visitor</th>
+                                <th>Sex</th>                                
                                 <th>ID Number</th>
+                                <th>Mobile</th>
+                                <th>Person To See</th>                               
                                 <th>Purpose</th>
-                                <th>Number of Visits</th>
-                                <th>Action</th>
+                                <th>Time In</th>
+                                <th>Time Out</th>
+                                <th class="text-center">Action</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            
-                          <%= for sec_report <- @sec_reports do %>  
-                                <tr>
-                
-                                    <td><%= sec_report.name %></td>
-                                    <td><%= sec_report.person_to_see %></td>
-                                    <td><%= sec_report.id_type %></td>
-                                    <td><%= sec_report.id_no %></td>
-                                    <td><%= sec_report.purpose %></td>
-                                    <td><%= sec_report.purpose %></td>
-                                    <td>
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    <i class='subheader-icon fal fa-chevron-down'></i>
-                                                </span>
-                                                <div class="dropdown-menu">
-                                                    <a class="dropdown-item" data-id="<%= sec_report.id %>" data-name="<%= sec_report.name %>" data-person_to_see="<%= sec_report.person_to_see %>" data-id_type="<%= sec_report.id_type %>" data-id_no="<%= sec_report.id_no %>" data-purpose="<%= sec_report.purpose %>"  data-toggle="modal" data-target="#view-case">
-                                                        <i class='subheader-icon fal fa-eye'></i> 
-                                                        View
-                                                    </a>
-
-                                                    <a class="dropdown-item" data-id="<%= sec_report.id %>" data-name="<%= sec_report.name %>" data-person_to_see="<%= sec_report.person_to_see %>" data-id_type="<%= sec_report.id_type %>" data-id_no="<%= sec_report.id_no %>" data-purpose="<%= sec_report.purpose %>" data-toggle="modal" data-target="#generate-report">
-                                                        <i class='subheader-icon fal fa-edit'></i> 
-                                                        Generate Report
-                                                    </a>                                      
-
-                                                   <!-- <a class="dropdown-item" data-toggle="modal" data-target="#deactivate_user">
-                                                        <i class='subheader-icon fal fa-times'></i>
-                                                        Close Report
-                                                    </a> -->                                       
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>  
-                         <% end %>
-                            </tbody>               
+                        <tfoot class="bg-info-300">
+                            <tr>
+                                <th>Company</th>
+                                <th>visitor</th>
+                                <th>Sex</th> 
+                                <th>ID Number</th>                               
+                                <th>Mobile</th>
+                                <th>Person To See</th>                               
+                                <th>Purpose</th>
+                                <th>Time In</th>
+                                <th>Time Out</th>
+                                <th class="text-center">Action</th>
+                            </tr>
+                        </tfoot>
                     </table>
-                    <!-- datatable end -->
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- ############################### VIEW-CASE MODAL #################################### -->
-<div class="modal fade" id="view-case" tabindex="-1" role="dialog" aria-hidden="true">
+<!-- Filter Modal -->
+<div class="modal fade" id="filter" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">VIEW REPORT <i class='subheader-icon fal fa-eye'></i> </h5>
+                <h5 class="modal-title">Filter results</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true"><i class="fal fa-times"></i></span>
                 </button>
             </div>
-
-            <div class="modal-body">                
-                <form action="#" method="POST">
-                    <div class="row">
+            <form id="reportSearchForm">
+                <div class="modal-body">
+                    <div class="row form-group">
+                      
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="form-label">Visitor</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fal fa-shopping-bag"></i></span>
-                                    </div>
-                                    <input type="text" id="name" class="form-control" disabled="disabled">
-                                </div>
-                            </div>
-
+                                <label class="form-label text-muted" for="id_no">NRC/Passport</label>
+                                <input type="text" name="id_no" id="id_no" placeholder="NRC/Passport" class="form-control">
+                            </div> 
+                        </div>
+                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="form-label">Staff</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fal fa-shopping-bag"></i></span>
-                                    </div>
-                                    <input type="text" id="person_to_see" class="form-control" disabled="disabled">
-                                </div>
+                                <label class="form-label text-muted" for="mobile">Mobile</label>
+                                <input type="text" name="mobile_no" id="mobile_no" placeholder="Mobile Number" class="form-control">
                             </div>
-
-                            <div class="form-group">
-                                <label class="form-label">ID Type</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fal fa-user"></i></span>
-                                    </div>
-                                    <input type="text" id="id_type" class="form-control" disabled="disabled">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label">ID Number</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fal fa-clock"></i></span>
-                                    </div>
-                                    <input type="text" id="id_no" class="form-control" disabled="disabled">
-                                </div>
-                            </div>
-                        </div>    
-
-                        <div class="col-md-6">
-
-                            <div class="form-group">
-                                <label class="form-label">Purpose</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fal fa-shopping-bag"></i></span>
-                                    </div>
-                                    <input type="text" id="purpose" class="form-control" disabled="disabled">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-label">Number of Visits</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fal fa-user"></i></span>
-                                    </div>
-                                    <input type="text" id="" class="form-control" disabled="disabled">
-                                </div>
-                            </div>
-
-                            
                         </div>
                     </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    </div>                   
-                </form>
-            </div>
-
-        </div>
-    </div>
-</div>
-
-<!-- ############################### GENERATE REPORT MODAL #################################### -->
-<div class="modal fade" id="generate-report" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">GENERATE REPORT <i class='subheader-icon fal fa-edit'></i> </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true"><i class="fal fa-times"></i></span>
-                </button>
-            </div>
-
-            <div class="modal-body"> 
-                <div class="row">
-                    <div class="col-xl-12">                            
-                        <div class="panel-container show">
-                            <div class="panel-content">
-                                <div id="smartwizard">
-                                    <ul>
-                                        <li><a href="#step-1">Case Details<br><small>Visitor description & people involved.</small></a></li>
-                                        <li><a href="#step-2">Case summary<br><small>Full case summary.</small></a></li>
-                                    </ul>
-                                    <div class="p-3">
-
-                                        <div id="step-1" class="">
-                                            <form action="#" method="POST">
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="form-label">Visitor</label>
-                                                            <div class="input-group">
-                                                                <div class="input-group-prepend">
-                                                                    <span class="input-group-text"><i class="fal fa-shopping-bag"></i></span>
-                                                                </div>
-                                                                <input type="text" name="name" id="name" class="form-control" required="required">
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="form-group">
-                                                            <label class="form-label">Staff</label>
-                                                            <div class="input-group">
-                                                                <div class="input-group-prepend">
-                                                                    <span class="input-group-text"><i class="fal fa-shopping-bag"></i></span>
-                                                                </div>
-                                                                <input type="text" name="person_to_see" id="person_to_see" class="form-control" required="required">
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="form-group">
-                                                            <label class="form-label">ID Type</label>
-                                                            <div class="input-group">
-                                                                <div class="input-group-prepend">
-                                                                    <span class="input-group-text"><i class="fal fa-user"></i></span>
-                                                                </div>
-                                                                <input type="text" name="id_type" id="id_type" class="form-control" required="required">
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="form-group">
-                                                            <label class="form-label">ID Number</label>
-                                                            <div class="input-group">
-                                                                <div class="input-group-prepend">
-                                                                    <span class="input-group-text"><i class="fal fa-clock"></i></span>
-                                                                </div>
-                                                                <input type="text" name="id_no" id="id_no" class="form-control" required="required">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="form-label">Purpose</label>
-                                                            <div class="input-group">
-                                                                <div class="input-group-prepend">
-                                                                    <span class="input-group-text"><i class="fal fa-shopping-bag"></i></span>
-                                                                </div>
-                                                                <input type="text" name="purpose" id="purpose" class="form-control" required="required">
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="form-group">
-                                                            <label class="form-label">Number of Visits</label>
-                                                            <div class="input-group">
-                                                                <div class="input-group-prepend">
-                                                                    <span class="input-group-text"><i class="fal fa-shopping-bag"></i></span>
-                                                                </div>
-                                                                <input type="text" name="" id="" class="form-control" required="required">
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-                                                </div>            
-                                            </form>
-                                        </div>
-                                        
-                                        <div id="step-2" class="">
-                                            <div class="container">
-                                                <div data-size="A4">
-                                                    <div class="row">
-                                                        <div class="col-sm-12">
-                                                            <div class="d-flex align-items-center mb-5">
-                                                                <h2 class="keep-print-font fw-500 mb-0 text-info flex-1 position-relative">
-                                                                    ProLegals
-                                                                    <small class="text-muted mb-0 fs-xs">
-                                                                        ZCCM-IH OFFICE PARK, Alick Nkhata Road, Lusaka, Zambia P.O. Box NM42, Stand 16806
-                                                                    </small>
-                                                                </h2>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                        <div class="row">
-                                                            <div class="col-sm-4 d-flex">
-                                                                <div class="table-responsive">
-                                                                    <table class="table table-clean table-sm align-self-end">
-                                                                        <tbody>
-                                                                            <tr>
-                                                                                <td>
-                                                                                   <strong>Visitor:</strong>
-                                                                                </td>
-                                                                                <td>
-                                                                                    <input type="text" id="name" class="form-control report-info">
-                                                                                </td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td>
-                                                                                    <strong> ID Number:</strong>
-                                                                                </td>
-                                                                                <td>
-                                                                                    <input type="text" id="id_no" class="form-control report-info">
-                                                                                </td>
-                                                                            </tr>
-                                                                        </tbody>
-                                                                    </table>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-sm-4 ml-sm-auto">
-                                                                <div class="table-responsive">
-                                                                    <table class="table table-sm table-clean text-right">
-                                                                        <tbody>
-                                                                           
-                                                                            <tr>
-                                                                                <td>
-                                                                                    <strong><input type="text" id="name" class="form-control report-info"></strong>
-                                                                                </td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <td>
-                                                                                    Address
-                                                                                </td>
-                                                                            </tr>
-                                                                        </tbody>
-                                                                    </table>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="row">
-                                                            <div class="col-sm-12">
-                                                                <div class="table-responsive">
-                                                                    <table class="table mt-5">
-                                                                        <thead>
-                                                                            <tr>
-                                                                                <th class="text-center border-top-0 table-scale-border-bottom fw-700"></th>
-                                                                                <th class="border-top-0 table-scale-border-bottom fw-700">
-                                                                                    Visitor
-                                                                                </th>
-                                                                                <th class="border-top-0 table-scale-border-bottom fw-700">
-                                                                                   Staff
-                                                                                </th>
-                                                                                <th class="text-right border-top-0 table-scale-border-bottom fw-700">
-                                                                                   Purpose
-                                                                                </th>
-                                                                                <th class="text-center border-top-0 table-scale-border-bottom fw-700">
-                                                                                  Number of Visits 
-                                                                                </th>
-                                                                                <th class="text-right border-top-0 table-scale-border-bottom fw-700">
-                                                                                    Date Reported
-                                                                                </th>
-                                                                            </tr>
-                                                                        </thead>
-
-                                                                        <tbody>
-                                                                            <tr>
-                                                                                
-                                                                                <td class="text-left strong">
-                                                                                    <input type="text" id="name" class="form-control report-info">
-                                                                                </td>
-                                                                                <td class="text-left">
-                                                                                    <input type="text" id="person_to_see" class="form-control report-info">
-                                                                                </td>
-                                                                                <td class="text-right">
-                                                                                    <input type="text" id="purpose" class="form-control report-info">
-                                                                                </td>
-                                                                               
-                                                                                <td class="text-right">
-                                                                                    <input type="text" id="date" class="form-control report-info">
-                                                                                </td>
-                                                                            </tr>
-                                                                        </tbody>
-                                                                    </table>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="row">
-                                                            <div class="col-sm-12">
-                                                                <h4 class="py-5 text-primary">
-                                                                   
-                                                                </h4>
-                                                                <p class="mt-2 text-muted mb-0">
-                                                                    Choose the format of your report.
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
+                   
+                    <div class="row form-group">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label text-muted" for="from">Start Date </label>
+                                <input type="date" name="from" id="from" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-label text-muted" for="to">End Date</label>
+                                <input type="date" name="to" id="to" class="form-control">
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="report-filter">FIlter</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
-
-
-<!-----------------------------------------------------------------------------------------Modal Rendering scripts -->
-<script src="<%= Routes.static_path(@conn, "/js/jquery-1.11.2.min.js") %>"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-
-<!----------------------------------------------------------------View Case Details -->
-<script>
-$(document).ready(function(){
-//View Case Details
-$('#view-case').on('show.bs.modal', function (event){
-    var button = $(event.relatedTarget)
-    var id = button.data('id')
-    var name = button.data('name')
-    var person_to_see = button.data('person_to_see')
-    var id_type = button.data('id_type')
-    var id_no = button.data('id_no')
-    var purpose = button.data('purpose')
-  
-    
-    var modal = $(this)
-    modal.find('.modal-body #id').val(id);
-    modal.find('.modal-body #name').val(name);
-    modal.find('.modal-body #person_to_see').val(person_to_see);
-    modal.find('.modal-body #id_type').val(id_type);
-    modal.find('.modal-body #id_no').val(id_no);
-    modal.find('.modal-body #purpose').val(purpose);
-
-});
-});
-</script>
-
-
-<!----------------------------------------------------------------Edit  Details -->
-
-<script>
-$(document).ready(function(){
-//View Case Details
-$('#generate-report').on('show.bs.modal', function (event){
-    var button = $(event.relatedTarget)
-    var id = button.data('id')
-    var name = button.data('name')
-    var person_to_see = button.data('person_to_see')
-    var id_type = button.data('id_type')
-    var id_no = button.data('id_no')
-    var purpose = button.data('purpose')
-  
-    
-    var modal = $(this)
-    modal.find('.modal-body #id').val(id);
-    modal.find('.modal-body #name').val(name);
-    modal.find('.modal-body #person_to_see').val(person_to_see);
-    modal.find('.modal-body #id_type').val(id_type);
-    modal.find('.modal-body #id_no').val(id_no);
-    modal.find('.modal-body #purpose').val(purpose);
-
-});
-});
-</script>
+ </main>

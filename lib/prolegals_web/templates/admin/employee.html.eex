@@ -71,14 +71,32 @@
                                         <td><%= employee.email %></td>
                                         <td><%= employee.department %></td>
                                         <td><%= employee.nrc %></td>
-                                        <td class="pull-right">
-                                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#editEmployee"  >
-                                                Edit
-                                            </button>
+                                        <td>
+                                             <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            <i class='subheader-icon fal fa-chevron-down'></i>
+                                                        </span>
+                                                            <div class="dropdown-menu">
+                                                                <a class="dropdown-item" \
+                                                                data-id="<%= employee.id %>" 
+                                                                data-employee_name="<%= employee.employee_name %>" 
+                                                                data-email="<%= employee.email %>" 
+                                                                data-contact="<%= employee.contact %>" 
+                                                                data-employee_no="<%= employee.employee_no %>" 
+                                                                data-nrc="<%= employee.nrc %>" 
+                                                                data-department="<%= employee.department %>"  
+                                                                data-toggle="modal" data-target="#editEmployee"  >Edit</a>
+                                                                    
+                                                               
+                                                            </div>  
+                                                     </div>
+                                               </div>               
+
                                         </td>
                                     </tr>   
                                 </tbody> 
-                            <%= end %>            
+                            <% end %>            
                         </table>
                         <!-- datatable end -->
                     </div>
@@ -188,7 +206,7 @@
             </div>
 
             <div class="modal-body">
-                <form class="form-horizontal" action="<%= Routes.admin_path(@conn, :create_bulk_employee)%>" enctype="multipart/form-data" method="POST">
+                <form class="form-horizontal" action="<%= Routes.admin_path(@conn, :handle_bulk_upload)%>" enctype="multipart/form-data" method="POST">
                     <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
                          <div class="form-group">
                                 <label class="form-label">Upload File</label>
@@ -223,7 +241,9 @@
             </div>
 
             <div class="modal-body">
-                <form class="form-horizontal" action="<%= Routes.admin_path(@conn, :update_inventory)%>" enctype="multipart/form-data" method="POST">
+                <form class="form-horizontal" action="<%= Routes.admin_path(@conn, :edit_employee)%>" enctype="multipart/form-data" method="POST">
+                  <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
+                    <input type="hidden" name="id" id="id" value="">
                      <div class="row">
                             <div class="col-xl-12">
                             <h4 class="text-center"> Employee Details </h4>
@@ -301,19 +321,27 @@
 <script>
 $(document).ready(function(){
 
-    $('#editCategory').on('show.bs.modal', function (event){
-        console.log("edit");
+    $('#editEmployee').on('show.bs.modal', function (event){
+        
 
         var button = $(event.relatedTarget)
         var id = button.data('id')
-        var name = button.data('name')
-        var category_code = button.data('category_code')
+        var employee_name = button.data('employee_name')
+        var email = button.data('email')
+        var contact = button.data('contact')
+        var employee_no = button.data('employee_no')
+        var nrc = button.data('nrc')
+        var department = button.data('department')
       
         var modal = $(this)
         
         modal.find('.modal-body #id').val(id);
-        modal.find('.modal-body #name').val(name);
-        modal.find('.modal-body #category_code').val(category_code);
+        modal.find('.modal-body #employee_name').val(employee_name);
+        modal.find('.modal-body #email').val(email);
+        modal.find('.modal-body #contact').val(contact);
+        modal.find('.modal-body #employee_no').val(employee_no);
+        modal.find('.modal-body #nrc').val(nrc);
+        modal.find('.modal-body #department').val(department);
        
     });
 });

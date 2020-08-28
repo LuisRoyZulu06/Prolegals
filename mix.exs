@@ -38,10 +38,10 @@ defmodule Prolegals.MixProject do
       {:ecto, "~> 2.2.0"},
       # {:phoenix_ecto, "~> 3.2"},
       # ------- postgres
-      {:postgrex, ">= 0.0.0"},
+      # {:postgrex, ">= 0.0.0"},
       # ------- mssql
-      # {:tds_ecto, "~> 2.2.0"},
-      # {:tds, "~> 1.1.0"},
+      {:tds_ecto, "~> 2.2.0"},
+      {:tds, "~> 1.1.0"},
       # ---------------------------------------------
       {:phoenix_html, "~> 2.11"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
@@ -57,7 +57,10 @@ defmodule Prolegals.MixProject do
       {:csv, "~>2.3"},
       {:bamboo, "~> 1.3"},
       {:bamboo_smtp, "~> 2.1.0"},
-      {:quantum, "~> 2.2.7"}
+      {:quantum, "~> 2.2.7"},
+      {:scrivener, "~> 2.0"},
+      {:scrivener_ecto, "~> 1.0"},
+      
     ]
   end
 

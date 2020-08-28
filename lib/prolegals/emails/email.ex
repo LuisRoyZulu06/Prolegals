@@ -4,8 +4,6 @@ defmodule Prolegals.Emails.Email do
   # alias Bamboo.Attachment
   use Bamboo.Phoenix, view: ProlegalsWeb.EmailView
   alias Prolegals.Emails.Mailer
-  alias Prolegals.Security
-  alias Prolegals.Security.LogBook
 
 
   # def send_email_notification(attr) do
@@ -45,14 +43,14 @@ defmodule Prolegals.Emails.Email do
     |> render("token_content.html")
   end
 
-  def send_alert(recipient, messages) do
+  def send_alert(recipient, messages, subject) do
     new_email()
     |> from("johnmfula360@gmail.com")
     |> to(recipient)
-    |> subject("Case in Prolegals")
+    |> subject("#{subject}")
     |> text_body(
       """
-      Dear User, \r\n Kindly note that there is a pending case . \r\n
+      Dear User, \r\n
       #{messages}
       """
     )
@@ -63,7 +61,7 @@ defmodule Prolegals.Emails.Email do
     new_email()
     |> from("johnmfula360@gmail.com")
     |> to(recipient)
-    |> subject("Visitors Not Check Out ")
+    |> subject("Visitors Not Checked Out ")
     # |> assign()
     |> render("send_checkout.html", items: items )
     # |> text_body(

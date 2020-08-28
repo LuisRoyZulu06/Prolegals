@@ -67,11 +67,27 @@
                                         <td><%= location.email %></td>
                                         <td><%= location.contact %></td>
                                         <td><%= location.address %></td>
-                                        <td class="pull-right">
-                                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#editLocation"  >
-                                                Edit
-                                            </button>
-                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            <i class='subheader-icon fal fa-chevron-down'></i>
+                                                        </span>
+                                                        <div class="dropdown-menu">
+                                                            <a  class="dropdown-item" 
+                                                            data-id="<%= location.id %>" 
+                                                            data-office_name="<%= location.office_name %>" 
+                                                            data-address="<%= location.address %>" 
+                                                            data-contact="<%= location.contact %>" 
+                                                            data-province="<%= location.province %>" 
+                                                            data-email="<%= location.email %>" 
+                                                            data-contact_person="<%= location.contact_person %>" 
+                                                            data-toggle="modal" data-target="#editLocation"  >Edit</a>
+                                                                
+                                                        </div> 
+                                                    </div>  
+                                            </div>                
+                                      </td>
                                     </tr>   
                                 </tbody>   
                                 <% end %>          
@@ -197,8 +213,9 @@
             </div>
 
             <div class="modal-body">
-                <form class="form-horizontal" action="<%= Routes.admin_path(@conn, :update_inventory)%>" enctype="multipart/form-data" method="POST">
+                <form class="form-horizontal" action="<%= Routes.admin_path(@conn, :edit_location)%>" enctype="multipart/form-data" method="POST">
                     <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
+                    <input type="hidden" name="id" id="id" value="">
                     <div class="row">
                         <div class="col-xl-12">
                             <h4 class="text-center"> Location Details </h4>
@@ -289,19 +306,27 @@
 <script>
 $(document).ready(function(){
 
-    $('#editCategory').on('show.bs.modal', function (event){
-        console.log("edit");
+    $('#editLocation').on('show.bs.modal', function (event){
+       
 
         var button = $(event.relatedTarget)
         var id = button.data('id')
-        var name = button.data('name')
-        var category_code = button.data('category_code')
+        var office_name = button.data('office_name')
+        var address = button.data('address')
+        var contact = button.data('contact')
+        var province = button.data('province')
+        var email = button.data('email')
+        var contact_person = button.data('contact_person')
       
         var modal = $(this)
         
         modal.find('.modal-body #id').val(id);
-        modal.find('.modal-body #name').val(name);
-        modal.find('.modal-body #category_code').val(category_code);
+        modal.find('.modal-body #office_name').val(office_name);
+        modal.find('.modal-body #address').val(address);
+        modal.find('.modal-body #contact').val(contact);
+        modal.find('.modal-body #province').val(province);
+        modal.find('.modal-body #email').val(email);
+        modal.find('.modal-body #contact_person').val(contact_person);
        
     });
 });

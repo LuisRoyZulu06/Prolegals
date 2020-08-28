@@ -71,4 +71,71 @@ defmodule Prolegals.ClientTest do
       assert %Ecto.Changeset{} = Client.change_messages(messages)
     end
   end
+
+  describe "cl_tbl_documents" do
+    alias Prolegals.Client.Documents
+
+    @valid_attrs %{description: "some description", document: "some document", document_filename: "some document_filename", mobile: "some mobile", sender: "some sender"}
+    @update_attrs %{description: "some updated description", document: "some updated document", document_filename: "some updated document_filename", mobile: "some updated mobile", sender: "some updated sender"}
+    @invalid_attrs %{description: nil, document: nil, document_filename: nil, mobile: nil, sender: nil}
+
+    def documents_fixture(attrs \\ %{}) do
+      {:ok, documents} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Client.create_documents()
+
+      documents
+    end
+
+    test "list_cl_tbl_documents/0 returns all cl_tbl_documents" do
+      documents = documents_fixture()
+      assert Client.list_cl_tbl_documents() == [documents]
+    end
+
+    test "get_documents!/1 returns the documents with given id" do
+      documents = documents_fixture()
+      assert Client.get_documents!(documents.id) == documents
+    end
+
+    test "create_documents/1 with valid data creates a documents" do
+      assert {:ok, %Documents{} = documents} = Client.create_documents(@valid_attrs)
+      assert documents.description == "some description"
+      assert documents.document == "some document"
+      assert documents.document_filename == "some document_filename"
+      assert documents.mobile == "some mobile"
+      assert documents.sender == "some sender"
+    end
+
+    test "create_documents/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Client.create_documents(@invalid_attrs)
+    end
+
+    test "update_documents/2 with valid data updates the documents" do
+      documents = documents_fixture()
+      assert {:ok, %Documents{} = documents} = Client.update_documents(documents, @update_attrs)
+      assert documents.description == "some updated description"
+      assert documents.document == "some updated document"
+      assert documents.document_filename == "some updated document_filename"
+      assert documents.mobile == "some updated mobile"
+      assert documents.sender == "some updated sender"
+    end
+
+    test "update_documents/2 with invalid data returns error changeset" do
+      documents = documents_fixture()
+      assert {:error, %Ecto.Changeset{}} = Client.update_documents(documents, @invalid_attrs)
+      assert documents == Client.get_documents!(documents.id)
+    end
+
+    test "delete_documents/1 deletes the documents" do
+      documents = documents_fixture()
+      assert {:ok, %Documents{}} = Client.delete_documents(documents)
+      assert_raise Ecto.NoResultsError, fn -> Client.get_documents!(documents.id) end
+    end
+
+    test "change_documents/1 returns a documents changeset" do
+      documents = documents_fixture()
+      assert %Ecto.Changeset{} = Client.change_documents(documents)
+    end
+  end
 end

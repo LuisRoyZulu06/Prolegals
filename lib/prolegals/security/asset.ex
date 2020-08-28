@@ -16,7 +16,7 @@ defmodule Prolegals.Security.Asset do
     field :asset_number, :string
     field :employee_number, :string
     field :office_location, :string
-    field :assaigned, :string
+    field :assaigned, :string, default: "Unassigned"
 
     timestamps(type: :utc_datetime)
   end

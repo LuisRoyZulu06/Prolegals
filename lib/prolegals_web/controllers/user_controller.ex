@@ -22,7 +22,18 @@ defmodule ProlegalsWeb.UserController do
            :create,
            :update_status,
            :user_actitvity,
-           :user_management
+           :user_management,
+           :view_mgt_user,
+           :deactivate_account,
+           :users_on_leave,
+           :activate_user_on_leave,
+           :dismissed_users,
+           :activate_dismissed_user,
+           :suspended_users,
+           :activate_suspended_user,
+           :retired_users,
+           :activate_retired_user
+
          ]
   )
 
@@ -53,20 +64,34 @@ defmodule ProlegalsWeb.UserController do
 
   def dashboard(conn, _params) do
     # conn.assigns.user
-    IO.inspect "----------------------------------------------------"
-    IO.inspect conn
+    # IO.inspect "----------------------------------------------------"
+    # IO.inspect conn
     total_visitors = Security.total_visitors()
+    frequent_visitors = Security.frequent_visitors()
+    visitors_not_checked_out = Security.visitors_not_checked_out()
     total_users = Accounts.total_users() 
     user_logs_activity = Logs.user_logs_activity()
     total_inventory = Security.total_inventory()
     total_assets = Security.total_assets()
+    total_location = Security.total_location()
+    total_vendors = Security.total_vendors()
+    assigned_assest = Security.assigned_assest()
+    unassigned_assest = Security.unassigned_assest()
 
     render(conn, "dashboard.html", 
           total_visitors: total_visitors,
           total_users: total_users, 
           user_logs_activity: user_logs_activity,
           total_inventory: total_inventory,
-          total_assets: total_assets)
+          total_assets: total_assets,
+          frequent_visitors: frequent_visitors,
+          visitors_not_checked_out: visitors_not_checked_out,
+          total_location: total_location,
+          total_vendors: total_vendors,
+          assigned_assest: assigned_assest,
+          unassigned_assest: unassigned_assest
+
+          )
   end
 
   defp prepare_dash_result(results) do
@@ -469,8 +494,8 @@ defmodule ProlegalsWeb.UserController do
          conn,
          %{"old_password" => pwd, "new_password" => new_pwd}
        ) do
-    IO.inspect("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-    IO.inspect conn
+    # IO.inspect("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+    # IO.inspect conn
 
     with true <- String.trim(pwd) != "",
          true <- String.trim(new_pwd) != "" do
@@ -517,15 +542,211 @@ defmodule ProlegalsWeb.UserController do
 
         conn
 
-      {:error, lunje} ->
+      {:error, _} ->
         conn
         |> put_flash(:error, "Failed to add user to system.")
         |> redirect(to: Routes.user_path(conn, :user_management))
     end
   end
 
+  def view_mgt_user(conn, %{"id" => id}) do
+    view_users  = Accounts.get_user!(id)
+    render(conn, "view_management.html", view_users: view_users)
+  end
+
+  # ---------------------- Deactivate Account ---------------------------------------
+  def deactivate_account(conn, %{"id" => id} = params) do
+    system_users = Accounts.get_user!(id)
+
+    Ecto.Multi.new()
+    |> Ecto.Multi.update(:system_users, User.changeset(system_users, params))
+    |> Ecto.Multi.run(:userlogs, fn %{system_users: system_users} ->
+      activity = "ProLegals user account deactivated with ID \"#{system_users.id}\""
+
+      userlogs = %{
+        user_id: conn.assigns.user.id,
+        activity: activity
+      }
+
+      UserLogs.changeset(%UserLogs{}, userlogs)
+      |> Repo.insert()
+    end)
+    |> Repo.transaction()
+    |> case do
+      {:ok, %{system_users: _system_users, userlogs: _userlogs}} ->
+        conn
+        |> put_flash(:info, "ProLegals system user account deactivated :-) ")
+        |> redirect(to: Routes.user_path(conn, :user_management))
+
+      {:error, _failed_operation, failed_value, _changes_so_far} ->
+        reason = traverse_errors(failed_value.errors) |> List.first()
+
+        conn
+        |> put_flash(:error, reason)
+        |> redirect(to: Routes.user_path(conn, :user_management))
+    end
+  end
+
+  # ---------------------- Leave Account -------------------------------------------- 
+
+  def users_on_leave(conn, _params) do
+    users_on_leave = Accounts.list_tbl_users()
+    render(conn, "users_on_leave.html", users_on_leave: users_on_leave)
+  end
+
+  def activate_user_on_leave(conn, %{"id" => id} = params) do
+    users_on_leaves = Accounts.get_user!(id)
+
+    Ecto.Multi.new()
+    |> Ecto.Multi.update(:users_on_leaves, User.changeset(users_on_leaves, params))
+    |> Ecto.Multi.run(:userlogs, fn %{users_on_leaves: users_on_leaves} ->
+      activity = "User Account on leave activated with ID \"#{users_on_leaves.id}\""
+
+      userlogs = %{
+        user_id: conn.assigns.user.id,
+        activity: activity
+      }
+
+      UserLogs.changeset(%UserLogs{}, userlogs)
+      |> Repo.insert()
+    end)
+    |> Repo.transaction()
+    |> case do
+      {:ok, %{users_on_leaves: _users_on_leaves, userlogs: _userlogs}} ->
+        conn
+        |> put_flash(:info, "ProLegals system leave account activated :-) ")
+        |> redirect(to: Routes.user_path(conn, :users_on_leave))
+
+      {:error, _failed_operation, failed_value, _changes_so_far} ->
+        reason = traverse_errors(failed_value.errors) |> List.first()
+
+        conn
+        |> put_flash(:error, reason)
+        |> redirect(to: Routes.user_path(conn, :users_on_leave))
+    end
+  end
+
+  # -------------------------- Dismissed Account ------------------------------------------
+
+  def dismissed_users(conn, _params) do
+    dismissed_users = Accounts.list_tbl_users()
+    render(conn, "dismissed_users.html", dismissed_users: dismissed_users)
+  end
+
+  def activate_dismissed_user(conn, %{"id" => id} = params) do
+    dismissed_users = Accounts.get_user!(id)
+
+    Ecto.Multi.new()
+    |> Ecto.Multi.update(:dismissed_users, User.changeset(dismissed_users, params))
+    |> Ecto.Multi.run(:userlogs, fn %{dismissed_users: dismissed_users} ->
+      activity = "ProLegals dismissed account activated with ID \"#{dismissed_users.id}\""
+
+      userlogs = %{
+        user_id: conn.assigns.user.id,
+        activity: activity
+      }
+
+      UserLogs.changeset(%UserLogs{}, userlogs)
+      |> Repo.insert()
+    end)
+    |> Repo.transaction()
+    |> case do
+      {:ok, %{dismissed_users: _dismissed_users, userlogs: _userlogs}} ->
+        conn
+        |> put_flash(:info, "ProLegals system dismissed account activated :-) ")
+        |> redirect(to: Routes.user_path(conn, :dismissed_users))
+
+      {:error, _failed_operation, failed_value, _changes_so_far} ->
+        reason = traverse_errors(failed_value.errors) |> List.first()
+
+        conn
+        |> put_flash(:error, reason)
+        |> redirect(to: Routes.user_path(conn, :dismissed_users))
+    end
+  end
+
+  # --------------------------- Suspended Account --------------------------------------------------
+  def suspended_users(conn, _params) do
+    suspended_users = Accounts.list_tbl_users()
+    render(conn, "suspended_users.html", suspended_users: suspended_users)
+  end
+
+  def activate_suspended_user(conn, %{"id" => id} = params) do
+    suspended_user = Accounts.get_user!(id)
+
+    Ecto.Multi.new()
+    |> Ecto.Multi.update(:suspended_user, User.changeset(suspended_user, params))
+    |> Ecto.Multi.run(:userlogs, fn %{suspended_user: suspended_user} ->
+      activity = "Suspended account activated with ID \"#{suspended_user.id}\""
+
+      userlogs = %{
+        user_id: conn.assigns.user.id,
+        activity: activity
+      }
+
+      UserLogs.changeset(%UserLogs{}, userlogs)
+      |> Repo.insert()
+    end)
+    |> Repo.transaction()
+    |> case do
+      {:ok, %{suspended_user: _suspended_user, userlogs: _userlogs}} ->
+        conn
+        |> put_flash(:info, "ProLegals system suspended account activated :-) ")
+        |> redirect(to: Routes.user_path(conn, :suspended_users))
+
+      {:error, _failed_operation, failed_value, _changes_so_far} ->
+        reason = traverse_errors(failed_value.errors) |> List.first()
+
+        conn
+        |> put_flash(:error, reason)
+        |> redirect(to: Routes.user_path(conn, :suspended_users))
+    end
+  end
+
+   # ----------------------- Retired Account  --------------------------------------------------------
+
+   def retired_users(conn, _params) do
+    retired_users = Accounts.list_tbl_users()
+    render(conn, "retired_users.html", retired_users: retired_users)
+  end
+
+  def activate_retired_user(conn, %{"id" => id} = params) do
+    retired_users = Accounts.get_user!(id)
+
+    Ecto.Multi.new()
+    |> Ecto.Multi.update(:retired_users, User.changeset(retired_users, params))
+    |> Ecto.Multi.run(:userlogs, fn %{retired_users: retired_users} ->
+      activity = "ProLegals retired account activated with ID \"#{retired_users.id}\""
+
+      userlogs = %{
+        user_id: conn.assigns.user.id,
+        activity: activity
+      }
+
+      UserLogs.changeset(%UserLogs{}, userlogs)
+      |> Repo.insert()
+    end)
+    |> Repo.transaction()
+    |> case do
+      {:ok, %{retired_users: _retired_users, userlogs: _userlogs}} ->
+        conn
+        |> put_flash(:info, "ProLegals system retired account activated :-) ")
+        |> redirect(to: Routes.user_path(conn, :retired_users))
+
+      {:error, _failed_operation, failed_value, _changes_so_far} ->
+        reason = traverse_errors(failed_value.errors) |> List.first()
+
+        conn
+        |> put_flash(:error, reason)
+        |> redirect(to: Routes.user_path(conn, :retired_users))
+    end
+  end
+
+  # ------------------------ User Logs -----------------------------------------
+
   def user_logs(conn, _params) do
     logs = Logs.list_tbl_user_logs()
     render(conn, "user_logs.html", logs: logs)
   end
+
 end

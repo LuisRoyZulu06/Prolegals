@@ -1,0 +1,305 @@
+<main id="js-page-content" role="main" class="page-content">
+    <!----------------------------------------------------------------------------------------------Flash -->
+    <div class="row">
+        <div class="col-md-12 col-lg-offset-2">
+            <div class="form-group">
+                <%= if get_flash(@conn, :info) do %>
+                    <div class="alert alert-info alert-styled-left">
+                    <button type="button" class="close" data-dismiss="alert">&times; <span class="sr-only">Close</span></button>
+                    <%= get_flash(@conn, :info) %>
+                    </div>
+                <% end %>
+                <%= if get_flash(@conn, :error) do %>
+                    <div class="alert alert-danger alert-styled-left">
+                    <button type="button" class="close" data-dismiss="alert">&times; <span class="sr-only">Close</span></button>
+                    Opps! <%= get_flash(@conn, :error) %>
+                    </div>
+                <% end %>
+            </div>
+        </div>
+    </div>
+    <!------------------------------------------------------------------------------------------------------>
+
+
+    <!-- Page heading removed for composed layout -->
+    <div class="d-flex flex-grow-1 p-0">
+        <!-- left slider -->
+        <div id="js-inbox-menu" class="flex-wrap position-relative bg-white slide-on-mobile slide-on-mobile-left">
+            <div class="position-absolute pos-top pos-bottom w-100">
+                <div class="d-flex h-100 flex-column">
+                    <br>
+
+                    <div class="flex-1 pr-3">
+                     
+                            <a href="#" class="dropdown-item px-3 px-sm-4 pr-lg-3 pl-lg-5 py-2 fs-md font-weight-bold d-flex justify-content-between rounded-pill border-top-left-radius-0 border-bottom-left-radius-0 " data-id="" data-sender="" data-toggle="modal" data-target="#send-message">
+                                
+                                <div>
+                                    <i class="fal fa-edit width-1"></i>Compose
+                                </div>
+                                <div class="fw-400 fs-xs js-unread-emails-count"></div>
+                            </a>
+            
+                         <a href="<%= Routes.client_path(@conn, :list_messages)%>" class="dropdown-item px-3 px-sm-4 pr-lg-3 pl-lg-5 py-2 fs-md d-flex justify-content-between rounded-pill border-top-left-radius-0 border-bottom-left-radius-0">
+                            <div>
+                                <i class="fal fa-folder width-1"></i>Inbox
+                            </div>
+                        </a>
+                        <a href="<%= Routes.client_path(@conn, :sent_message)%>" class="dropdown-item px-3 px-sm-4 pr-lg-3 pl-lg-5 py-2 fs-md d-flex justify-content-between rounded-pill border-top-left-radius-0 border-bottom-left-radius-0">
+                            <div>
+                                <i class="fal fa-paper-plane width-1"></i>Sent
+                            </div>
+                        </a>
+                        <a href="<%= Routes.client_path(@conn, :list_messages)%>" class="dropdown-item px-3 px-sm-4 pr-lg-3 pl-lg-5 py-2 fs-md d-flex justify-content-between rounded-pill border-top-left-radius-0 border-bottom-left-radius-0">
+                            <div>
+                                <i class="fal fa-redo width-1"></i>Refresh
+                            </div>
+                        </a>
+                        <a href="<%= Routes.client_path(@conn, :trash)%>" class="dropdown-item px-3 px-sm-4 pr-lg-3 pl-lg-5 py-2 fs-md font-weight-bold d-flex justify-content-between rounded-pill border-top-left-radius-0 border-bottom-left-radius-0">
+                            <div>
+                                <i class="fal fa-trash width-1"></i>Trash
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="px-5 py-3 fs-nano fw-500">
+                        ProLegals
+                        <div class="progress mt-1" style="height: 7px;">
+                            <div class="progress-bar" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        <!-- end left slider -->
+
+        <div class="slide-backdrop" data-action="toggle" data-class="slide-on-mobile-left-show" data-target="#js-inbox-menu"></div> 
+        
+        <!-- inbox container -->
+        <div class="d-flex flex-column flex-grow-1 bg-white"> 
+            <div class="flex-wrap align-items-center flex-grow-1 position-relative bg-gray-50">
+                <div class="position-absolute pos-top pos-bottom w-100">
+                    <div class="d-flex h-100 flex-column">
+
+                        <!-- button for mobile -->
+                        <a href="javascript:void(0);" class="pl-3 pr-3 py-2 d-flex d-lg-none align-items-left justify-content-left mr-2 btn" data-action="toggle" data-class="slide-on-mobile-left-show" data-target="#js-inbox-menu">
+                            <i class="fal fa-ellipsis-v h1 mb-0 "></i>
+                        </a>
+                        <!-- end button for mobile -->
+
+                        <div class="container show">
+                            <div class="panel-content">
+                                <!-- datatable start -->
+                                <table id="dt-basic-example" class="table table-bordered table-hover table-striped w-100">
+                                    <thead class="p-3 bg-info-300 rounded overflow-hidden position-relative text-white mb-g">
+                                        <tr>
+                                            
+                                            <th>client</th>
+                                            <th>Message</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <%= for msg <- @msgs do %>  
+                                                <tr>
+                                                   
+                                                    <td><%= msg.sender%></td>
+                                                    <td><%= msg.messages%></td>
+                                                    <td>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                    <i class='subheader-icon fal fa-chevron-down'></i>
+                                                                </span>
+                                                                <div class="dropdown-menu">
+                                                                    <a class="dropdown-item" data-toggle="modal" data-target="#view-details"><i class="fas fa-comments fs-md"> View conversation</i></a>
+                                                                    
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>                          
+                                         <% end %>       
+                                </table>
+                                <!-- datatable end -->
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end inbox container -->
+    </div>
+</main>
+
+
+<!-- ############################### SEND MESSAGE ########################### -->
+<div class="modal fade" id="send-message" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Email</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="fal fa-times"></i></span>
+                </button>
+            </div>
+
+            <form action="<%= Routes.client_path(@conn, :create_message)%>" method="POST">
+                <div class="modal-body">
+                    <div class="px-3">
+
+                         <div class="form-group">
+                            <label class="form-label" for="example-select">SENDER:-From</label>
+                            <input name="sender" id="sender" required  type="text" placeholder="<%= "#{String.capitalize(@conn.assigns.user.email)}"%>" class="form-control border-top-0 border-left-0 border-right-0 px-0 rounded-0 fs-md mt-2" >
+                            <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
+                            <input type="hidden" name="user_role" value="client">
+                            <input type="hidden" name="id" id="id">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="example-select">RECIPIENT:-To</label>
+                            <input name="recipient" required  type="text" placeholder="Recipient Email" class="form-control border-top-0 border-left-0 border-right-0 px-0 rounded-0 fs-md mt-2" >
+                        
+                        </div>
+
+                         <div class="form-group">
+                            <label class="form-label" for="example-select">CASE:</label>                
+                              <input name="case_link" required  type="text" placeholder="Case" class="form-control border-top-0 border-left-0 border-right-0 px-0 rounded-0 fs-md mt-2" >
+                        </div>
+
+                         <div class="form-group">
+                            <label class="form-label" for="example-select">SUBJECT:</label>
+                           <input name="subject" required  type="text" placeholder="Subject" class="form-control border-top-0 border-left-0 border-right-0 px-0 rounded-0 fs-md mt-2" >
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label" for="example-select">MESSAGE:</label>
+                            <textarea name="messages"  type="text" placeholder="Enter Your Message" class="form-control" ></textarea>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-info">Send</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- ####################################################################### -->
+
+
+<!-- ############################### CONVERSATION ########################### -->
+<div class="modal fade" id="view-details" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Conversation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="fal fa-times"></i></span>
+                </button>
+            </div>
+
+                <!-- BEGIN msgr -->
+                <div class="msgr d-flex h-100 flex-column bg-white">
+                    <!-- BEGIN custom-scroll -->
+                    <div class="custom-scroll flex-1 h-100">
+                        <div id="chat_container" class="w-100 p-4">
+
+                            <div class="chat-segment chat-segment-sent">
+                                <div class="chat-message">
+                                    <p>
+                                        Hey Ching, did you get my files?
+                                    </p>
+                                </div>
+                                <div class="text-right fw-300 text-muted mt-1 fs-xs">
+                                    3:00 pm
+                                </div>
+                            </div>
+                            <!--  end .chat-segment -->
+                            <!-- start .chat-segment -->
+                            <div class="chat-segment chat-segment-get">
+                                <div class="chat-message">
+                                    <p>
+                                        I will have them ready by tonight.
+                                    </p>
+                                </div>
+                            </div>
+                            <!--  end .chat-segment -->
+                            <!-- start .chat-segment -->
+                            <div class="chat-segment chat-segment-get">
+                                <div class="chat-message">
+                                    <p>
+                                        Hi
+                                    </p>
+                                    <p>
+                                        Sorry going through a busy time in office. Yes I analyzed the solution.
+                                    </p>
+                                    <p>
+                                        It will require some resource, which I could not manage.
+                                    </p>
+                                </div>
+                                <div class="fw-300 text-muted mt-1 fs-xs">
+                                    3:24 pm
+                                </div>
+                            </div>
+                            <!--  end .chat-segment -->
+                            <!--  end .chat-segment -->
+                            <!-- start .chat-segment -->
+                            <div class="chat-segment chat-segment-get chat-end">
+                                <div class="chat-message">
+                                    <p>
+                                        Cheers
+                                    </p>
+                                </div>
+                            </div>
+                            <!--  end .chat-segment -->
+                            <!-- start .chat-segment for timestamp -->
+                            <div class="chat-segment">
+                                <div class="time-stamp text-center mb-2 fw-400">
+                                    Jun 20
+                                </div>
+                            </div>
+                            <!--  end .chat-segment for timestamp -->
+                        </div>
+                        <!-- END custom-scroll  -->
+                    </div>
+                    <!-- END msgr -->
+                    <!-- end message list -->
+                </div>
+
+            <!-- Message Details -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="<%= Routes.static_path(@conn, "/js/jquery-1.11.2.min.js") %>"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<script>
+$(document).ready(function(){
+//sender Js
+$('#send-message').on('show.bs.modal', function (event){
+
+
+    var button = $(event.relatedTarget)
+    var id = button.data('id')
+    var sender = button.data('sender')
+   
+    
+    var modal = $(this)
+    modal.find('.modal-body #id').val(id);
+    modal.find('.modal-body #sender').val(sender);
+    
+});
+});
+</script>
+

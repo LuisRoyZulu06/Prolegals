@@ -47,7 +47,7 @@
                         
                         <!-- datatable start -->
                         <table id="dt-basic-example" class="table table-bordered table-hover table-striped w-100">
-                            <thead class="p-3 bg-primary-300 rounded overflow-hidden position-relative text-white mb-g">
+                            <thead class="p-3 bg-info-300 rounded overflow-hidden position-relative text-white mb-g">
                                 <tr>
                                     <th>Full Name</th>
                                     <th>Sex</th>
@@ -81,9 +81,10 @@
                                         <td><%= String.slice(to_string( Time.to_string(history_log_book_user.inserted_at)), 0..4)%></td>
                                         <td>
                                            <%= if Time.to_string(history_log_book_user.updated_at) == Time.to_string(history_log_book_user.inserted_at) do %>
-                                               <!--Empty Check out--->    
+                                               <!--Empty Check Out--->    
                                             <% else %> 
-                                             <%= String.slice(to_string( Time.to_string(history_log_book_user.updated_at)), 0..4) %>
+                                             <%= String.slice(to_string(history_log_book_user.time_out), 0..5) %>
+                                             <!------Check Out------->
                                           <% end %>
                                         </td>                  
                                         <td>
@@ -95,7 +96,8 @@
                                                     <div class="dropdown-menu">
                                                        
                                                         <!-- <a class="dropdown-item" data-id="<%= history_log_book_user.id %>" data-name="<%= history_log_book_user.name %>" data-sex="<%= history_log_book_user.sex %>" data-mobile_no="<%= history_log_book_user.mobile_no %>" data-address="<%= history_log_book_user.address %>" data-id_type="<%= history_log_book_user.id_type %>" data-id_no="<%= history_log_book_user.id_no %>" data-company="<%= history_log_book_user.company %>" data-person_to_see="<%= history_log_book_user.person_to_see %>" data-purpose="<%= history_log_book_user.purpose %>" data-date="<%= history_log_book_user.date %>" data-time_in="<%= history_log_book_user.time_in %>" data-time_out="<%= history_log_book_user.time_out %>" data-toggle="modal" data-target="#edit-modal">Edit</a> %>-->
-                                                          <a class="dropdown-item" data-id="<%= history_log_book_user.id %>"
+                                                          <!-- <a class="dropdown-item"
+                                                                                data-id="<%= history_log_book_user.id %>"
                                                                                 data-name="<%= history_log_book_user.name %>" 
                                                                                 data-sex="<%= history_log_book_user.sex %>" 
                                                                                 data-mobile_no="<%= history_log_book_user.mobile_no %>" 
@@ -107,14 +109,15 @@
                                                                                 data-purpose="<%= history_log_book_user.purpose %>" 
                                                                                 data-date="<%= history_log_book_user.date %>" 
                                                                                 data-time_in="<%= history_log_book_user.time_in %>" 
-                                                                                data-time_out="<%= history_log_book_user.time_out %>" data-toggle="modal" data-target="#check-in-modal">Check In</a>
+                                                                                data-time_out="<%= history_log_book_user.time_out %>" data-toggle="modal" data-target="#check-in-modal">Check In</a> -->
 
                                                         <!--- Check Out Action ---->
                                                         <!-- <form action="<%= Routes.security_path(@conn, :add_time_out)%>" method="POST">
                                                             <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
                                                             <input type="hidden" name="id" id="id" value="<%= history_log_book_user.id %>">
                                                             <button class="dropdown-item" type="submit" >Check Out</button> 
-                                                        </form>      -->                        
+                                                        </form>      -->    
+                                                        <a class="dropdown-item"  href="<%= Routes.security_path(@conn, :recheck_in_visitor, id: history_log_book_user.id)%>">Check In</a>                    
                                                         <a class="dropdown-item"  href="<%= Routes.security_path(@conn, :view_log_book_user, id: history_log_book_user.id)%>">View</a>
                                                     </div>
                                                 </div>
@@ -402,28 +405,46 @@
 </div>
 <!-- #########################################################################-->
 
-<!-- ################################ CHECK IN MODAL ############################ -->
-<div class="modal fade" id="check-in-modal" tabindex="-1" role="dialog" aria-hidden="true">
+ <!-- ################################ CHECK IN MODAL ######################## -->
+<div class="modal fade" id="check--modal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Add User<i class='subheader-icon fal fa-user-circle'></i></h5>
+                <h5 class="modal-title">CHECK IN <i class='subheader-icon fal fa-book'></i></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true"><i class="fal fa-times"></i></span>
                 </button>
             </div>
 
             <div class="modal-body">
-                <form class="form-horizontal" action="<%= Routes.security_path(@conn, :check_in_log_book_user)%>" enctype="multipart/form-data"  method="post">
+                <form class="form-horizontal" action="<%= Routes.security_path(@conn, :create_log_book_user)%>" enctype="multipart/form-data"  method="post">
                     <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
                     <input type="hidden" name="id" id="id" value="">
+
+                    <div  class="container">
+                        
+
+                        <!-- <div class="form-group">
+                            <label class="form-label"> Facial Image</label> 
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fal fa-user"></i></span> 
+                                </div>
+                                <input type="file" name="image" placeholder="Facial image of the person" class="form-control" required="required">
+                                
+                            </div>
+                        </div> -->
+                    </div>    
+
                     <div class="form-group">
                         <label class="form-label">Personal Details</label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fal fa-user"></i></span>
                             </div>
+                        
                             <input type="text" name="name" id="name" class="form-control" placeholder="Full Names" required="required">
+
                             <select class="custom-select form-control" name="sex" id="sex" required="required">
                                 <option selected="">Select Gender</option>
                                 <option value="M">Male</option>
@@ -449,7 +470,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fal fa-id-card"></i></span>
                             </div>
-                            <select class="custom-select form-control" name="id_type"id="id_type" required="required">
+                            <select class="custom-select form-control" name="id_type" id="id_type" required="required">
                                 <option selected="">Select ID Type</option>
                                 <option value="NRC">NRC</option>
                                 <option value="PASSPORT">Passport</option>
@@ -459,72 +480,56 @@
                         </div>
                     </div>
 
-                     <div class="form-group">
+                    <div class="form-group">
                         <label class="form-label">Company Details</label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fal fa-home"></i></span>
                             </div>
-                            <input type="text" name="company" id="company" placeholder="Company Name" class="form-control" required="required">
+                            <input type="text" name="company"  id="company" placeholder="Company Name" class="form-control" required="required">
                         
                         </div>
                     </div>
 
-                     <div class="form-group">
+                    <div class="form-group">
                         <label class="form-label">Details for visit</label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fal fa-home"></i></span>
                             </div>
-                            <input type="text" name="person_to_see" id="person_to_see" placeholder="Person To See"  class="form-control" required="required">
-                            <input type="text" name="purpose" id="purpose" placeholder="Purpose for Visit" class="form-control" required="required">
+                            <input type="text" name="person_to_see" placeholder="Person To See"  class="form-control" required="required">
+                            <input type="text" name="purpose" placeholder="Purpose for Visit" class="form-control" required="required">
                         </div>
                     </div>
 
-                    <%# <div class="form-group">
-                        <label class="form-label"> Date of visit</label>
+                    <div class="form-group">
+                        <!-- <label class="form-label"> Date of visit</label> -->
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fal fa-clock"></i></span>
+                                <!-- <span class="input-group-text"><i class="fal fa-clock"></i></span> -->
                             </div>
-                            <input type="date" name="date" id="date" placeholder="Date of Visit" class="form-control" required="required">
+                            <%# <input type="hidden" name="date" placeholder="Date of Visit" class="form-control" required="required"> %>
+                            <%# <input type="hidden" name="time_in" placeholder="Time In" class="form-control" required="required">  %>
                             
                         </div>
-                    </div> %>
-
-                     <%# <div class="form-group">
-                        <label class="form-label"> Time Details</label>
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fal fa-clock"></i></span>
-                            </div>
-                            <input type="text" name="time_in" id="time_in" placeholder="Time In" class="form-control" required="required">              
-                        </div>
-                    </div> %>
-
-                    <%# <div class="form-group">
-                        <label class="form-label">Facial image </label>
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fal fa-user"></i></span>
-                            </div>
-                            <input type="file" name="image" placeholder="Facial image of the person" class="form-control" required="required">
-                            
-                        </div>
-                     </div> %>
-     
+                    </div>
+                    
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">check in</button>
+                        <button type="submit" class="btn btn-primary">Add Visitor</button>
                     </div>
+                </div>  
                 </form>
             </div>   
         </div>
     </div>
-</div>
+</div> 
+
 <!-- ########################################################################## -->
+
 <script src="<%= Routes.static_path(@conn, "/js/jquery-1.11.2.min.js") %>"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script type="text/javascript" src=" https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.25/webcam.js "></script>
 
 <script>
 $(document).ready(function(){
@@ -619,6 +624,9 @@ $('#edit-modal').on('show.bs.modal', function (event){
 $(document).ready(function(){
 //Re Add User
 $('#check-in-modal').on('show.bs.modal', function (event){
+       
+    
+    console.log("check in")
 
     var button = $(event.relatedTarget)
     var id = button.data('id')
@@ -629,6 +637,9 @@ $('#check-in-modal').on('show.bs.modal', function (event){
     var id_type = button.data('id_type')
     var id_no = button.data('id_no')
     var company  = button.data('company')
+
+    console.log(button.data('company'));
+     console.log(button.data('id'));
 
   
     var modal = $(this)
@@ -644,7 +655,4 @@ $('#check-in-modal').on('show.bs.modal', function (event){
 });
 });
 </script>
-
-
-
 

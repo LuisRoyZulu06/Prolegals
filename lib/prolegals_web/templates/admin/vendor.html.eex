@@ -66,10 +66,27 @@
                                         <td><%= vendor.contact_person %></td>
                                         <td><%= vendor.country %></td>
                                         <td><%= vendor.address %></td>
-                                        <td class="pull-right">
-                                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#editCategory"  >
-                                                Edit
-                                            </button>
+                                        <td>
+                                             <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            <i class='subheader-icon fal fa-chevron-down'></i>
+                                                        </span>
+                                                        <div class="dropdown-menu">
+                                                            <a class="dropdown-item" 
+                                                            data-id="<%= vendor.id %>" 
+                                                            data-vendor_name="<%= vendor.vendor_name %>" 
+                                                            data-email="<%= vendor.email %>" 
+                                                            data-contact="<%= vendor.contact %>" 
+                                                            data-country="<%= vendor.country %>" 
+                                                            data-contact_person="<%= vendor.contact_person %>" 
+                                                            data-address="<%= vendor.address %>" 
+                                                            data-toggle="modal" data-target="#editVendor"  >Edit</a>
+                                                              
+                                                            
+                                                        </div>    
+                                                    </div> 
+                                              </div>         
                                         </td>
                                     </tr>   
                                 </tbody>    
@@ -171,7 +188,7 @@
 
 
 <!-- EDIT LOCATION -->
-<div class="modal fade" id="editCategory" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="editVendor" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header" style="text-align: center">
@@ -182,8 +199,9 @@
             </div>
 
             <div class="modal-body">
-                <form class="form-horizontal" action="<%= Routes.admin_path(@conn, :update_inventory)%>" enctype="multipart/form-data" method="POST">
+                <form class="form-horizontal" action="<%= Routes.admin_path(@conn, :edit_vendor)%>" enctype="multipart/form-data" method="POST">
                     <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
+                    <input type="hidden" name="id" id="id" value="">
                     <div class="row">
                             <div class="col-xl-12">
                                 <h4 class="text-center"> Vendor Details </h4>
@@ -260,19 +278,27 @@
 <script>
 $(document).ready(function(){
 
-    $('#editCategory').on('show.bs.modal', function (event){
-        console.log("edit");
+    $('#editVendor').on('show.bs.modal', function (event){
+       
 
         var button = $(event.relatedTarget)
         var id = button.data('id')
-        var name = button.data('name')
-        var category_code = button.data('category_code')
+        var vendor_name = button.data('vendor_name')
+        var email = button.data('email')
+        var contact = button.data('contact')
+        var country = button.data('country')
+        var contact_person = button.data('contact_person')
+        var address = button.data('address')
       
         var modal = $(this)
         
         modal.find('.modal-body #id').val(id);
-        modal.find('.modal-body #name').val(name);
-        modal.find('.modal-body #category_code').val(category_code);
+        modal.find('.modal-body #vendor_name').val(vendor_name);
+        modal.find('.modal-body #email').val(email);
+        modal.find('.modal-body #contact').val(contact);
+        modal.find('.modal-body #country').val(country);
+        modal.find('.modal-body #contact_person').val(contact_person);
+        modal.find('.modal-body #address').val(address);
        
     });
 });

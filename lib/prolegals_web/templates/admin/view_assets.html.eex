@@ -55,6 +55,8 @@
                                     <th>Brand</th>
                                     <th>Status</th>
                                     <th>Purchased From</th>
+                                    <th>Employee Assigned</th>
+                                    <th>Assign Status</th>
                                     <th>Type</th>
                                     <th>Action</th>
                                 </tr>
@@ -65,44 +67,53 @@
                                         <td><%= all_asset.brand %></td>
                                         <td><%= all_asset.status %></td>
                                         <td><%= all_asset.purchased_from %></td>
+                                        <td><%= all_asset.employee_number %></td>
+                                        <td><%= all_asset.assaigned %></td>
                                         <td><%= all_asset.type %></td>
-                                        <td class="pull-right">
-                                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#editAssets"
-                                            data-id="<%= all_asset.id%>" 
-                                            data-name="<%= all_asset.name%>" 
-                                            data-brand="<%= all_asset.brand%>" 
-                                            data-type="<%= all_asset.type%>" 
-                                            data-category_id="<%= all_asset.category_id%>" 
-                                            data-status="<%= all_asset.status%>" 
-                                            data-serial_number="<%= all_asset.serial_number%>" 
-                                            data-purchased_from="<%= all_asset.purchased_from%>" 
-                                            data-date_purchased="<%= all_asset.date_purchased%>" 
-                                            data-make_year="<%= all_asset.make_year%>" 
-                                            data-asset_number="<%= all_asset.asset_number%>"
-                                            data-purchase_price="<%= all_asset.purchase_price%>"
-                                            >
-                                                Edit
-                                            </button>
-                                             <button type="button" class="btn btn-info" data-toggle="modal" data-target="#assignAssets"
-                                            data-id="<%= all_asset.id%>" 
-                                            data-name="<%= all_asset.name%>" 
-                                            data-brand="<%= all_asset.brand%>" 
-                                            data-type="<%= all_asset.type%>" 
-                                            data-category_id="<%= all_asset.category_id%>" 
-                                            data-status="<%= all_asset.status%>" 
-                                            data-serial_number="<%= all_asset.serial_number%>" 
-                                            data-purchased_from="<%= all_asset.purchased_from%>" 
-                                            data-date_purchased="<%= all_asset.date_purchased%>" 
-                                            data-make_year="<%= all_asset.make_year%>" 
-                                            data-employee_number="<%= all_asset.employee_number%>" 
-                                            data-office_location="<%= all_asset.office_location%>"
-                                            data-assaigned="<%= all_asset.assaigned%>"
-                                            data-asset_number="<%= all_asset.asset_number%>"
-                                            data-purchase_price="<%= all_asset.purchase_price%>"
-                                            >
-                                                Assign
-                                            </button>
-                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            <i class='subheader-icon fal fa-chevron-down'></i>
+                                                        </span>
+                                                        <div class="dropdown-menu">
+
+                                                                <button type="button" class="dropdown-item" data-toggle="modal" data-target="#editAssets"
+                                                                data-id="<%= all_asset.id%>" 
+                                                                data-name="<%= all_asset.name%>" 
+                                                                data-brand="<%= all_asset.brand%>" 
+                                                                data-type="<%= all_asset.type%>" 
+                                                                data-category_id="<%= all_asset.category_id%>" 
+                                                                data-status="<%= all_asset.status%>" 
+                                                                data-serial_number="<%= all_asset.serial_number%>" 
+                                                                data-purchased_from="<%= all_asset.purchased_from%>" 
+                                                                data-date_purchased="<%= all_asset.date_purchased%>" 
+                                                                data-make_year="<%= all_asset.make_year%>" 
+                                                                data-asset_number="<%= all_asset.asset_number%>"
+                                                                data-purchase_price="<%= all_asset.purchase_price%>"
+                                                                >
+                                                                    Edit
+                                                                </button>
+                                                                <button type="button" class="dropdown-item" data-toggle="modal" data-target="#assignAssets"
+                                                                data-id="<%= all_asset.id%>" 
+                                                                data-name="<%= all_asset.name%>" 
+                                                                data-brand="<%= all_asset.brand%>" 
+                                                                data-type="<%= all_asset.type%>" 
+                                                                data-category_id="<%= all_asset.category_id%>" 
+                                                                data-status="<%= all_asset.status%>" 
+                                                                data-serial_number="<%= all_asset.serial_number%>" 
+                                                                data-purchased_from="<%= all_asset.purchased_from%>" 
+                                                                data-date_purchased="<%= all_asset.date_purchased%>" 
+                                                                data-make_year="<%= all_asset.make_year%>" 
+                                                                data-employee_number="<%= all_asset.employee_number%>" 
+                                                                data-asset_number="<%= all_asset.asset_number%>"
+                                                                data-purchase_price="<%= all_asset.purchase_price%>">
+                                                                    Assign
+                                                                </button>
+                                                        </div>  
+                                                </div>    
+                                            </div>                 
+                                       </td>
                                     </tr>   
                                 </tbody>    
                             <% end %> 
@@ -402,7 +413,7 @@
                 <form class="form-horizontal" action="<%= Routes.admin_path(@conn, :update_asset)%>" method="POST">
                     <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
                     <input type="hidden" name="id" id="id" value="">
-                    <input type="hidden" name="assaigned" id="assaigned" value="Assigned`">
+                    <input type="hidden" name="assaigned" id="assaigned" value="Assigned">
                    <div class="row">
                             <div class="col-xl-12">
                             <h4> Asset Details </h4>
@@ -431,7 +442,7 @@
                                                                 </div>
                                                             </div>
                                                             <div class="form-group">
-                                                                <label class="form-label">Name Of Emplyee</label>
+                                                                <label class="form-label">Name Of Assignee</label>
                                                                 <select class="custom-select form-control" id="employee_number" name="employee_number" required="required">
                                                                     <option selected="">Employee Name & Number</option>
                                                                     <%= for employee <- @employees do %>
@@ -555,8 +566,7 @@ $(document).ready(function(){
         var make_year = button.data('make_year')
         var employee_number = button.data('employee_number')
         var quantity_assigned = button.data('quantity_assigned')
-        var office_location = button.data('office_location')
-        var assigned = button.data('assaigned')
+       
       
         var modal = $(this)
         
@@ -573,8 +583,7 @@ $(document).ready(function(){
         modal.find('.modal-body #make_year').val(make_year);
         modal.find('.modal-body #employee_number').val(employee_number);
         modal.find('.modal-body #quantity_assigned').val(quantity_assigned);
-        modal.find('.modal-body #office_location').val(office_location);
-        modal.find('.modal-body #assaigned').val(assaigned);
+       
        
     });
 });

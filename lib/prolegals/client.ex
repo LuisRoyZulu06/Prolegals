@@ -106,4 +106,145 @@ defmodule Prolegals.Client do
   def change_messages(%Messages{} = messages) do
     Messages.changeset(messages, %{})
   end
+
+  # ---------------------------------------------------------------Get Client Notification to the lawyer
+  def get_client_notification(email) do
+    Repo.all(
+      from(
+        u in Messages,
+        where: u.recipient == ^email and u.status == "sent",
+        select: u
+      )
+    )
+  end
+
+  def get_inbox_notification(email) do
+    Repo.all(
+      from(
+        u in Messages,
+        where: u.recipient == ^email and u.user_role == "lawyer" and u.status == "sent",
+        select: u
+      )
+    )
+     
+  end
+
+  def get_client_sent_notification(email) do
+    Repo.all(
+      from(
+        u in Messages,
+        where: u.sender == ^email and u.user_role == "client",
+        select: u
+      )
+    )
+  end
+
+  def get_client_trash_notification(email) do
+    Repo.all(
+      from(
+        u in Messages,
+        where: u.recipient == ^email and u.status == "trash",
+        select: u
+      )
+    )
+  end
+
+
+  # -----------------------------------------------------------------------
+
+  alias Prolegals.Client.Documents
+
+  @doc """
+  Returns the list of cl_tbl_documents.
+
+  ## Examples
+
+      iex> list_cl_tbl_documents()
+      [%Documents{}, ...]
+
+  """
+  def list_cl_tbl_documents do
+    Repo.all(Documents)
+  end
+
+  @doc """
+  Gets a single documents.
+
+  Raises `Ecto.NoResultsError` if the Documents does not exist.
+
+  ## Examples
+
+      iex> get_documents!(123)
+      %Documents{}
+
+      iex> get_documents!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_documents!(id), do: Repo.get!(Documents, id)
+
+  @doc """
+  Creates a documents.
+
+  ## Examples
+
+      iex> create_documents(%{field: value})
+      {:ok, %Documents{}}
+
+      iex> create_documents(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_documents(attrs \\ %{}) do
+    %Documents{}
+    |> Documents.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a documents.
+
+  ## Examples
+
+      iex> update_documents(documents, %{field: new_value})
+      {:ok, %Documents{}}
+
+      iex> update_documents(documents, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_documents(%Documents{} = documents, attrs) do
+    documents
+    |> Documents.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a documents.
+
+  ## Examples
+
+      iex> delete_documents(documents)
+      {:ok, %Documents{}}
+
+      iex> delete_documents(documents)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_documents(%Documents{} = documents) do
+    Repo.delete(documents)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking documents changes.
+
+  ## Examples
+
+      iex> change_documents(documents)
+      %Ecto.Changeset{source: %Documents{}}
+
+  """
+  def change_documents(%Documents{} = documents) do
+    Documents.changeset(documents, %{})
+  end
 end

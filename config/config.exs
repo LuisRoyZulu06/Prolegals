@@ -9,6 +9,7 @@ use Mix.Config
 
 config :prolegals,
   ecto_repos: [Prolegals.Repo]
+  
 
 # Configures the endpoint
 config :prolegals, ProlegalsWeb.Endpoint,
@@ -26,7 +27,7 @@ config :Prolegals, Prolegals.Emails.Mailer,
   # or {:system, "SMTP_USERNAME"}
   username: "johnmfula360@gmail.com",
   # or {:system, "SMTP_PASSWORD"}
-  password: "john@360",
+  password: "john@360d",
   # can be `:always` or `:never`
   tls: :if_available,
   allowed_tls_versions: [:tlsv1, :"tlsv1.1", :"tlsv1.2"],
@@ -42,39 +43,25 @@ config :Prolegals, Prolegals.Scheduler,
   timeout: 300_000,
   timezone: "Africa/Cairo",
   jobs: [
-    # cust_penalty: [
-    #   # schedule: {:extended, "*/30"},
-    #   schedule: "@weekly",
-    #   task: {BankLinkWeb.EftTransController, :cust_penalty, []}
-    # ],
-    # internet_file: [
-    #   # schedule: {:extended, "*/10"},
-    #   # schedule: {:extended, "*/30"},
-    #   task: {ProlegalsWeb.ClientController, :send_emails, []}
-    # ],
 
     checkout_alert: [
       # schedule: {:extended, "*/10"},
       # schedule: {:extended, "*/30"},
       #Alert at 18:00 Hrs
-      schedule: {:extended, "0 18 * * *"},
-      # schedule: {:extended, "0 16 * * *"},
+      schedule: {:extended, "0 0 20 * * *"},
+      # schedule: {:extended, "0 0 13 * * *"},
       task: {ProlegalsWeb.SecurityController, :alert_not_checked_out, []}
+    ],
+
+    system_checkout: [
+      # schedule: {:extended, "*/10"},
+      # schedule: {:extended, "*/30"},
+      #Execute every midnight
+      schedule: {:extended, "@daily"},
+      task: {ProlegalsWeb.SecurityController, :system_checkout, []}
     ]
 
-
-
-    # channel_entries: [
-    #   # schedule: {:extended, "*/30"},
-    #   # schedule: "*/10 * * * * *",
-    #   schedule: "@weekly",
-    #   task: {Prolegals.Workers.Channel, :perform, []}
-    # ],
-    # branch_list: [
-    #   # schedule: "*/5 8,9,10,18 * * * *",
-    #   schedule: "@weekly",
-    #   task: {Prolegals.Workers.Branchs, :perform, []}
-    # ]
+  
   ]
 
 

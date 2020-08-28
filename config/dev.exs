@@ -5,10 +5,10 @@ config :prolegals, Prolegals.Repo,
   #--------------- MySQL
   # adapter: Ecto.Adapters.MySQL,
   #--------------- mssql
-  # adapter: Tds.Ecto,
-  # username: "sa",
+  adapter: Tds.Ecto,
+  username: "sa",
   #--------------- Postgres
-  username: "postgres",
+  # username: "postgres",
   password: "cool",
   database: "prolegals",
   # port: "1433",
@@ -23,7 +23,7 @@ config :prolegals, Prolegals.Repo,
 # watchers to your application. For example, we use it
 # with webpack to recompile .js and .css sources.
 config :prolegals, ProlegalsWeb.Endpoint,
-  http: [port: 4000],
+  http: [port: 5000],
   debug_errors: true,
   code_reloader: true,
   check_origin: false,

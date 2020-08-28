@@ -10,52 +10,20 @@
 
     <%= for logbook_user <- [@logbook_users] do %> 
     <div class="row">
-        <div class="col-lg-6 col-xl-3 order-lg-1 order-xl-1">
+        <div class="col-lg-6 col-xl-4 order-lg-1 order-xl-1">
             <!-- profile summary -->
             <div class="card mb-g rounded-top">
-                <div class="row no-gutters row-grid">
-                    <div class="col-12">
-                        <div class="d-flex flex-column align-items-center justify-content-center p-4">
-
-                            <%= for logbook_user <- [@logbook_users] do %>
-                             <img class="rounded-circle shadow-2 img-thumbnail"  src="<%= Prolegals.ImageUploader.url({logbook_user.image, logbook_user})%>">
-                            <% end %>
-      
-                            <h5 class="mb-0 fw-700 text-center mt-3">
-                                <%= logbook_user.name%> 
-                            </h5>
-                            <div class="mt-4 text-center demo">
-                              <h5 class="text-muted mb-0"><%= logbook_user.mobile_no%></h5>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="text-center py-3">
-                            <h5 class="mb-0 fw-700">
-                                Gender
-                                <small class="text-muted mb-0"><%= logbook_user.sex%></small>
-                            </h5>
-                        </div>
-                    </div>
-                     <div class="col-6">
-                        <div class="text-center py-3">
-                            <h5 class="mb-0 fw-700">
-                                Address
-                                <small class="text-muted mb-0"><%= logbook_user.address%></small>
-                            </h5>
-                        </div>
-                    </div>
-                   
-                    <div class="col-12">
-                        <div class="p-3 text-center">     
-                            <a href="tel:<%= logbook_user.mobile_no%>" class="btn-link font-weight-bold">Call</a>
-                        </div>
-                    </div>
+                <div class="row no-gutters row-grid" style=" width: auto 550px; height: 400px;" >
+                    
+                     <%= for logbook_user <- [@logbook_users] do %>
+                             <img class="shadow-2 img-thumbnail" style=" width: 800px; height: 400px;"  src="<%= Prolegals.ImageUploader.url({logbook_user.image, logbook_user})%>">
+                     <% end %>
+                        
                 </div>
             </div>
         </div>
         
-        <div class="col-lg-12 col-xl-9 order-lg-3 order-xl-2">
+        <div class="col-lg-12 col-xl-8 order-lg-3 order-xl-2">
             <!-- Details -->
             <div class="col-xl-12">
                 <div id="panel-1" class="panel">
@@ -70,6 +38,28 @@
                             <form action="" method="POST">
                                 <div class="row">
                                     <div class="col-md-12">
+                                        
+                                        <div class="form-group">
+                                            <label class="form-label">Name/Sex</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="fal fa-window-alt width-1 text-align-center"></i></span>
+                                                </div>
+                                                <input type="text" value="<%= logbook_user.name %>" placeholder="Name"   class="form-control" disabled>
+                                                <input type="text" value="<%= logbook_user.sex %>" placeholder="Sex"  class="form-control" disabled>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="form-label">Mobile/Address</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="fal fa-window-alt width-1 text-align-center"></i></span>
+                                                </div>
+                                                <input type="text" value="<%= logbook_user.mobile_no %>" placeholder="Mobile Number"   class="form-control" disabled>
+                                                <input type="text" value="<%= logbook_user.address %>" placeholder="Address"  class="form-control" disabled>
+                                            </div>
+                                        </div>
 
                                         <div class="form-group">
                                             <label class="form-label">ID Details</label>
@@ -79,16 +69,6 @@
                                                 </div>
                                                 <input type="text" value="<%= logbook_user.id_type %>"  class="form-control" disabled>
                                                 <input type="text" value="<%= logbook_user.id_no %>" placeholder="ID Number"  class="form-control" disabled>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label class="form-label">Company</label>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text"><i class="fal fa-home width-1 text-align-center"></i></span>
-                                                </div>
-                                                <input type="text" value="<%= logbook_user.company %>"  class="form-control" disabled>
                                             </div>
                                         </div>
 
@@ -109,26 +89,30 @@
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text"><i class="fal fa-clock width-1 text-align-center"></i></span>
                                                 </div>
-                                                <input type="text" value="<%= logbook_user.time_in %>"  class="form-control" disabled>
-                                                 <input type="text" value="<%= logbook_user.time_out %>" placeholder="Time Out" class="form-control" disabled>
+                                                <input type="text" value="<%= String.slice(to_string( Time.to_string(logbook_user.inserted_at)), 0..4) %>"  class="form-control" disabled>
+                                               <%= if Time.to_string(logbook_user.updated_at) == Time.to_string(logbook_user.inserted_at) do %>
+                                                <!--Empty Check out---> 
+                                                <input type="text" value="<%= logbook_user.time_out %>" placeholder="" class="form-control" disabled>   
+                                                <% else %>                                                    
+                                                     <input type="text" value="<%= String.slice(to_string( Time.to_string(logbook_user.updated_at)), 0..4) %>" placeholder="Time Out" class="form-control" disabled>
+                                                <% end %>
+                                                 
                                             </div>
                                         </div>
 
                                         <div class="form-group">
-                                            <label class="form-label">Date</label>
+                                            <label class="form-label">Company/Date</label>
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text"><i class="fal fa-clock width-1 text-align-center"></i></span>
                                                 </div>
+                                                 <input type="text" value="<%= logbook_user.company %>"  class="form-control" disabled>
                                                 <input type="text" value="<%= logbook_user.date %>"  class="form-control" disabled>
                                             </div>
                                         </div>
                                     </div>                               
                                 </div>
-
-                                <div class="modal-footer">
-                                    <a href="<%= Routes.security_path(@conn, :list_log_book_users)%>" class="btn btn-secondary" data-dismiss="modal">Back</a>
-                                </div>                 
+                
                             </form>
                         </div>
                     </div>

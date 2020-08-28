@@ -5,6 +5,7 @@ defmodule Prolegals.SystemDirectories.Directory do
   schema "tbl_system_directories" do
     field :failed, :string
     field :processed, :string
+    field :facial_image, :string
 
     timestamps()
   end
@@ -12,7 +13,7 @@ defmodule Prolegals.SystemDirectories.Directory do
   @doc false
   def changeset(directory, attrs) do
     directory
-    |> cast(attrs, [:failed, :processed])
+    |> cast(attrs, [:failed, :processed, :facial_image])
     |> validate_required([:failed, :processed])
   end
 end

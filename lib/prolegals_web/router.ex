@@ -48,7 +48,28 @@ defmodule ProlegalsWeb.Router do
     # ---------------------------User Maintenance
     get "/User/Maintenance", UserController, :user_management
     post "/Create/User", UserController, :create_user
+    get "/View/User/Maintenance", UserController, :view_mgt_user
     get "/User/Activity/Logs", UserController, :user_logs
+
+    # ---------------------- Deactivated ---------------------------
+    post "/Deactivate/Account", UserController, :deactivate_account
+    
+     # --------------------- On Leave --------------------------------
+     get "/Users/On/Leave", UserController, :users_on_leave
+     post "/Activate/Leave/Account", UserController, :activate_user_on_leave
+
+     # -----------------------Dismissed---------------------------------
+    get "/Dismissed/User/Accounts", UserController, :dismissed_users
+    post "/Activate/dismissed/Account", UserController, :activate_dismissed_user
+
+
+    # ---------------------- Suspension ---------------------------
+    get "/Suspended/Users", UserController, :suspended_users
+    post "/Activate/Suspended/Account", UserController, :activate_suspended_user
+
+    # ------------------------Retired -------------------------------
+    get "/Retired/User/Accounts", UserController, :retired_users
+    post "/Activate/retired/Account", UserController, :activate_retired_user
 
     # ---------------------------------------------------LEGAL CONTROLLER
     # ------------------------------ Case_Mgt
@@ -58,6 +79,7 @@ defmodule ProlegalsWeb.Router do
     get "/Case/Updates", LegalController, :case_update
     post "/New/Evidence", LegalController, :evidence_update
     get "/Notifications", LegalController, :notifications
+    post "/create/Email", LegalController, :create_email
     get "/View/Case/History", LegalController, :view_case_history
 
     # ------------------------------ Task_Mgt
@@ -93,11 +115,20 @@ defmodule ProlegalsWeb.Router do
     get "/list/logbook/user", SecurityController, :list_log_book_users
     post "/create/logbook/user", SecurityController, :create_log_book_user
     post "/add/timeout", SecurityController, :add_time_out
+    get "/add/timeout", SecurityController, :add_time_out
     post "/logbook/update", SecurityController, :edit_log_book_user
     get "/view/logbook/user", SecurityController, :view_log_book_user
-    post "/check/in/logbook/user", SecurityController, :check_in_log_book_user
     get "/history/logbook/user", SecurityController, :history_log_book_users
+    get "/check_in/visitor", SecurityController, :recheck_in_visitor
+    post "/check/in/user", SecurityController, :recheck_in
+    # -------------------Security Reports------------------------------------
     get "/security/report", SecurityController, :sec_reports
+    post "/security/report", SecurityController, :item_lookup
+    get "/download/csv", SecurityController, :csv_exp 
+    get "/view/sec_report/details", SecurityController, :view_report_details
+
+    # ----------------------------------------------------------------------
+    
 
     # ---------------------------Firearms Inventory
     get "/firearms", AdminController, :firearm
@@ -123,27 +154,31 @@ defmodule ProlegalsWeb.Router do
     post "/Create/Category", AdminController, :create_inventory
     post "/Update/Category", AdminController, :update_inventory
     get "/Delete/Category", AdminController, :delete_inventory
-    get "/Assets", AdminController, :view_assets
+    
 
      # ---------------------------Assets
      get "/Asset", AdminController, :asset
      post "/Create/Asset", AdminController, :create_asset
      get "/Assets/View_Asset", AdminController, :view_asset
      post "/Update/Asset", AdminController, :update_asset
+     post "/Edit/Asset", AdminController, :edit_asset
      get "/Delete/Asset", AdminController, :delete_asset
 
     # ---------------------------Location
     get "/Location", AdminController, :location
     post "/Create/Location", AdminController, :create_location
+    post "/Edit/Location", AdminController, :edit_location
 
     # ---------------------------Location
     get "/Employees", AdminController, :employee
     post "/Create/Employee", AdminController, :create_employee
-    post "/Create/Bulk/Employee", AdminController, :create_bulk_employee
+    post "/Edit/Employee", AdminController, :edit_employee
+    post "/Create/Bulk/Employee", AdminController, :handle_bulk_upload
 
      # ---------------------------Assets
      get "/Vendor", AdminController, :vendor
      post "/Create/Vendor", AdminController, :create_vendor
+     post "/Edit/Vendor", AdminController, :edit_vendor
 
     # ---------------------------Legal Controller
     get "/Contacts", LegalController, :contacts
@@ -155,8 +190,19 @@ defmodule ProlegalsWeb.Router do
     get "/Notifications", LegalController, :notifications
     get "/Tasks", LegalController, :tasks
 
+
+    # -------------------------------------------------- Client Controller
     get "/messages", ClientController, :list_messages
+    get "/document", ClientController, :list_document
     post "/create/messages", ClientController, :create_message
+    post "/bulk/upload", ClientController, :document_upload
+    get "/trash", ClientController, :trash
+    get "/sent/message", ClientController, :sent_message
+    get "/move/trash", ClientController, :update_trash
+    post "/move/trash", ClientController, :update_trash
+    get "/move/trash_to/inbox", ClientController, :trash_to_inbox
+    post "/move/trash_to/inbox", ClientController, :trash_to_inbox
+    
 
   end
 

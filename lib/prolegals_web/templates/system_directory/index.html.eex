@@ -55,19 +55,31 @@
                     <form action="<%= Routes.system_directory_path(@conn, :create)%>" method="POST">
                         <input type="hidden" name="_csrf_token" value="<%= Plug.CSRFProtection.get_csrf_token()%>">
                         <div class="row form-group">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="form-label text-muted" for="simpleinput-disabled"id="companyInformationLabels">Processed<span class="text-danger">*</span></label>
-                                    <input type="text" name="processed" id="simpleinput-disabled" class="form-control" placeholder="D:\FILES\PROCESSED" value="<%= @sys_dirs && @sys_dirs.processed %>">
+                            
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label text-muted" for="simpleinput-disabled"id="companyInformationLabels">Processed<span class="text-danger">*</span></label>
+                                        <input type="text" name="processed" id="simpleinput-disabled" class="form-control" placeholder="D:\FILES\PROCESSED" value="<%= @sys_dirs && @sys_dirs.processed %>">
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="form-label text-muted" for="simpleinput-disabled"id="companyInformationLabels">Errors<span class="text-danger">*</span></label>
-                                    <input type="text" name="failed" id="simpleinput-disabled" class="form-control" placeholder="D:\FILES\ERRORS" value="<%= @sys_dirs && @sys_dirs.failed %>">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label text-muted" for="simpleinput-disabled"id="companyInformationLabels">Errors<span class="text-danger">*</span></label>
+                                        <input type="text" name="failed" id="simpleinput-disabled" class="form-control" placeholder="D:\FILES\ERRORS" value="<%= @sys_dirs && @sys_dirs.failed %>">
+                                    </div>
                                 </div>
-                            </div>
+                                
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label text-muted" for="simpleinput-disabled"id="companyInformationLabels">Facial Images<span class="text-danger">*</span></label>
+                                        <input type="text" name="facial_image" id="simpleinput-disabled" class="form-control" placeholder="D:\IMAGE\FACIAL IMAGE" value="<%= @sys_dirs && @sys_dirs.facial_image %>">
+                                    </div>
+                                </div>
+
+                               
+
+
                         </div>
                         <div class="panel-content border-faded border-left-0 border-right-0 border-bottom-0 d-flex flex-row">
                             <button type="button" class="btn btn-secondary submit ml-auto" onclick="history.back(-1)">Go Back</button>

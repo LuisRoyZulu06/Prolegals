@@ -5,7 +5,8 @@ defmodule Prolegals.Repo do
     # adapter: Ecto.Adapters.MySQL
     # adapter: Ecto.Adapters.MyXQL
     #----------- mssql
-    # adapter: Tds.Ecto
+    adapter: Tds.Ecto
     #----------- Postgres
-    adapter: Ecto.Adapters.Postgres
+    # adapter: Ecto.Adapters.Postgres
+    use Scrivener
 end

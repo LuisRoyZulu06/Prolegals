@@ -9,6 +9,9 @@ defmodule Prolegals.Security.Employee do
     field :employee_name, :string
     field :employee_no, :string
     field :nrc, :string
+    field :employee_bulk_filename, :string
+
+    # belongs_to :user, Prolegals.Accounts.User, foreign_key: :user_id, type: :id
 
     timestamps()
   end

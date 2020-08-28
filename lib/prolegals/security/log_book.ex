@@ -21,7 +21,7 @@ defmodule Prolegals.Security.LogBook do
     field :purpose, :string
     field :sex, :string
     field :time_in, :string
-    field :time_out, :string , default: "NotCheckOut"
+    field :time_out, :string, default: "NotCheckedOut"
 
     timestamps()
   end
@@ -29,8 +29,10 @@ defmodule Prolegals.Security.LogBook do
   @doc false
   def changeset(log_book, attrs) do
     log_book
+
     |> cast(attrs, [:name, :sex, :id_type, :id_no, :image, :mobile_no, :address, :company, :person_to_see, :purpose, :date, :time_in, :time_out])
-    |> validate_required([:name, :sex, :id_type, :id_no, :mobile_no, :address, :company, :person_to_see, :purpose])
+    |> validate_required([:name, :sex, :id_type, :id_no,  :mobile_no, :address, :company, :person_to_see, :purpose])
+    |> cast_attachments(attrs, [:image])
     # |> unique_constraint(:id_no)
   end
 
